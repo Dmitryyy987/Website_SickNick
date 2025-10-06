@@ -79,7 +79,7 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="relative py-24 md:py-32 bg-slate-950 border-b border-slate-800/50 overflow-hidden">
+    <section id="services" className="relative py-24 md:py-24 bg-slate-950 border-b border-slate-800/50 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>

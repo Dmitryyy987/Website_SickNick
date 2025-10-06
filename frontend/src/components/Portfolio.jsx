@@ -78,7 +78,7 @@ const Portfolio = () => {
     : projects.filter(project => project.category === activeFilter);
 
   return (
-    <section id="portfolio" className="relative py-24 md:py-32 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50 overflow-hidden">
+    <section id="portfolio" className="relative py-24 md:py-24 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
