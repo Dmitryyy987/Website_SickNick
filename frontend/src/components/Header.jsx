@@ -111,9 +111,8 @@ const Header = () => {
                 <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-lg sm:rounded-xl p-1.5 sm:p-2 border border-white/10 group-hover:border-blue-400/50 transition-all duration-300 group-hover:scale-105">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <span className="relative bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent text-lg sm:text-xl md:text-2xl font-black">
-                      Byt
+                      Byt<span className="text-white text-lg sm:text-xl md:text-2xl font-black">Brand</span>
                     </span>
-                    <span className="text-white text-lg sm:text-xl md:text-2xl font-black">Brand</span>
                   </div>
                   
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-lg sm:rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
