@@ -2,6 +2,7 @@ import React from "react";
 
 const Portfolio = () => {
   return (
+<<<<<<< Updated upstream
     <section id="portfolio" className="py-24 md:py-36 border-b border-gray-900 bg-[#111111]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
@@ -26,6 +27,22 @@ const Portfolio = () => {
               alt="Featured project screenshot"
               className="w-full rounded-xl shadow-2xl border border-gray-800"
             />
+=======
+    <section id="portfolio" className="relative py-24 md:py-20 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-1/4 right-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-cyan-500 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-full backdrop-blur-sm mb-4">
+            <span className="text-sm font-medium bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              Our Work
+            </span>
+>>>>>>> Stashed changes
           </div>
         </div>
       </div>
