@@ -14,18 +14,6 @@ const Contact = () => {
   const formRef = useRef(null);
   const location = useLocation();
 
-  // Auto-scroll to form when navigated to contact page
-  useEffect(() => {
-    if (location.pathname === '/contact' && formRef.current) {
-      setTimeout(() => {
-        formRef.current.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }, 100);
-    }
-  }, [location.pathname]);
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -36,10 +24,8 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 2000));
     setIsSubmitting(false);
-    // Handle form submission here
     alert('Thank you for your message! We will get back to you soon.');
     setFormData({
       name: "",
@@ -52,8 +38,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50 ">
-      {/* Animated Background Grid */}
+    <section id="contact" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50 pt-8 md:pt-12 lg:pt-16">
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0" style={{
           backgroundImage: `
@@ -64,16 +49,12 @@ const Contact = () => {
         }}></div>
       </div>
 
-      {/* Gradient Orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-20 w-full mt-0">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-20 w-full">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Contact Information */}
           <div className="space-y-8">
-            {/* Header */}
             <div>
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-full backdrop-blur-sm mb-6">
                 <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
@@ -95,7 +76,6 @@ const Contact = () => {
               </p>
             </div>
 
-            {/* Contact Methods */}
             <div className="space-y-6">
               {[
                 {
@@ -145,7 +125,6 @@ const Contact = () => {
               ))}
             </div>
 
-            {/* Social Links */}
             <div className="pt-6">
               <h3 className="text-white font-semibold mb-4">Follow Us</h3>
               <div className="flex gap-4">
@@ -164,7 +143,6 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Contact Form with ref for auto-scroll */}
           <div ref={formRef} className="bg-slate-900/50 backdrop-blur-sm border border-slate-800/50 rounded-2xl p-8 lg:p-10 shadow-2xl shadow-blue-500/10">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">

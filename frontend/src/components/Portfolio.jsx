@@ -79,14 +79,12 @@ const Portfolio = () => {
 
   return (
     <section id="portfolio" className="relative py-24 md:py-24 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50 overflow-hidden">
-      {/* Background Elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-cyan-500 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Section Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-full backdrop-blur-sm mb-4">
             <span className="text-sm font-medium bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
@@ -101,7 +99,6 @@ const Portfolio = () => {
           </p>
         </div>
 
-        {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {filters.map((filter) => (
             <button
@@ -118,7 +115,6 @@ const Portfolio = () => {
           ))}
         </div>
 
-        {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project, index) => (
             <div
@@ -128,14 +124,12 @@ const Portfolio = () => {
                 animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
               }}
             >
-              {/* Featured Badge */}
               {project.featured && (
                 <div className="absolute top-4 left-4 z-20 px-3 py-1 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-xs font-semibold rounded-full">
                   Featured
                 </div>
               )}
 
-              {/* Image Container */}
               <div className="relative h-56 overflow-hidden bg-slate-800">
                 <img
                   src={project.image}
@@ -144,7 +138,6 @@ const Portfolio = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
                 
-                {/* Overlay Link */}
                 <a
                   href={project.link}
                   target="_blank"
@@ -159,7 +152,6 @@ const Portfolio = () => {
                 </a>
               </div>
 
-              {/* Content */}
               <div className="p-6">
                 <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-cyan-400 group-hover:bg-clip-text transition-all duration-300">
                   {project.title}
@@ -168,7 +160,6 @@ const Portfolio = () => {
                   {project.description}
                 </p>
 
-                {/* Tech Stack */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tech.map((tech, i) => (
                     <span
@@ -180,7 +171,6 @@ const Portfolio = () => {
                   ))}
                 </div>
 
-                {/* View Project Link */}
                 <a
                   href={project.link}
                   target="_blank"
@@ -197,7 +187,6 @@ const Portfolio = () => {
           ))}
         </div>
 
-        {/* CTA Section */}
         <div className="mt-20 text-center">
           <p className="text-slate-400 mb-6 text-lg">
             Want to see more of our work?

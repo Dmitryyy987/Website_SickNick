@@ -20,7 +20,6 @@ const Hero = () => {
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50">
-      {/* Animated Background Grid */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0" style={{
           backgroundImage: `
@@ -31,7 +30,6 @@ const Hero = () => {
         }}></div>
       </div>
 
-      {/* Gradient Orbs */}
       <div 
         className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse"
         style={{
@@ -48,9 +46,7 @@ const Hero = () => {
         }}
       ></div>
 
-      {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-20 md:py-32">
-        {/* Badge */}
         <div 
           className={`flex justify-center mb-8 transition-all duration-1000 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
@@ -64,7 +60,6 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Main Headline */}
         <h1 
           className={`text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-8 transition-all duration-1000 delay-100 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
@@ -76,7 +71,6 @@ const Hero = () => {
           </span>
         </h1>
 
-        {/* Subheadline */}
         <p 
           className={`text-xl md:text-2xl lg:text-3xl font-light text-slate-400 max-w-4xl mx-auto mb-12 leading-relaxed transition-all duration-1000 delay-300 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
@@ -90,7 +84,6 @@ const Hero = () => {
           .
         </p>
 
-        {/* CTA Buttons */}
         <div 
           className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-1000 delay-500 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
@@ -122,7 +115,6 @@ const Hero = () => {
           </a>
         </div>
 
-        {/* Stats or Trust Indicators */}
         <div 
           className={`mt-20 pt-12 border-t border-slate-800/50 grid grid-cols-2 md:grid-cols-4 gap-8 transition-all duration-1000 delay-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
@@ -146,7 +138,6 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
         <svg className="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />

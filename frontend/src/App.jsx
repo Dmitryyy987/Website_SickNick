@@ -9,10 +9,8 @@ import Contact from './pages/Contact';
 import Footer from "./components/Footer";
 import "./index.css";
 
-// Home Page Component
 function HomePage() {
   useEffect(() => {
-    // Scroll reveal logic for home page only
     const checkReveal = () => {
       const reveals = document.querySelectorAll(".reveal");
       const windowHeight = window.innerHeight;
@@ -47,16 +45,12 @@ function HomePage() {
   );
 }
 
-// Contact Page Component
 function ContactPage() {
   return (
-    <div className="pt-20"> {/* Add padding to account for fixed header */}
       <Contact />
-    </div>
   );
 }
 
-// Layout Component
 function Layout({ children }) {
   return (
     <div className="antialiased bg-black text-white font-inter">
@@ -73,7 +67,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Home Route */}
         <Route 
           path="/" 
           element={
@@ -83,7 +76,6 @@ function App() {
           } 
         />
         
-        {/* Contact Route - FIXED PATH */}
         <Route 
           path="/contact" 
           element={
@@ -93,7 +85,6 @@ function App() {
           } 
         />
         
-        {/* 404 Catch-all Route */}
         <Route 
           path="*" 
           element={

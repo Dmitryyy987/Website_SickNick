@@ -80,13 +80,11 @@ const Services = () => {
 
   return (
     <section id="services" className="relative py-24 md:py-24 bg-slate-950 border-b border-slate-800/50 overflow-hidden">
-      {/* Background Elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500 rounded-full blur-3xl"></div>
       </div>
 
-      {/* Grid Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
           backgroundImage: `
@@ -98,7 +96,6 @@ const Services = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Section Header */}
         <div className="text-center mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-full backdrop-blur-sm mb-4">
             <span className="text-sm font-medium bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
@@ -113,7 +110,6 @@ const Services = () => {
           </p>
         </div>
 
-        {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <div
@@ -125,10 +121,8 @@ const Services = () => {
                 animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
               }}
             >
-              {/* Gradient Overlay on Hover */}
               <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-500`}></div>
 
-              {/* Icon Container */}
               <div className="relative mb-6">
                 <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${service.gradient} bg-opacity-10 border border-slate-700 group-hover:border-blue-500/50 transition-all duration-300`}>
                   <div className={`bg-gradient-to-br ${service.iconGradient} bg-clip-text text-transparent`}>
@@ -140,7 +134,6 @@ const Services = () => {
                 )}
               </div>
 
-              {/* Content */}
               <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-cyan-400 group-hover:bg-clip-text transition-all duration-300">
                 {service.title}
               </h3>
@@ -149,7 +142,6 @@ const Services = () => {
                 {service.description}
               </p>
 
-              {/* Features List */}
               <ul className="space-y-2 mb-6">
                 {service.features.map((feature, i) => (
                   <li key={i} className="flex items-center gap-2 text-slate-500 text-sm group-hover:text-slate-400 transition-colors">
@@ -161,7 +153,6 @@ const Services = () => {
                 ))}
               </ul>
 
-              {/* Learn More Link */}
               <a
                 href="#contact"
                 className="inline-flex items-center gap-2 text-blue-400 hover:text-cyan-400 font-semibold text-sm transition-all duration-300 group/link"
@@ -172,13 +163,11 @@ const Services = () => {
                 </svg>
               </a>
 
-              {/* Corner Accent */}
               <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-10 rounded-bl-full transition-opacity duration-500`}></div>
             </div>
           ))}
         </div>
 
-        {/* Bottom CTA */}
         <div className="mt-20 text-center">
           <div className="inline-block p-8 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-2xl backdrop-blur-sm">
             <h3 className="text-2xl font-bold text-white mb-4">

@@ -18,12 +18,10 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu when page changes
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = "hidden";
@@ -35,12 +33,10 @@ const Header = () => {
     };
   }, [menuOpen]);
 
-  // Smooth scroll to section on home page
   const scrollToSection = (sectionId) => {
     setMenuOpen(false);
 
     if (location.pathname !== "/") {
-      // If not on home page, navigate to home first then scroll
       navigate("/");
       setTimeout(() => {
         const element = document.getElementById(sectionId);
@@ -57,7 +53,6 @@ const Header = () => {
         }
       }, 100);
     } else {
-      // If already on home page, just scroll
       const element = document.getElementById(sectionId);
       if (element) {
         const headerHeight = headerRef.current?.offsetHeight || 0;
@@ -76,6 +71,9 @@ const Header = () => {
   const navigateToContact = () => {
     setMenuOpen(false);
     navigate("/contact");
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 100);
   };
 
   const navigateToHome = (e) => {
@@ -91,8 +89,8 @@ const Header = () => {
         ref={headerRef}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-slate-900/70 backdrop-blur-xl shadow-xl border-b border-white/10"
-            : "bg-slate-950/40 backdrop-blur-lg border-b border-white/5"
+            ? "bg-slate-900/95 backdrop-blur-xl shadow-xl border-b border-white/10"
+            : "bg-slate-900/95 backdrop-blur-lg border-b border-white/10"
         }`}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent pointer-events-none"></div>
@@ -216,10 +214,6 @@ const Header = () => {
         className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ${
           menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
-        style={{
-          top: "64px", // Use fixed value instead of dynamic calculation
-          height: "calc(100vh - 64px)", // Adjust height accordingly
-        }}
       >
         <div
           className={`absolute inset-0 bg-slate-950/95 backdrop-blur-xl transition-opacity duration-300 ${
@@ -229,11 +223,11 @@ const Header = () => {
         ></div>
 
         <div
-          className={`relative h-full overflow-y-auto transition-transform duration-300 ${
+          className={`relative h-full overflow-y-auto transition-transform duration-300 pt-16 ${
             menuOpen ? "translate-y-0" : "-translate-y-4"
           }`}
         >
-          <div className="px-4 py-6 space-y-3 min-h-full">
+          <div className="px-4 py-6 space-y-3">
             {["services", "portfolio"].map((item, index) => (
               <button
                 key={item}

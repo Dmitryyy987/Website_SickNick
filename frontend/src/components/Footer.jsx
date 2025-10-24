@@ -241,7 +241,7 @@ const Footer = () => {
         <div className="py-8 border-t border-slate-800/50">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
             <p className="text-center md:text-left">
-              © {currentYear} <span className="text-slate-400 font-medium">ByteBrand</span>. All rights reserved.
+              © {currentYear} <span className="text-slate-400 font-medium">BytBrand</span>. All rights reserved.
             </p>
             <div className="flex items-center gap-2">
               <span className="hidden md:inline">Crafted with</span>
