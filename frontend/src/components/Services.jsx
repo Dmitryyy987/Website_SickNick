@@ -177,7 +177,7 @@ const Services = () => {
               We specialize in creating tailored solutions that perfectly match your unique business requirements
             </p>
             <a
-              href="#contact"
+              href="/contact"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105 group"
             >
               Let's Talk About Your Project

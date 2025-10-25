@@ -61,12 +61,10 @@ const Footer = () => {
     
     setSubscribeStatus("loading");
     
-    // Simulate subscription
     setTimeout(() => {
       setSubscribeStatus("success");
       setEmail("");
       
-      // Reset status after 3 seconds
       setTimeout(() => {
         setSubscribeStatus("");
       }, 3000);
@@ -75,16 +73,13 @@ const Footer = () => {
 
   return (
     <footer className="relative bg-slate-950 border-t border-slate-800/50 overflow-hidden">
-      {/* Background Elements */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Main Footer Content */}
         <div className="py-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-          {/* Brand Column */}
           <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <a href="#hero" className="group flex items-center gap-2 text-2xl font-bold tracking-tight mb-4">
               <div className="relative">
@@ -98,7 +93,6 @@ const Footer = () => {
               Engineering next-generation digital solutions with precision, innovation, and uncompromising quality.
             </p>
             
-            {/* Social Links */}
             <div className="flex gap-3">
               {socialLinks.map((social, index) => (
                 <a
@@ -121,7 +115,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Company Links */}
           <div className="col-span-1">
             <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Company</h3>
             <ul className="space-y-3">
@@ -138,7 +131,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services Links */}
           <div className="col-span-1">
             <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Services</h3>
             <ul className="space-y-3">
@@ -155,7 +147,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Resources Links */}
           <div className="col-span-1">
             <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Resources</h3>
             <ul className="space-y-3">
@@ -172,7 +163,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Legal Links */}
           <div className="col-span-1">
             <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Legal</h3>
             <ul className="space-y-3">
@@ -190,7 +180,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Newsletter Section */}
         <div className="py-8 border-t border-slate-800/50">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
@@ -237,22 +226,15 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="py-8 border-t border-slate-800/50">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
             <p className="text-center md:text-left">
               © {currentYear} <span className="text-slate-400 font-medium">BytBrand</span>. All rights reserved.
             </p>
-            <div className="flex items-center gap-2">
-              <span className="hidden md:inline">Crafted with</span>
-              <span className="text-red-400 animate-pulse text-lg">♥</span>
-              <span className="hidden md:inline">using modern technologies</span>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Decorative Bottom Line */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
     </footer>
   );

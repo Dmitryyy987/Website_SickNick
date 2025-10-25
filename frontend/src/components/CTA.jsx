@@ -1,28 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const CTA = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    const section = document.getElementById('cta-section');
-    if (section) observer.observe(section);
-
-    return () => {
-      if (section) observer.unobserve(section);
-    };
-  }, []);
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -38,8 +17,8 @@ const CTA = () => {
       className="relative py-24 md:py-24 bg-slate-950 border-b border-slate-800/50 overflow-hidden"
     >
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-3xl"></div>
         
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -55,19 +34,15 @@ const CTA = () => {
       <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8">
         <div className="text-center">
           <div 
-            className={`inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-full backdrop-blur-sm mb-8 transition-all duration-1000 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
-            }`}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-full backdrop-blur-sm mb-8 opacity-100"
           >
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
             <span className="text-sm font-medium text-slate-300">
               Free 30-Minute Consultation
             </span>
           </div>
           <h2 
-            className={`text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight transition-all duration-1000 delay-100 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight opacity-100"
           >
             Ready to build{' '}
             <span className="relative inline-block">
@@ -79,17 +54,13 @@ const CTA = () => {
             ?
           </h2>
           <p 
-            className={`text-lg md:text-xl text-slate-400 mb-10 max-w-3xl mx-auto leading-relaxed transition-all duration-1000 delay-300 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
+            className="text-lg md:text-xl text-slate-400 mb-10 max-w-3xl mx-auto leading-relaxed opacity-100"
           >
             Book a free discovery call with our Lead Engineer. No sales pitch—just honest insights, 
             technical guidance, and <span className="text-white font-semibold">actionable solutions</span> tailored to your vision.
           </p>
           <div 
-            className={`flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 transition-all duration-1000 delay-500 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 opacity-100"
           >
             <a
               href="#contact"
@@ -105,13 +76,13 @@ const CTA = () => {
               
               <span className="relative z-10 flex items-center gap-3">
                 Schedule Discovery Call
-                <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </span>
               
               <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute inset-0 rounded-xl border-2 border-white/20 animate-pulse"></div>
+                <div className="absolute inset-0 rounded-xl border-2 border-white/20"></div>
               </div>
             </a>
 
@@ -121,7 +92,7 @@ const CTA = () => {
             >
               <span className="flex items-center gap-3">
                 View Case Studies
-                <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </span>
@@ -129,9 +100,7 @@ const CTA = () => {
           </div>
 
           <div 
-            className={`grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-slate-800/50 transition-all duration-1000 delay-700 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-slate-800/50 opacity-100"
           >
             {[
               { icon: "⚡", text: "24-48hr Response" },

@@ -85,7 +85,7 @@ const Contact = () => {
                     </svg>
                   ),
                   title: "Email Us",
-                  detail: "hello@agency.com",
+                  detail: "bytbrand.info@gmail.com",
                   description: "Send us an email anytime"
                 },
                 {

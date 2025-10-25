@@ -187,20 +187,6 @@ const Portfolio = () => {
           ))}
         </div>
 
-        <div className="mt-20 text-center">
-          <p className="text-slate-400 mb-6 text-lg">
-            Want to see more of our work?
-          </p>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105 group"
-          >
-            Let's Discuss Your Project
-            <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </a>
-        </div>
       </div>
 
       <style jsx>{`
