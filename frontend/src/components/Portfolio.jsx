@@ -31,12 +31,19 @@ const Portfolio = () => {
     },
   ];
 
+  const filters = [
+    { id: 'all', label: 'All Projects', icon: '🎯' },
+    { id: 'web', label: 'Web Apps', icon: '💻' },
+    { id: 'mobile', label: 'Mobile', icon: '📱' },
+    { id: 'ai', label: 'AI/ML', icon: '🤖' }
+  ];
+
   const filteredProjects = activeFilter === 'all' 
     ? projects 
     : projects.filter(project => project.category === activeFilter);
 
   return (
-    <section id="#portfolio" className="relative py-24 md:py-32 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50 overflow-hidden">
+    <section id="portfolio" className="relative py-24 md:py-32 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50 overflow-hidden">
       {/* Animated Background Effects */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl animate-pulse"></div>
@@ -221,34 +228,6 @@ const Portfolio = () => {
               <div className={`absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl ${project.color} opacity-0 group-hover:opacity-10 rounded-tl-full transition-opacity duration-500`}></div>
             </div>
           ))}
-        </div>
-
-        {/* Bottom CTA Section */}
-        <div className="mt-16 text-center">
-          <div className="inline-block p-8 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-2xl backdrop-blur-sm hover:scale-105 transition-transform duration-300">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-                </svg>
-              </div>
-              <h3 className="text-2xl font-bold text-white">
-                Have a Project in Mind?
-              </h3>
-            </div>
-            <p className="text-slate-400 mb-6 max-w-2xl mx-auto">
-              Let's collaborate to bring your vision to life with innovative solutions and exceptional results
-            </p>
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105 group"
-            >
-              Start Your Project
-              <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </a>
-          </div>
         </div>
 
         {/* Project Count Indicator */}
