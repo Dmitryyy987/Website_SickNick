@@ -90,7 +90,7 @@ const Hero = () => {
           }`}
         >
           <a
-            href="/contact"
+            href="contact"
             className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105 overflow-hidden"
           >
             <span className="relative z-10 flex items-center gap-2">
