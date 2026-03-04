@@ -1,40 +1,14 @@
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Services from "./components/Services";
 import Portfolio from "./components/Portfolio";
 import CTA from "./components/CTA";
-import Contact from './pages/Contact';
+import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
-import "./index.css";
 
 function HomePage() {
-  useEffect(() => {
-    const checkReveal = () => {
-      const reveals = document.querySelectorAll(".reveal");
-      const windowHeight = window.innerHeight;
-
-      reveals.forEach((element) => {
-        const elementTop = element.getBoundingClientRect().top;
-        const revealPoint = 150;
-
-        if (elementTop < windowHeight - revealPoint) {
-          element.classList.add("active");
-        }
-      });
-    };
-
-    window.addEventListener("scroll", checkReveal);
-    window.addEventListener("load", checkReveal);
-    checkReveal();
-
-    return () => {
-      window.removeEventListener("scroll", checkReveal);
-      window.removeEventListener("load", checkReveal);
-    };
-  }, []);
-
   return (
     <>
       <Hero />
@@ -45,17 +19,12 @@ function HomePage() {
   );
 }
 
-function ContactPage() {
+function Layout({ children, theme, onToggleTheme }) {
+  const location = useLocation();
   return (
-      <Contact />
-  );
-}
-
-function Layout({ children }) {
-  return (
-    <div className="antialiased bg-black text-white font-inter">
-      <Header />
-      <main>
+    <div className="min-h-screen page-grid">
+      <Header theme={theme} onToggleTheme={onToggleTheme} />
+      <main key={location.pathname} className="route-fade">
         {children}
       </main>
       <Footer />
@@ -63,50 +32,61 @@ function Layout({ children }) {
   );
 }
 
-function App() {
+function NotFound() {
+  return (
+    <section className="section-shell min-h-[60vh] flex items-center justify-center">
+      <div className="glass-panel rounded-2xl p-10 text-center max-w-xl w-full">
+        <h1 className="heading-font text-5xl font-bold mb-4">404</h1>
+        <p className="text-[var(--muted)]">The page you are looking for does not exist.</p>
+      </div>
+    </section>
+  );
+}
+
+export default function App() {
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem("bytbrand-theme");
+    if (savedTheme === "light" || savedTheme === "dark") return savedTheme;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("bytbrand-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
+  };
+
   return (
     <Router>
       <Routes>
-        <Route 
-          path="/" 
+        <Route
+          path="/"
           element={
-            <Layout>
+            <Layout theme={theme} onToggleTheme={toggleTheme}>
               <HomePage />
             </Layout>
-          } 
+          }
         />
-        
-        <Route 
-          path="/contact" 
+        <Route
+          path="/contact"
           element={
-            <Layout>
-              <ContactPage />
+            <Layout theme={theme} onToggleTheme={toggleTheme}>
+              <Contact />
             </Layout>
-          } 
+          }
         />
-        
-        <Route 
-          path="*" 
+        <Route
+          path="*"
           element={
-            <Layout>
-              <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                  <h1 className="text-6xl font-bold text-white mb-4">404</h1>
-                  <p className="text-xl text-slate-400 mb-8">Page not found</p>
-                  <a 
-                    href="/" 
-                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-lg hover:from-blue-500 hover:to-cyan-500 transition-all duration-300"
-                  >
-                    Go Home
-                  </a>
-                </div>
-              </div>
+            <Layout theme={theme} onToggleTheme={toggleTheme}>
+              <NotFound />
             </Layout>
-          } 
+          }
         />
       </Routes>
     </Router>
   );
 }
-
-export default App; 

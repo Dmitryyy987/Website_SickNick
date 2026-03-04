@@ -1,1 +1,196 @@
 @import "tailwindcss";
+
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --line: #dbe3ef;
+  --primary: #0f4c81;
+  --primary-soft: #ecf4ff;
+  --accent: #18a999;
+  --body-gradient: radial-gradient(circle at 10% -10%, #dde9f8 0%, transparent 42%),
+    radial-gradient(circle at 100% 0%, #e8effa 0%, transparent 32%);
+  --grid-line: rgba(15, 76, 129, 0.06);
+  --scrollbar-track: #e6edf8;
+  --scrollbar-thumb: #7ea0c3;
+  --cta-bg: #0f4c81;
+  --cta-text: #f8fbff;
+  --cta-muted: #d7e6f7;
+  --cta-outline: #e3efff;
+  --btn-primary-text: #f8fbff;
+  --btn-primary-border: #0f4c81;
+  --btn-primary-hover-bg: #0d406c;
+  --btn-primary-hover-border: #18a999;
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-text: #1e293b;
+  --btn-secondary-border: #c8d7ea;
+  --btn-secondary-hover-bg: #ecf4ff;
+  --btn-secondary-hover-border: #7ea0c3;
+  --nav-bg: color-mix(in srgb, #f5f7fb 78%, #ffffff 22%);
+  --nav-border: rgba(142, 166, 195, 0.45);
+}
+
+[data-theme="dark"] {
+  --bg: #0a1220;
+  --surface: #0f1a2f;
+  --text: #f1f5f9;
+  --muted: #c8d3e2;
+  --line: #2a3a57;
+  --primary: #61b3ff;
+  --primary-soft: #17253b;
+  --accent: #34d399;
+  --body-gradient: radial-gradient(circle at 12% -12%, #1f3152 0%, transparent 42%),
+    radial-gradient(circle at 100% 0%, #122946 0%, transparent 34%);
+  --grid-line: rgba(97, 179, 255, 0.1);
+  --scrollbar-track: #101a2c;
+  --scrollbar-thumb: #3f5f87;
+  --cta-bg: #1f3657;
+  --cta-text: #f8fbff;
+  --cta-muted: #d7e8ff;
+  --cta-outline: #adc9ee;
+  --btn-primary-text: #06182b;
+  --btn-primary-border: #61b3ff;
+  --btn-primary-hover-bg: #4ba5f6;
+  --btn-primary-hover-border: #34d399;
+  --btn-secondary-bg: #13233b;
+  --btn-secondary-text: #e8f1ff;
+  --btn-secondary-border: #365071;
+  --btn-secondary-hover-bg: #1a2f4d;
+  --btn-secondary-hover-border: #61b3ff;
+  --nav-bg: color-mix(in srgb, #0a1220 76%, #13233b 24%);
+  --nav-border: rgba(80, 121, 168, 0.58);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--body-gradient), var(--bg);
+  color: var(--text);
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+.heading-font {
+  font-family: "Sora", "Segoe UI", sans-serif;
+}
+
+.section-shell {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 4rem 1.25rem;
+}
+
+.glass-panel {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+}
+
+.page-grid {
+  background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.route-fade {
+  animation: route-fade 420ms ease both;
+}
+
+.btn-interactive {
+  transition: transform 220ms ease, box-shadow 220ms ease, background-color 220ms ease, border-color 220ms ease,
+    color 220ms ease;
+  border: 1px solid transparent;
+}
+
+.btn-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 76, 129, 0.18);
+  border-color: var(--btn-secondary-hover-border);
+}
+
+.btn-interactive:active {
+  transform: translateY(0);
+}
+
+.card-interactive {
+  transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+}
+
+.card-interactive:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(2, 8, 23, 0.08);
+  border-color: #b8c9df;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-border);
+}
+
+.btn-primary:hover {
+  background: var(--btn-primary-hover-bg);
+  border-color: var(--btn-primary-hover-border);
+}
+
+.btn-secondary {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border-color: var(--btn-secondary-border);
+}
+
+.btn-secondary:hover {
+  background: var(--btn-secondary-hover-bg);
+  border-color: var(--btn-secondary-hover-border);
+}
+
+.nav-surface {
+  background: color-mix(in srgb, var(--nav-bg) 88%, transparent);
+  border-color: var(--nav-border);
+  backdrop-filter: blur(14px);
+}
+
+@keyframes route-fade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 999px;
+  border: 2px solid var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}

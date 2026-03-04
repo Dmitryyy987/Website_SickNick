@@ -1,440 +1,49 @@
-import React, { useState } from "react";
+const services = [
+  {
+    title: "Web Platforms",
+    description: "Fast, SEO-ready websites and dashboards with modern architecture and clear CMS workflows.",
+  },
+  {
+    title: "Mobile & Cross Platform",
+    description: "Native-feel mobile apps with stable APIs, push workflows, and analytics-ready releases.",
+  },
+  {
+    title: "Shopify & WordPress",
+    description: "Conversion-focused storefronts and content sites optimized for speed, checkout, and discoverability.",
+  },
+  {
+    title: "AI Automations",
+    description: "Chatbots and internal agents that reduce manual work and improve customer response times.",
+  },
+  {
+    title: "UI Systems",
+    description: "Design systems and reusable component libraries for consistent, maintainable product experience.",
+  },
+  {
+    title: "Support & Optimization",
+    description: "Performance tuning, bug fixes, security hardening, and long-term maintenance plans.",
+  },
+];
 
-const Services = () => {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [selectedService, setSelectedService] = useState(null);
-
-  const services = [
-    {
-      icon: (
-        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-      ),
-      title: "Web Development",
-      description: "Custom web application development using modern frameworks to create fast, responsive, and scalable digital solutions for businesses.",
-      features: ["React & Next.js Development", "Full-Stack Solutions", "API Integration", "Progressive Web Apps", "Performance Optimization"],
-      detailedInfo: {
-        overview: "Transform your digital presence with cutting-edge web applications built using the latest technologies. Our expert team delivers solutions that are not only visually stunning but also highly functional and scalable.",
-        technologies: ["React.js", "Next.js", "Node.js", "TypeScript", "TailwindCSS", "GraphQL", "PostgreSQL", "MongoDB"],
-        benefits: [
-          "Lightning-fast page load times with optimized performance",
-          "SEO-friendly architecture for better search rankings",
-          "Responsive design that works flawlessly on all devices",
-          "Scalable infrastructure that grows with your business",
-          "Secure and maintainable codebase following best practices"
-        ],
-        process: ["Discovery & Planning", "UI/UX Design", "Development", "Testing & QA", "Deployment", "Maintenance & Support"]
-      },
-      gradient: "from-blue-500 to-cyan-500",
-      iconGradient: "from-blue-400 to-cyan-400"
-    },
-    {
-      icon: (
-        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-        </svg>
-      ),
-      title: "Mobile Applications",
-      description: "Native and cross-platform mobile app development for iOS and Android that delivers seamless user experiences and robust performance.",
-      features: ["iOS & Android Native Apps", "React Native Development", "Flutter Cross-Platform", "App Store Deployment", "Mobile UI/UX Design"],
-      detailedInfo: {
-        overview: "Reach your audience wherever they are with powerful mobile applications. We create native and cross-platform apps that provide exceptional user experiences and drive engagement.",
-        technologies: ["React Native", "Flutter", "Swift", "Kotlin", "Firebase", "Redux", "REST APIs", "Push Notifications"],
-        benefits: [
-          "Single codebase for both iOS and Android platforms",
-          "Native-like performance and smooth animations",
-          "Offline functionality and data synchronization",
-          "Seamless integration with device features",
-          "Regular updates and feature enhancements"
-        ],
-        process: ["Ideation & Strategy", "Wireframing", "App Development", "Testing on Devices", "App Store Submission", "Post-Launch Support"]
-      },
-      gradient: "from-cyan-500 to-blue-500",
-      iconGradient: "from-cyan-400 to-blue-400"
-    },
-    {
-      icon: (
-        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-        </svg>
-      ),
-      title: "UI/UX Design",
-      description: "User-centered design solutions that create intuitive, accessible, and engaging digital experiences across all platforms.",
-      features: ["User Interface Design", "User Experience Research", "Wireframing & Prototyping", "Design Systems", "Brand Identity Design"],
-      detailedInfo: {
-        overview: "Create memorable experiences that users love. Our design team combines aesthetics with functionality to deliver interfaces that are both beautiful and intuitive.",
-        technologies: ["Figma", "Adobe XD", "Sketch", "InVision", "Principle", "Framer", "Miro", "Maze"],
-        benefits: [
-          "Increased user engagement and satisfaction",
-          "Reduced development costs with clear specifications",
-          "Consistent brand experience across all touchpoints",
-          "Data-driven design decisions backed by user research",
-          "Accessible designs that work for everyone"
-        ],
-        process: ["User Research", "Information Architecture", "Wireframing", "Visual Design", "Prototyping", "Usability Testing"]
-      },
-      gradient: "from-blue-500 to-cyan-500",
-      iconGradient: "from-blue-400 to-cyan-400"
-    },
-    {
-      icon: (
-        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-        </svg>
-      ),
-      title: "Website Using Shopify & Wordpress",
-      description: "Professional e-commerce and content management solutions using Shopify and WordPress for scalable online presence.",
-      features: ["Shopify Store Development", "WordPress Website Design", "E-commerce Solutions", "Theme Customization", "Plugin Development"],
-      detailedInfo: {
-        overview: "Launch your online store or content platform with powerful CMS solutions. We leverage Shopify and WordPress to create flexible, easy-to-manage websites that drive results.",
-        technologies: ["Shopify", "WordPress", "WooCommerce", "Liquid", "PHP", "MySQL", "Shopify Apps", "Custom Plugins"],
-        benefits: [
-          "Quick time-to-market with proven platforms",
-          "Easy content management without technical knowledge",
-          "Built-in SEO optimization and marketing tools",
-          "Secure payment processing and checkout",
-          "Extensive plugin ecosystem for added functionality"
-        ],
-        process: ["Platform Selection", "Theme Setup", "Customization", "Content Migration", "Testing", "Launch & Training"]
-      },
-      gradient: "from-cyan-500 to-blue-500",
-      iconGradient: "from-cyan-400 to-blue-400"
-    },
-    {
-      icon: (
-        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-        </svg>
-      ),
-      title: "AI ChatBots & AI Agents",
-      description: "Intelligent AI-powered chatbots and virtual agents that automate customer service and enhance business operations.",
-      features: ["Custom AI Chatbots", "Natural Language Processing", "Virtual Assistants", "AI Integration", "Machine Learning Models"],
-      detailedInfo: {
-        overview: "Revolutionize your customer interactions with intelligent AI solutions. Our chatbots and AI agents provide 24/7 support while learning and improving over time.",
-        technologies: ["OpenAI GPT", "LangChain", "TensorFlow", "Python", "Natural Language Processing", "Machine Learning", "API Integration", "Cloud AI Services"],
-        benefits: [
-          "24/7 automated customer support availability",
-          "Reduced operational costs and improved efficiency",
-          "Personalized interactions based on user behavior",
-          "Seamless integration with existing systems",
-          "Continuous learning and improvement capabilities"
-        ],
-        process: ["Requirements Analysis", "AI Model Selection", "Training & Fine-tuning", "Integration", "Testing", "Deployment & Monitoring"]
-      },
-      gradient: "from-blue-500 to-cyan-500",
-      iconGradient: "from-blue-400 to-cyan-400"
-    },
-    {
-      icon: (
-        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
-      title: "Software Maintenance & Optimization",
-      description: "Comprehensive software maintenance, performance optimization, and ongoing support services for existing applications.",
-      features: ["Performance Optimization", "Bug Fixing & Updates", "Security Patches", "Code Refactoring", "Technical Support"],
-      detailedInfo: {
-        overview: "Keep your applications running smoothly and efficiently. Our maintenance services ensure your software stays secure, fast, and up-to-date with the latest technologies.",
-        technologies: ["Performance Monitoring", "Code Analysis Tools", "Security Scanners", "CI/CD", "Docker", "Kubernetes", "New Relic", "DataDog"],
-        benefits: [
-          "Improved application performance and speed",
-          "Enhanced security with regular patches",
-          "Reduced downtime and technical issues",
-          "Extended software lifespan and ROI",
-          "Proactive monitoring and issue resolution"
-        ],
-        process: ["Audit & Assessment", "Priority Identification", "Optimization Plan", "Implementation", "Testing", "Ongoing Monitoring"]
-      },
-      gradient: "from-cyan-500 to-blue-500",
-      iconGradient: "from-cyan-400 to-blue-400"
-    }
-  ];
-
-  const handleLearnMore = (service, index) => {
-    setSelectedService({ ...service, index });
-  };
-
-  const closeModal = () => {
-    setSelectedService(null);
-  };
-
+export default function Services() {
   return (
-    <section id="services" className="relative py-24 md:py-32 bg-slate-950 border-b border-slate-800/50 overflow-hidden">
-      {/* Animated Background Effects */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+    <section id="services" className="section-shell">
+      <div className="text-center max-w-2xl mx-auto">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary)]">Services</p>
+        <h2 className="heading-font mt-3 text-3xl md:text-4xl font-semibold">Clean execution across your stack</h2>
+        <p className="mt-3 text-[var(--muted)]">
+          End-to-end delivery from design to infrastructure, with clear process and maintainable code.
+        </p>
       </div>
 
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `
-            linear-gradient(to right, rgb(59, 130, 246, 0.3) 1px, transparent 1px),
-            linear-gradient(to bottom, rgb(59, 130, 246, 0.3) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px'
-        }}></div>
+      <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {services.map((service) => (
+          <article key={service.title} className="glass-panel rounded-2xl p-6 shadow-sm card-interactive">
+            <h3 className="heading-font text-xl font-semibold">{service.title}</h3>
+            <p className="mt-3 text-[var(--muted)] leading-relaxed">{service.description}</p>
+          </article>
+        ))}
       </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Header Section */}
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-full backdrop-blur-sm mb-6 animate-bounce-slow">
-            <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
-            <span className="text-sm font-medium bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-              Our Capabilities
-            </span>
-          </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-            Services We <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient">Offer</span>
-          </h2>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
-            Comprehensive digital solutions tailored to transform your business and drive sustainable growth
-          </p>
-        </div>
-
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <div
-              key={index}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className="group relative bg-slate-900/50 backdrop-blur-sm rounded-2xl p-8 border border-slate-800 hover:border-blue-500/50 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20"
-              style={{
-                animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
-              }}
-            >
-              {/* Gradient Overlay */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-500`}></div>
-
-              {/* Icon Section */}
-              <div className="relative mb-6">
-                <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${service.gradient} bg-opacity-10 border border-slate-700 group-hover:border-blue-500/50 transition-all duration-300 group-hover:scale-110`}>
-                  <div className={`bg-gradient-to-br ${service.iconGradient} bg-clip-text text-transparent`}>
-                    {service.icon}
-                  </div>
-                </div>
-                {hoveredIndex === index && (
-                  <div className={`absolute -inset-2 bg-gradient-to-br ${service.gradient} blur-xl opacity-30 rounded-xl animate-pulse`}></div>
-                )}
-              </div>
-
-              {/* Title */}
-              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-cyan-400 group-hover:bg-clip-text transition-all duration-300">
-                {service.title}
-              </h3>
-              
-              {/* Description */}
-              <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                {service.description}
-              </p>
-
-              {/* Features List */}
-              <ul className="space-y-2 mb-6">
-                {service.features.map((feature, i) => (
-                  <li key={i} className="flex items-center gap-2 text-slate-500 text-sm group-hover:text-slate-400 transition-colors">
-                    <svg className="w-4 h-4 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-
-              {/* Corner Gradient */}
-              <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-10 rounded-bl-full transition-opacity duration-500`}></div>
-            </div>
-          ))}
-        </div>
-
-        {/* CTA Section */}
-        <div className="mt-20 text-center">
-          <div className="inline-block p-8 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-2xl backdrop-blur-sm hover:scale-105 transition-transform duration-300">
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Need a Custom Solution?
-            </h3>
-            <p className="text-slate-400 mb-6 max-w-2xl">
-              We specialize in creating tailored solutions that perfectly match your unique business requirements
-            </p>
-            <a
-              href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105 group"
-            >
-              Let's Talk About Your Project
-              <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Modal for Detailed Service Information */}
-      {selectedService && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-          onClick={closeModal}
-        >
-          <div 
-            className="relative bg-slate-900 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-slate-700 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className={`sticky top-0 z-10 bg-gradient-to-r ${selectedService.gradient} p-8 rounded-t-2xl`}>
-              <button
-                onClick={closeModal}
-                className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
-              >
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-              <div className="flex items-start gap-4">
-                <div className="p-4 bg-white/10 rounded-xl backdrop-blur-sm">
-                  <div className="text-white">
-                    {selectedService.icon}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bold text-white mb-2">
-                    {selectedService.title}
-                  </h3>
-                  <p className="text-white/80 text-lg">
-                    {selectedService.description}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Modal Content */}
-            <div className="p-8 space-y-8">
-              {/* Overview */}
-              <div>
-                <h4 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                  <span className={`w-1 h-6 bg-gradient-to-b ${selectedService.gradient} rounded`}></span>
-                  Overview
-                </h4>
-                <p className="text-slate-300 leading-relaxed">
-                  {selectedService.detailedInfo.overview}
-                </p>
-              </div>
-
-              {/* Technologies */}
-              <div>
-                <h4 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                  <span className={`w-1 h-6 bg-gradient-to-b ${selectedService.gradient} rounded`}></span>
-                  Technologies We Use
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {selectedService.detailedInfo.technologies.map((tech, i) => (
-                    <span
-                      key={i}
-                      className={`px-4 py-2 bg-gradient-to-r ${selectedService.gradient} bg-opacity-10 border border-slate-700 rounded-lg text-slate-300 text-sm`}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Benefits */}
-              <div>
-                <h4 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                  <span className={`w-1 h-6 bg-gradient-to-b ${selectedService.gradient} rounded`}></span>
-                  Key Benefits
-                </h4>
-                <ul className="space-y-3">
-                  {selectedService.detailedInfo.benefits.map((benefit, i) => (
-                    <li key={i} className="flex items-start gap-3 text-slate-300">
-                      <svg className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Process */}
-              <div>
-                <h4 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                  <span className={`w-1 h-6 bg-gradient-to-b ${selectedService.gradient} rounded`}></span>
-                  Our Process
-                </h4>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {selectedService.detailedInfo.process.map((step, i) => (
-                    <div
-                      key={i}
-                      className={`p-4 bg-gradient-to-br ${selectedService.gradient} bg-opacity-5 border border-slate-700 rounded-lg`}
-                    >
-                      <div className={`text-2xl font-bold bg-gradient-to-r ${selectedService.iconGradient} bg-clip-text text-transparent mb-2`}>
-                        {i + 1}
-                      </div>
-                      <div className="text-slate-300 text-sm font-medium">
-                        {step}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* CTA Button */}
-              <div className="pt-4">
-                <a
-                  href="#contact"
-                  className={`inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r ${selectedService.gradient} text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group`}
-                >
-                  Get Started with {selectedService.title}
-                  <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes bounce-slow {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-5px);
-          }
-        }
-        @keyframes gradient {
-          0%, 100% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 3s ease-in-out infinite;
-        }
-        .animate-gradient {
-          background-size: 200% auto;
-          animation: gradient 3s ease infinite;
-        }
-      `}</style>
     </section>
   );
-};
-
-export default Services;
+}
