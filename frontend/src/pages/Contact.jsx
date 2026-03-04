@@ -57,9 +57,9 @@ export default function Contact() {
   };
 
   return (
-    <section className="section-shell">
-      <div className="max-w-3xl mx-auto">
-        <div className="mb-8 text-center">
+    <section className="section-shell" data-animate>
+      <div className="max-w-3xl mx-auto" data-animate>
+        <div className="mb-8 text-center" data-animate>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary)]">Contact</p>
           <h1 className="heading-font mt-3 text-4xl font-semibold">Tell us about your project</h1>
           <p className="mt-3 text-[var(--muted)]">
@@ -67,9 +67,9 @@ export default function Contact() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="glass-panel rounded-2xl p-6 md:p-8 space-y-5">
+        <form onSubmit={handleSubmit} className="glass-panel rounded-2xl p-6 md:p-8 space-y-5" data-animate-stagger>
           <div className="grid md:grid-cols-2 gap-4">
-            <div>
+            <div data-animate-item>
               <label htmlFor="name" className="block text-sm text-[var(--muted)] mb-1">
                 Full Name
               </label>
@@ -82,7 +82,7 @@ export default function Contact() {
                 className="w-full rounded-lg border border-[var(--line)] bg-[var(--surface)] px-3 py-2"
               />
             </div>
-            <div>
+            <div data-animate-item>
               <label htmlFor="email" className="block text-sm text-[var(--muted)] mb-1">
                 Email
               </label>
@@ -99,7 +99,7 @@ export default function Contact() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
-            <div>
+            <div data-animate-item>
               <label htmlFor="company" className="block text-sm text-[var(--muted)] mb-1">
                 Company
               </label>
@@ -111,7 +111,7 @@ export default function Contact() {
                 className="w-full rounded-lg border border-[var(--line)] bg-[var(--surface)] px-3 py-2"
               />
             </div>
-            <div>
+            <div data-animate-item>
               <label htmlFor="projectType" className="block text-sm text-[var(--muted)] mb-1">
                 Project Type
               </label>
@@ -131,7 +131,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <div>
+          <div data-animate-item>
             <label htmlFor="budget" className="block text-sm text-[var(--muted)] mb-1">
               Budget
             </label>
@@ -150,7 +150,7 @@ export default function Contact() {
             </select>
           </div>
 
-          <div>
+          <div data-animate-item>
             <label htmlFor="message" className="block text-sm text-[var(--muted)] mb-1">
               Project Details
             </label>
@@ -169,6 +169,8 @@ export default function Contact() {
             type="submit"
             disabled={isSubmitting}
             className="rounded-xl px-6 py-3 font-semibold disabled:opacity-60 btn-primary btn-interactive"
+            data-animate-item
+            data-click-animate
           >
             {isSubmitting ? "Sending..." : "Send Message"}
           </button>

@@ -10,9 +10,9 @@ export default function Hero() {
   const navigate = useNavigate();
 
   return (
-    <section className="section-shell pt-20 md:pt-24">
+    <section className="section-shell pt-20 md:pt-24" data-animate>
       <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-center">
-        <div>
+        <div data-animate>
           <p className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-1 text-sm text-[var(--muted)]">
             <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
             Product engineering and growth design
@@ -29,6 +29,7 @@ export default function Hero() {
               type="button"
               onClick={() => navigate("/contact")}
               className="rounded-xl px-6 py-3 font-semibold btn-primary btn-interactive"
+              data-click-animate
             >
               Start a Project
             </button>
@@ -36,22 +37,24 @@ export default function Hero() {
               type="button"
               onClick={() => document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" })}
               className="rounded-xl px-6 py-3 font-semibold btn-secondary btn-interactive"
+              data-click-animate
             >
               View Case Studies
             </button>
           </div>
         </div>
 
-        <div className="glass-panel rounded-2xl p-7 shadow-sm card-interactive">
+        <div className="glass-panel rounded-2xl p-7 shadow-sm card-interactive" data-animate>
           <h2 className="heading-font text-xl font-semibold">Built for reliability</h2>
           <p className="mt-2 text-[var(--muted)]">
             Production-ready stack, clean code, and measurable outcomes from launch to long-term maintenance.
           </p>
-          <div className="mt-6 space-y-4">
+          <div className="mt-6 space-y-4" data-animate-stagger>
             {stats.map((item) => (
               <div
                 key={item.label}
                 className="flex items-center justify-between rounded-xl bg-[color:var(--primary-soft)] px-4 py-3 border border-[var(--line)]"
+                data-animate-item
               >
                 <span className="text-[var(--muted)]">{item.label}</span>
                 <span className="heading-font font-semibold text-lg">{item.value}</span>

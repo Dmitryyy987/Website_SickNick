@@ -44,10 +44,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="border-t border-[var(--line)] bg-[var(--surface)]">
-      <div className="section-shell py-12">
-        <div className="grid md:grid-cols-[1.4fr_1fr_1fr] gap-10">
-          <div>
+    <footer className="border-t border-[var(--line)] bg-[var(--surface)]" data-animate>
+      <div className="section-shell py-12" data-animate>
+        <div className="grid md:grid-cols-[1.4fr_1fr_1fr] gap-10" data-animate-stagger>
+          <div data-animate-item>
             <p className="heading-font text-2xl font-semibold">
               Byt<span className="text-[var(--primary)]">Brand</span>
             </p>
@@ -56,16 +56,21 @@ export default function Footer() {
               backend systems.
             </p>
             <div className="mt-4 flex items-center gap-4 text-[var(--muted)]">
-              <a href="mailto:bytbrand.info@gmail.com" className="btn-interactive rounded-lg p-1" aria-label="Email">
+              <a
+                href="mailto:bytbrand.info@gmail.com"
+                className="btn-interactive rounded-lg p-1"
+                aria-label="Email"
+                data-click-animate
+              >
                 <FiMail />
               </a>
-              <a href="tel:+15551234567" className="btn-interactive rounded-lg p-1" aria-label="Phone">
+              <a href="tel:+15551234567" className="btn-interactive rounded-lg p-1" aria-label="Phone" data-click-animate>
                 <FiPhoneCall />
               </a>
             </div>
           </div>
 
-          <div>
+          <div data-animate-item>
             <h3 className="heading-font text-base font-semibold">Quick Links</h3>
             <ul className="mt-3 space-y-2 text-[var(--muted)]">
               {links.map((item) => (
@@ -73,7 +78,8 @@ export default function Footer() {
                   <button
                     type="button"
                     onClick={() => handleJump(item.id)}
-                  className="hover:text-[var(--primary)] btn-interactive rounded-lg px-2 py-1 inline-flex items-center gap-2 btn-secondary"
+                    className="hover:text-[var(--primary)] btn-interactive rounded-lg px-2 py-1 inline-flex items-center gap-2 btn-secondary"
+                    data-click-animate
                   >
                     {item.id === "services" ? <FiBriefcase size={14} /> : <FiGrid size={14} />}
                     {item.label}
@@ -85,6 +91,7 @@ export default function Footer() {
                   type="button"
                   onClick={() => navigate("/contact")}
                   className="hover:text-[var(--primary)] btn-interactive rounded-lg px-2 py-1 btn-secondary"
+                  data-click-animate
                 >
                   Contact
                 </button>
@@ -92,7 +99,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div>
+          <div data-animate-item>
             <h3 className="heading-font text-base font-semibold">Stay in Touch</h3>
             <p className="mt-3 text-sm text-[var(--muted)]">Enter your email and continue to our contact form.</p>
             <form onSubmit={handleSubscribe} className="mt-3 flex gap-2">
@@ -106,6 +113,7 @@ export default function Footer() {
               <button
                 type="submit"
                 className="rounded-lg px-4 py-2 text-sm font-semibold btn-primary btn-interactive inline-flex items-center gap-2"
+                data-click-animate
               >
                 Continue
                 <FiArrowRight size={14} />

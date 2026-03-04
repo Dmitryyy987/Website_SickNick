@@ -37,6 +37,7 @@ export default function Header({ theme, onToggleTheme }) {
           type="button"
           onClick={() => navigate("/")}
           className="heading-font text-xl font-semibold tracking-tight btn-interactive rounded-lg px-2 py-1"
+          data-click-animate
         >
           Byt<span className="text-[var(--primary)]">Brand</span>
         </button>
@@ -48,6 +49,7 @@ export default function Header({ theme, onToggleTheme }) {
               key={link.id}
               onClick={() => scrollToSection(link.id)}
               className="px-4 py-2 rounded-lg text-[var(--muted)] btn-secondary btn-interactive"
+              data-click-animate
             >
               {link.label}
             </button>
@@ -57,6 +59,7 @@ export default function Header({ theme, onToggleTheme }) {
             onClick={onToggleTheme}
             className="rounded-lg px-3 py-2 text-[var(--muted)] btn-secondary btn-interactive"
             aria-label="Toggle theme"
+            data-click-animate
           >
             {theme === "dark" ? <FiSun size={18} /> : <FiMoon size={18} />}
           </button>
@@ -64,6 +67,7 @@ export default function Header({ theme, onToggleTheme }) {
             type="button"
             onClick={() => navigate("/contact")}
             className="ml-2 rounded-lg px-5 py-2 btn-primary btn-interactive"
+            data-click-animate
           >
             Contact
           </button>
@@ -74,6 +78,7 @@ export default function Header({ theme, onToggleTheme }) {
           onClick={() => setMenuOpen((prev) => !prev)}
           className="md:hidden rounded-lg p-2 btn-secondary btn-interactive"
           aria-label="Toggle menu"
+          data-click-animate
         >
           <FiMenu className="w-5 h-5" />
         </button>
@@ -87,6 +92,7 @@ export default function Header({ theme, onToggleTheme }) {
               key={link.id}
               onClick={() => scrollToSection(link.id)}
               className="rounded-lg px-3 py-2 text-left btn-secondary btn-interactive"
+              data-click-animate
             >
               {link.label}
             </button>
@@ -95,6 +101,7 @@ export default function Header({ theme, onToggleTheme }) {
             type="button"
             onClick={onToggleTheme}
             className="rounded-lg px-3 py-2 text-left btn-secondary btn-interactive flex items-center gap-2"
+            data-click-animate
           >
             {theme === "dark" ? <FiSun size={16} /> : <FiMoon size={16} />}
             Theme
@@ -106,6 +113,7 @@ export default function Header({ theme, onToggleTheme }) {
               navigate("/contact");
             }}
             className="rounded-lg px-3 py-2 text-left btn-primary btn-interactive"
+            data-click-animate
           >
             Contact
           </button>

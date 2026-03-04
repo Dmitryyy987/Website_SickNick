@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -7,6 +7,7 @@ import Portfolio from "./components/Portfolio";
 import CTA from "./components/CTA";
 import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
+import { bindClickAnimations, initPageAnimations } from "./animations/siteAnimations";
 
 function HomePage() {
   return (
@@ -21,10 +22,16 @@ function HomePage() {
 
 function Layout({ children, theme, onToggleTheme }) {
   const location = useLocation();
+  const mainRef = useRef(null);
+
+  useEffect(() => {
+    return initPageAnimations(mainRef.current);
+  }, [location.pathname]);
+
   return (
     <div className="min-h-screen page-grid">
       <Header theme={theme} onToggleTheme={onToggleTheme} />
-      <main key={location.pathname} className="route-fade">
+      <main ref={mainRef} key={location.pathname} className="route-fade">
         {children}
       </main>
       <Footer />
@@ -54,6 +61,8 @@ export default function App() {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("bytbrand-theme", theme);
   }, [theme]);
+
+  useEffect(() => bindClickAnimations(document), []);
 
   const toggleTheme = () => {
     setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));

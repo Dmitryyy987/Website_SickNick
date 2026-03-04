@@ -39,9 +39,9 @@ const projects = [
 
 export default function Portfolio() {
   return (
-    <section id="portfolio" className="section-shell pt-0">
-      <div className="glass-panel rounded-3xl p-6 md:p-9">
-        <div className="max-w-2xl">
+    <section id="portfolio" className="section-shell pt-0" data-animate>
+      <div className="glass-panel rounded-3xl p-6 md:p-9" data-animate>
+        <div className="max-w-2xl" data-animate>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary)]">Selected Work</p>
           <h2 className="heading-font mt-3 text-3xl md:text-4xl font-semibold">Recent projects and deliveries</h2>
           <p className="mt-3 text-[var(--muted)]">
@@ -49,11 +49,12 @@ export default function Portfolio() {
           </p>
         </div>
 
-        <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4" data-animate-stagger>
           {projects.map((project) => (
             <article
               key={project.title}
               className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-sm card-interactive"
+              data-animate-item
             >
               <h3 className="heading-font text-xl font-semibold">{project.title}</h3>
               <p className="mt-2 text-[var(--muted)] text-sm leading-relaxed">{project.description}</p>
@@ -69,6 +70,7 @@ export default function Portfolio() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-5 inline-flex items-center text-sm font-semibold text-[var(--primary)] btn-interactive rounded-lg px-2 py-1"
+                data-click-animate
               >
                 Open project
               </a>

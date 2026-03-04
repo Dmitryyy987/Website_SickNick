@@ -27,8 +27,8 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="section-shell">
-      <div className="text-center max-w-2xl mx-auto">
+    <section id="services" className="section-shell" data-animate>
+      <div className="text-center max-w-2xl mx-auto" data-animate>
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary)]">Services</p>
         <h2 className="heading-font mt-3 text-3xl md:text-4xl font-semibold">Clean execution across your stack</h2>
         <p className="mt-3 text-[var(--muted)]">
@@ -36,9 +36,9 @@ export default function Services() {
         </p>
       </div>
 
-      <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-5" data-animate-stagger>
         {services.map((service) => (
-          <article key={service.title} className="glass-panel rounded-2xl p-6 shadow-sm card-interactive">
+          <article key={service.title} className="glass-panel rounded-2xl p-6 shadow-sm card-interactive" data-animate-item>
             <h3 className="heading-font text-xl font-semibold">{service.title}</h3>
             <p className="mt-3 text-[var(--muted)] leading-relaxed">{service.description}</p>
           </article>
