@@ -1,4 +1,3 @@
-// backend/routes/contactRoutes.js
 const express = require("express");
 const { body, matchedData, validationResult } = require("express-validator");
 const db = require("../config/firebase");
@@ -25,21 +24,30 @@ router.post(
     body("company")
       .optional()
       .trim()
-      .isLength({ max: 120 }),
+      .isLength({ max: 120 })
+      .withMessage("Company name must be less than 120 characters."),
     body("projectType")
       .optional()
       .trim()
-      .isLength({ max: 80 }),
+      .isLength({ max: 80 })
+      .withMessage("Project type must be less than 80 characters."),
     body("budget")
       .optional()
       .trim()
-      .isLength({ max: 60 }),
+      .isLength({ max: 60 })
+      .withMessage("Budget must be less than 60 characters."),
   ],
   async (req, res) => {
+    console.log("📬 Contact form submission received:", req.body);
+
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      console.log("❌ Validation errors:", errors.array());
+      return res.status(400).json({ 
+        success: false,
+        errors: errors.array() 
+      });
     }
 
     try {
@@ -49,16 +57,26 @@ router.post(
         locations: ["body"],
       });
 
+      console.log("✅ Validated data:", data);
+
       // Save to Firebase
-      await db.collection("contacts").add({
-        ...data,
-        createdAt: new Date().toISOString(),
-      });
+      let docRef;
+      try {
+        docRef = await db.collection("contacts").add({
+          ...data,
+          createdAt: new Date().toISOString(),
+          status: "new"
+        });
+        console.log(`✅ Contact saved to Firebase with ID: ${docRef.id}`);
+      } catch (firebaseError) {
+        console.error("❌ Firebase error:", firebaseError);
+        // Continue even if Firebase fails - we still want to try sending email
+      }
 
       // Send confirmation email
-      let emailDelivered = true;
+      let emailResult = { success: false, clientDelivered: false, adminDelivered: false };
       try {
-        await sendConfirmationEmail({
+        emailResult = await sendConfirmationEmail({
           userEmail: data.email,
           userName: data.name,
           company: data.company,
@@ -66,21 +84,21 @@ router.post(
           budget: data.budget,
           message: data.message,
         });
-        console.log(`Confirmation email sent to ${data.email}`);
+        console.log(`✅ Email sending result:`, emailResult);
       } catch (emailError) {
-        emailDelivered = false;
-        console.error("Email delivery error:", emailError);
+        console.error("❌ Email delivery error:", emailError.message);
       }
 
       // Return success response
       return res.status(200).json({
         success: true,
-        message: "Message received successfully.",
-        emailDelivered,
+        message: "Message received successfully. We'll get back to you soon!",
+        emailDelivered: emailResult.clientDelivered || false,
+        id: docRef?.id || null
       });
 
     } catch (error) {
-      console.error("Contact route error:", error);
+      console.error("❌ Contact route error:", error);
       return res.status(500).json({
         success: false,
         error: "Could not process your request right now. Please try again later.",
@@ -88,5 +106,14 @@ router.post(
     }
   }
 );
+
+// Health check for this route
+router.get("/health", (req, res) => {
+  res.status(200).json({ 
+    success: true, 
+    message: "Contact route is working",
+    timestamp: new Date().toISOString()
+  });
+});
 
 module.exports = router;

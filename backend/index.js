@@ -1,12 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const { rateLimit, ipKeyGenerator } = require("express-rate-limit");
+const { rateLimit } = require("express-rate-limit");
 require("dotenv").config();
 
 const contactRoutes = require("./routes/contactRoutes");
 
 const app = express();
-app.set("trust proxy", 1);
+app.set("trust proxy", 1); // Trust first proxy
 
 // CORS configuration
 const allowedOrigins = (process.env.CORS_ORIGINS || "")
@@ -18,12 +18,14 @@ const allowedOrigins = (process.env.CORS_ORIGINS || "")
 const defaultOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
+  "http://localhost:5000",
   "https://bytbrand.vercel.app",
   "https://website-sicknick-backend.onrender.com"
 ];
 
 const finalAllowedOrigins = allowedOrigins.length > 0 ? allowedOrigins : defaultOrigins;
 
+// CORS middleware - must be first
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -36,7 +38,7 @@ app.use(
         return callback(null, true);
       }
       
-      console.log(`Blocked CORS origin: ${origin}`); // For debugging
+      console.log(`⚠️ Blocked CORS origin: ${origin}`);
       return callback(new Error("Origin not allowed by CORS"));
     },
     credentials: true,
@@ -48,32 +50,32 @@ app.use(
 app.use(express.json({ limit: "100kb" }));
 app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 
-// Rate limiting for contact form
+// Rate limiting for contact form - APPLY THIS BEFORE ROUTES
 const contactLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 40, // Limit each IP to 40 requests per windowMs
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  standardHeaders: true,
+  legacyHeaders: false,
   message: {
     success: false,
     error: "Too many contact requests. Please wait a few minutes and try again.",
   },
   keyGenerator: (req) => {
-    // Get the IP address, considering proxy headers
-    const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket.remoteAddress;
-    
-    // Use ipKeyGenerator to handle IPv6 subnet masking properly
-    // This prevents IPv6 users from bypassing the rate limit
-    return ipKeyGenerator(ip);
-  }
+    const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() || 
+               req.socket.remoteAddress || 
+               req.ip;
+    return ip;
+  },
+  skip: (req) => req.path === '/api/health' || req.path === '/'
 });
 
-// Public routes
+// Public routes (no rate limiting)
 app.get("/", (_, res) => {
   res.status(200).json({
     success: true,
     message: "BytBrand API is running",
     version: "1.0.0",
+    timestamp: new Date().toISOString(),
     endpoints: {
       health: "GET /api/health",
       contact: "POST /api/contact"
@@ -87,65 +89,94 @@ app.get("/api/health", (_, res) => {
     status: "ok",
     uptime: Math.round(process.uptime()),
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || "development"
+    environment: process.env.NODE_ENV || "development",
+    memory: process.memoryUsage()
   });
 });
 
-// Apply rate limiting to contact routes
+// ✅ IMPORTANT: Apply rate limiting to specific route BEFORE mounting
 app.use("/api/contact", contactLimiter);
 
 // Mount contact routes
-app.use("/api", contactRoutes); // This handles /api/contact
+app.use("/api/contact", contactRoutes);
 
 // 404 handler for undefined routes
 app.use((req, res) => {
+  console.log(`❌ 404: ${req.method} ${req.path}`);
   res.status(404).json({
     success: false,
-    error: `Route ${req.method} ${req.path} not found`
+    error: `Route ${req.method} ${req.path} not found`,
+    availableEndpoints: {
+      GET: ["/", "/api/health"],
+      POST: ["/api/contact"]
+    }
   });
 });
 
 // Error handling middleware
-app.use((err, _req, res, _next) => {
+app.use((err, req, res, _next) => {
+  // Handle CORS errors
   if (err?.message === "Origin not allowed by CORS") {
     return res.status(403).json({ 
       success: false,
-      error: "CORS error: Origin not allowed" 
+      error: "CORS error: Origin not allowed",
+      allowedOrigins: finalAllowedOrigins
     });
   }
   
+  // Handle JSON parsing errors
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ 
       success: false,
-      error: "Invalid JSON payload" 
+      error: "Invalid JSON payload. Please check your request format." 
     });
   }
   
-  console.error("Unhandled server error:", err);
+  // Log all other errors
+  console.error("❌ Unhandled server error:", err);
+  
+  // Don't expose error details in production
+  const errorMessage = process.env.NODE_ENV === "production" 
+    ? "Internal server error" 
+    : err.message || "Internal server error";
+  
   return res.status(500).json({ 
     success: false,
-    error: "Internal server error" 
+    error: errorMessage
   });
 });
 
 // Start server
 const PORT = Number(process.env.PORT) || 5000;
 const server = app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+  console.log("\n" + "=".repeat(50));
+  console.log(`✅ Server is running!`);
+  console.log("=".repeat(50));
+  console.log(`📡 Port: ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
   console.log(`🔗 Allowed CORS origins:`, finalAllowedOrigins);
-  console.log(`📝 API endpoints:`);
-  console.log(`   - GET  /`);
-  console.log(`   - GET  /api/health`);
-  console.log(`   - POST /api/contact`);
+  console.log(`\n📝 Available endpoints:`);
+  console.log(`   - GET  http://localhost:${PORT}/`);
+  console.log(`   - GET  http://localhost:${PORT}/api/health`);
+  console.log(`   - POST http://localhost:${PORT}/api/contact`);
+  console.log("=".repeat(50) + "\n");
 });
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
+  console.log('📥 SIGTERM signal received: closing HTTP server');
   server.close(() => {
-    console.log('HTTP server closed');
+    console.log('✅ HTTP server closed');
+    process.exit(0);
   });
 });
 
-module.exports = app; // For testing purposes
+process.on('SIGINT', () => {
+  console.log('📥 SIGINT signal received: closing HTTP server');
+  server.close(() => {
+    console.log('✅ HTTP server closed');
+    process.exit(0);
+  });
+});
+
+module.exports = app;

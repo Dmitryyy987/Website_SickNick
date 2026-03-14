@@ -1,4 +1,3 @@
-// backend/services/emailService.js
 const nodemailer = require("nodemailer");
 
 // Create transporter with flexible configuration
@@ -15,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 // Verify transporter connection (with caching)
 let verifyPromise;
-function verifyTransporter() {
+async function verifyTransporter() {
   if (!verifyPromise) {
     verifyPromise = transporter.verify().catch((error) => {
       verifyPromise = null;
