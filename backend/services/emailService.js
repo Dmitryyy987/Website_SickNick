@@ -2,21 +2,20 @@ const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || "smtp.gmail.com",
-  port: Number(process.env.SMTP_PORT) || 587,
-  // Port 587 uses STARTTLS (secure: false), port 465 uses implicit TLS (secure: true)
-  secure: process.env.SMTP_SECURE === "true" || Number(process.env.SMTP_PORT) === 465, 
+  port: Number(process.env.SMTP_PORT) || 465,
+  secure: Number(process.env.SMTP_PORT) === 465 || process.env.SMTP_SECURE === "true", 
+  pool: true,
   auth: {
     user: process.env.SMTP_USER || process.env.EMAIL_USER,
     pass: process.env.SMTP_PASS || process.env.EMAIL_PASS,
   },
-  // Robust production settings
-  connectionTimeout: 10000, // 10 seconds
-  greetingTimeout: 5000,
-  socketTimeout: 20000,
+  // Extreme production settings
+  connectionTimeout: 20000, // 20 seconds
+  greetingTimeout: 10000,
+  socketTimeout: 30000,
   tls: {
-    // Useful for Office365 or strict SMTP servers
-    ciphers: "SSLv3",
-    rejectUnauthorized: false // Avoid certificate errors in strict environments
+    // Avoids strict TLS errors that block Render IPs
+    rejectUnauthorized: false
   }
 });
 
