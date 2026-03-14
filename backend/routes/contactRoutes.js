@@ -78,27 +78,31 @@ router.post(
         // Continue even if Firebase fails - we still want to try sending email
       }
 
-      // Send confirmation email in the background (don't await)
-      sendConfirmationEmail({
-        userEmail: data.email,
-        userName: data.name,
-        company: data.company,
-        projectType: data.projectType,
-        budget: data.budget,
-        message: data.message,
-      })
-        .then((emailResult) => {
-          console.log(`✅ Background email sending result:`, emailResult);
-        })
-        .catch((emailError) => {
-          console.error("❌ Background email delivery error:", emailError.message);
+      // Send confirmation email and wait for completion
+      let emailDelivered = false;
+      try {
+        const emailResult = await sendConfirmationEmail({
+          userEmail: data.email,
+          userName: data.name,
+          company: data.company,
+          projectType: data.projectType,
+          budget: data.budget,
+          message: data.message,
         });
+        emailDelivered = emailResult.success;
+      } catch (emailError) {
+        console.error("❌ Email delivery error:", emailError.message);
+        return res.status(500).json({
+          success: false,
+          error: "Data saved, but failed to send confirmation email. Please reach out directly."
+        });
+      }
 
-      // Return success response immediately
+      // Return success response after email is sent
       return res.status(200).json({
         success: true,
         message: "Message received successfully. We'll get back to you soon!",
-        emailDelivered: true, // Optimistically assume success
+        emailDelivered: true,
         id: docRef?.id || null
       });
 

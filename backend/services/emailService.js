@@ -1,15 +1,38 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  service: process.env.EMAIL_SERVICE || "gmail",
-  host: process.env.EMAIL_HOST || "smtp.gmail.com",
-  port: Number(process.env.EMAIL_PORT) || 587,
-  secure: process.env.EMAIL_SECURE === "true" || false, // Use false for port 587 (STARTTLS)
+  host: process.env.SMTP_HOST || "smtp.gmail.com",
+  port: Number(process.env.SMTP_PORT) || 587,
+  // Port 587 uses STARTTLS (secure: false), port 465 uses implicit TLS (secure: true)
+  secure: process.env.SMTP_SECURE === "true" || Number(process.env.SMTP_PORT) === 465, 
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.SMTP_USER || process.env.EMAIL_USER,
+    pass: process.env.SMTP_PASS || process.env.EMAIL_PASS,
   },
+  // Robust production settings
+  connectionTimeout: 10000, // 10 seconds
+  greetingTimeout: 5000,
+  socketTimeout: 20000,
+  tls: {
+    // Useful for Office365 or strict SMTP servers
+    ciphers: "SSLv3",
+    rejectUnauthorized: false // Avoid certificate errors in strict environments
+  }
 });
+
+// Helper for sending with retry
+const sendMailWithRetry = async (mailOptions, retries = 3) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.warn(`⚠️ Email sending attempt ${i + 1} failed: ${error.message}`);
+      if (i === retries - 1) throw error; // Rethrow on last attempt
+      // Exponential backoff
+      await new Promise(res => setTimeout(res, 1500 * (i + 1)));
+    }
+  }
+};
 
 // Email templates
 function clientMailTemplate(name) {
@@ -64,20 +87,22 @@ function adminMailTemplate({ userName, userEmail, company, projectType, budget, 
 // Main email sending function
 async function sendConfirmationEmail(payload) {
   const { userEmail, userName, company, projectType, budget, message } = payload;
+  const authUser = process.env.SMTP_USER || process.env.EMAIL_USER;
+  const authPass = process.env.SMTP_PASS || process.env.EMAIL_PASS;
 
   // Validate credentials
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    throw new Error("Email credentials are missing. Configure EMAIL_USER and EMAIL_PASS in .env");
+  if (!authUser || !authPass) {
+    throw new Error("Email credentials are missing. Configure SMTP_USER and SMTP_PASS in .env.");
   }
 
   try {
-    const from = `"BytBrand" <${process.env.EMAIL_USER}>`;
-    const adminRecipient = process.env.ADMIN_EMAILS || process.env.EMAIL_USER;
+    const from = `"BytBrand" <${authUser}>`;
+    const adminRecipient = process.env.ADMIN_EMAILS || authUser;
 
-    // Send both emails in parallel
+    // Send both emails in parallel using retry wrapper
     const [clientResult, adminResult] = await Promise.allSettled([
       // Client confirmation email
-      transporter.sendMail({
+      sendMailWithRetry({
         from,
         to: userEmail,
         subject: "We received your message - BytBrand",
@@ -86,7 +111,7 @@ async function sendConfirmationEmail(payload) {
       }),
       
       // Admin notification email
-      transporter.sendMail({
+      sendMailWithRetry({
         from,
         to: adminRecipient,
         subject: `New inquiry from ${userName}`,
@@ -105,23 +130,30 @@ async function sendConfirmationEmail(payload) {
     ]);
 
     // Log results
-    if (clientResult.status === 'fulfilled') {
+    const clientDelivered = clientResult.status === 'fulfilled';
+    const adminDelivered = adminResult.status === 'fulfilled';
+
+    if (clientDelivered) {
       console.log(`✅ Confirmation email sent to ${userEmail}`);
     } else {
       console.error(`❌ Failed to send confirmation email to ${userEmail}:`, clientResult.reason);
     }
 
-    if (adminResult.status === 'fulfilled') {
+    if (adminDelivered) {
       console.log(`✅ Admin notification sent`);
     } else {
       console.error(`❌ Failed to send admin notification:`, adminResult.reason);
     }
 
-    // Return success if at least admin email was sent
+    // Treat as overall error only if we couldn't send to admin
+    if (!adminDelivered && !clientDelivered) {
+      throw new Error("Failed to send ANY emails (both client and admin delivery failed)");
+    }
+
     return { 
-      success: adminResult.status === 'fulfilled',
-      clientDelivered: clientResult.status === 'fulfilled',
-      adminDelivered: adminResult.status === 'fulfilled'
+      success: adminDelivered,
+      clientDelivered,
+      adminDelivered
     };
 
   } catch (error) {
