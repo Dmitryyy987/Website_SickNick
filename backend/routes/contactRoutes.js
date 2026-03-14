@@ -59,11 +59,16 @@ router.post(
 
       console.log("✅ Validated data:", data);
 
+      // Clean data for Firebase (remove undefined values)
+      const firebaseData = Object.fromEntries(
+        Object.entries(data).filter(([_, v]) => v !== undefined)
+      );
+
       // Save to Firebase
       let docRef;
       try {
         docRef = await db.collection("contacts").add({
-          ...data,
+          ...firebaseData,
           createdAt: new Date().toISOString(),
           status: "new"
         });
