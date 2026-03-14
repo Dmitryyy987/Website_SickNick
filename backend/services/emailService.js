@@ -1,28 +1,15 @@
 const nodemailer = require("nodemailer");
 
-// Create transporter with flexible configuration
 const transporter = nodemailer.createTransport({
   service: process.env.EMAIL_SERVICE || "gmail",
-  host: process.env.EMAIL_HOST || undefined,
-  port: Number(process.env.EMAIL_PORT) || undefined,
-  secure: process.env.EMAIL_SECURE === "true",
+  host: process.env.EMAIL_HOST || "smtp.gmail.com",
+  port: Number(process.env.EMAIL_PORT) || 587,
+  secure: process.env.EMAIL_SECURE === "true" || false, // Use false for port 587 (STARTTLS)
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
-
-// Verify transporter connection (with caching)
-let verifyPromise;
-async function verifyTransporter() {
-  if (!verifyPromise) {
-    verifyPromise = transporter.verify().catch((error) => {
-      verifyPromise = null;
-      throw error;
-    });
-  }
-  return verifyPromise;
-}
 
 // Email templates
 function clientMailTemplate(name) {
@@ -84,9 +71,6 @@ async function sendConfirmationEmail(payload) {
   }
 
   try {
-    // Verify transporter connection
-    await verifyTransporter();
-
     const from = `"BytBrand" <${process.env.EMAIL_USER}>`;
     const adminRecipient = process.env.ADMIN_EMAILS || process.env.EMAIL_USER;
 
