@@ -78,27 +78,27 @@ router.post(
         // Continue even if Firebase fails - we still want to try sending email
       }
 
-      // Send confirmation email
-      let emailResult = { success: false, clientDelivered: false, adminDelivered: false };
-      try {
-        emailResult = await sendConfirmationEmail({
-          userEmail: data.email,
-          userName: data.name,
-          company: data.company,
-          projectType: data.projectType,
-          budget: data.budget,
-          message: data.message,
+      // Send confirmation email in the background (don't await)
+      sendConfirmationEmail({
+        userEmail: data.email,
+        userName: data.name,
+        company: data.company,
+        projectType: data.projectType,
+        budget: data.budget,
+        message: data.message,
+      })
+        .then((emailResult) => {
+          console.log(`✅ Background email sending result:`, emailResult);
+        })
+        .catch((emailError) => {
+          console.error("❌ Background email delivery error:", emailError.message);
         });
-        console.log(`✅ Email sending result:`, emailResult);
-      } catch (emailError) {
-        console.error("❌ Email delivery error:", emailError.message);
-      }
 
-      // Return success response
+      // Return success response immediately
       return res.status(200).json({
         success: true,
         message: "Message received successfully. We'll get back to you soon!",
-        emailDelivered: emailResult.clientDelivered || false,
+        emailDelivered: true, // Optimistically assume success
         id: docRef?.id || null
       });
 
