@@ -1,10 +1,9 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || "smtp.gmail.com",
-  port: Number(process.env.SMTP_PORT) || 465,
-  secure: Number(process.env.SMTP_PORT) === 465 || process.env.SMTP_SECURE === "true", 
-  pool: true,
+  host: process.env.SMTP_HOST || process.env.EMAIL_HOST || "smtp.gmail.com",
+  port: Number(process.env.SMTP_PORT) || Number(process.env.EMAIL_PORT) || 587,
+  secure: process.env.SMTP_SECURE === "true" || process.env.EMAIL_SECURE === "true" || false, 
   auth: {
     user: process.env.SMTP_USER || process.env.EMAIL_USER,
     pass: process.env.SMTP_PASS || process.env.EMAIL_PASS,
@@ -18,6 +17,11 @@ const transporter = nodemailer.createTransport({
     rejectUnauthorized: false
   }
 });
+
+// Verify connection configuration on startup
+transporter.verify()
+  .then(() => console.log('✅ SMTP transporter verified and ready to send emails'))
+  .catch(err => console.error('❌ SMTP verification failed:', err.message));
 
 // Helper for sending with retry
 const sendMailWithRetry = async (mailOptions, retries = 3) => {
@@ -91,7 +95,7 @@ async function sendConfirmationEmail(payload) {
 
   // Validate credentials
   if (!authUser || !authPass) {
-    throw new Error("Email credentials are missing. Configure SMTP_USER and SMTP_PASS in .env.");
+    throw new Error("Email credentials are missing. Configure EMAIL_USER and EMAIL_PASS in .env.");
   }
 
   try {

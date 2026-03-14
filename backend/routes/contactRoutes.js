@@ -62,8 +62,13 @@ router.post(
       // Save to Firebase
       let docRef;
       try {
+        // Firestore doesn't accept undefined values, so clean up optional fields
+        const cleanData = Object.fromEntries(
+          Object.entries(data).filter(([_, v]) => v !== undefined)
+        );
+
         docRef = await db.collection("contacts").add({
-          ...data,
+          ...cleanData,
           createdAt: new Date().toISOString(),
           status: "new"
         });
