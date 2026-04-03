@@ -92,9 +92,12 @@ router.post(
         emailDelivered = emailResult.success;
       } catch (emailError) {
         console.error("❌ Email delivery error:", emailError.message);
-        return res.status(500).json({
-          success: false,
-          error: "Data saved, but failed to send confirmation email. Please reach out directly."
+        // Data was already saved — return partial success so user knows their message was received
+        return res.status(200).json({
+          success: true,
+          message: "Your message was saved. We'll reach out to you shortly.",
+          emailDelivered: false,
+          id: docRef?.id || null
         });
       }
 

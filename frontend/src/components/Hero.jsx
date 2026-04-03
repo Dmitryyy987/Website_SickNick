@@ -1,65 +1,171 @@
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const stats = [
-  { label: "Projects Delivered", value: "150+" },
-  { label: "Client Retention", value: "94%" },
-  { label: "Avg Delivery", value: "6-10 weeks" },
-];
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
   const navigate = useNavigate();
+  const sectionRef = useRef(null);
+  const headlineRef = useRef(null);
+  const subRef = useRef(null);
+  const ctaRef = useRef(null);
+  const badgeRef = useRef(null);
+  const orbRef1 = useRef(null);
+  const orbRef2 = useRef(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      tl.fromTo(
+        badgeRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, delay: 0.2 }
+      )
+        .fromTo(
+          headlineRef.current,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 1 },
+          "-=0.5"
+        )
+        .fromTo(
+          subRef.current,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.8 },
+          "-=0.6"
+        )
+        .fromTo(
+          ctaRef.current,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.8 },
+          "-=0.5"
+        );
+
+      // Parallax on gradient orbs
+      gsap.to(orbRef1.current, {
+        yPercent: 30,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      gsap.to(orbRef2.current, {
+        yPercent: -20,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="section-shell pt-20 md:pt-24" data-animate>
-      <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-center">
-        <div data-animate>
-          <p className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-1 text-sm text-[var(--muted)]">
-            <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-            Product engineering and growth design
-          </p>
-          <h1 className="heading-font mt-6 text-4xl md:text-6xl font-semibold leading-tight">
-            We design and build websites that convert and scale.
+    <section
+      ref={sectionRef}
+      className="relative flex items-center pt-28 pb-12 md:pt-32 md:pb-16 lg:pt-36 lg:pb-20 overflow-hidden"
+    >
+      {/* Background gradient orbs */}
+      <div
+        ref={orbRef1}
+        className="absolute top-[-20%] right-[-10%] w-[700px] h-[700px] rounded-full pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, rgba(139,149,255,0.12) 0%, transparent 70%)",
+          filter: "blur(80px)",
+        }}
+      />
+      <div
+        ref={orbRef2}
+        className="absolute bottom-[-10%] left-[-15%] w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, rgba(197,126,255,0.08) 0%, transparent 70%)",
+          filter: "blur(80px)",
+        }}
+      />
+
+      {/* Subtle grid */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+        }}
+      />
+
+      <div className="container-wide relative z-10">
+        <div className="max-w-4xl">
+          {/* Badge */}
+          <div ref={badgeRef} className="mb-6" style={{ opacity: 0 }}>
+            <span className="label-accent inline-flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
+              Digital Product Studio
+            </span>
+          </div>
+
+          {/* Headline */}
+          <h1
+            ref={headlineRef}
+            className="heading-xl text-[var(--text)] mb-6"
+            style={{ opacity: 0 }}
+          >
+            We craft{" "}
+            <span className="gradient-text">digital experiences</span>
+            <br />
+            that drive growth.
           </h1>
-          <p className="mt-5 text-lg text-[var(--muted)] max-w-2xl">
-            BytBrand creates high-performance websites, web apps, and automation workflows with a clean
-            architecture that can handle growth.
+
+          {/* Subheadline */}
+          <p
+            ref={subRef}
+            className="body-lg max-w-2xl mb-8"
+            style={{ opacity: 0 }}
+          >
+            Premium web platforms, scalable architectures, and conversion-focused
+            products — engineered for ambitious brands that refuse to blend in.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+
+          {/* CTAs */}
+          <div
+            ref={ctaRef}
+            className="flex flex-col sm:flex-row items-start gap-4"
+            style={{ opacity: 0 }}
+          >
             <button
               type="button"
               onClick={() => navigate("/contact")}
-              className="rounded-xl px-6 py-3 font-semibold btn-primary btn-interactive"
+              className="btn-primary"
               data-click-animate
             >
-              Start a Project
+              <span>Start a Project</span>
+              <ArrowRight className="w-4 h-4" />
             </button>
             <button
               type="button"
-              onClick={() => document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" })}
-              className="rounded-xl px-6 py-3 font-semibold btn-secondary btn-interactive"
+              onClick={() =>
+                document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="btn-ghost"
               data-click-animate
             >
-              View Case Studies
+              <span>View Our Work</span>
+              <ArrowRight className="w-4 h-4" />
             </button>
-          </div>
-        </div>
-
-        <div className="glass-panel rounded-2xl p-7 shadow-sm card-interactive" data-animate>
-          <h2 className="heading-font text-xl font-semibold">Built for reliability</h2>
-          <p className="mt-2 text-[var(--muted)]">
-            Production-ready stack, clean code, and measurable outcomes from launch to long-term maintenance.
-          </p>
-          <div className="mt-6 space-y-4" data-animate-stagger>
-            {stats.map((item) => (
-              <div
-                key={item.label}
-                className="flex items-center justify-between rounded-xl bg-[color:var(--primary-soft)] px-4 py-3 border border-[var(--line)]"
-                data-animate-item
-              >
-                <span className="text-[var(--muted)]">{item.label}</span>
-                <span className="heading-font font-semibold text-lg">{item.value}</span>
-              </div>
-            ))}
           </div>
         </div>
       </div>

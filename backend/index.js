@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { rateLimit } = require("express-rate-limit");
+const { rateLimit, ipKeyGenerator } = require("express-rate-limit");
 require("dotenv").config();
 
 const contactRoutes = require("./routes/contactRoutes");
@@ -60,12 +60,7 @@ const contactLimiter = rateLimit({
     success: false,
     error: "Too many contact requests. Please wait a few minutes and try again.",
   },
-  keyGenerator: (req) => {
-    const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() || 
-               req.socket.remoteAddress || 
-               req.ip;
-    return ip;
-  },
+  keyGenerator: (req) => ipKeyGenerator(req),
   skip: (req) => req.path === '/api/health' || req.path === '/'
 });
 

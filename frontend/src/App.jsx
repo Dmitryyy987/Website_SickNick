@@ -1,26 +1,33 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
+import Stats from "./components/Stats";
 import Services from "./components/Services";
 import Portfolio from "./components/Portfolio";
+import ProcessSteps from "./components/ProcessSteps";
+import Testimonials from "./components/Testimonials";
 import CTA from "./components/CTA";
-import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
-import { bindClickAnimations, initPageAnimations } from "./animations/siteAnimations";
+import Contact from "./pages/Contact";
+import ProjectDetail from "./pages/ProjectDetail";
+import { initPageAnimations, bindClickAnimations } from "./animations/siteAnimations";
 
 function HomePage() {
   return (
     <>
       <Hero />
+      <Stats />
       <Services />
       <Portfolio />
+      <ProcessSteps />
+      <Testimonials />
       <CTA />
     </>
   );
 }
 
-function Layout({ children, theme, onToggleTheme }) {
+function Layout({ children }) {
   const location = useLocation();
   const mainRef = useRef(null);
 
@@ -29,9 +36,9 @@ function Layout({ children, theme, onToggleTheme }) {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen page-grid">
-      <Header theme={theme} onToggleTheme={onToggleTheme} />
-      <main ref={mainRef} key={location.pathname} className="route-fade">
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main ref={mainRef} key={location.pathname} className="route-fade flex-1">
         {children}
       </main>
       <Footer />
@@ -41,32 +48,20 @@ function Layout({ children, theme, onToggleTheme }) {
 
 function NotFound() {
   return (
-    <section className="section-shell min-h-[60vh] flex items-center justify-center">
-      <div className="glass-panel rounded-2xl p-10 text-center max-w-xl w-full">
-        <h1 className="heading-font text-5xl font-bold mb-4">404</h1>
-        <p className="text-[var(--muted)]">The page you are looking for does not exist.</p>
+    <section className="section-space min-h-[60vh] flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="heading-xl gradient-text mb-4">404</h1>
+        <p className="body-base mb-8">The page you're looking for doesn't exist.</p>
+        <a href="/" className="btn-primary">
+          <span>Back to Home</span>
+        </a>
       </div>
     </section>
   );
 }
 
 export default function App() {
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem("bytbrand-theme");
-    if (savedTheme === "light" || savedTheme === "dark") return savedTheme;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  });
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("bytbrand-theme", theme);
-  }, [theme]);
-
   useEffect(() => bindClickAnimations(document), []);
-
-  const toggleTheme = () => {
-    setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
-  };
 
   return (
     <Router>
@@ -74,7 +69,7 @@ export default function App() {
         <Route
           path="/"
           element={
-            <Layout theme={theme} onToggleTheme={toggleTheme}>
+            <Layout>
               <HomePage />
             </Layout>
           }
@@ -82,15 +77,23 @@ export default function App() {
         <Route
           path="/contact"
           element={
-            <Layout theme={theme} onToggleTheme={toggleTheme}>
+            <Layout>
               <Contact />
+            </Layout>
+          }
+        />
+        <Route
+          path="/project/:slug"
+          element={
+            <Layout>
+              <ProjectDetail />
             </Layout>
           }
         />
         <Route
           path="*"
           element={
-            <Layout theme={theme} onToggleTheme={toggleTheme}>
+            <Layout>
               <NotFound />
             </Layout>
           }

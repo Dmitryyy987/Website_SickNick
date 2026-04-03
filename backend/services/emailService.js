@@ -1,43 +1,22 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || process.env.EMAIL_HOST || "smtp.gmail.com",
-  port: Number(process.env.SMTP_PORT) || Number(process.env.EMAIL_PORT) || 587,
-  secure: process.env.SMTP_SECURE === "true" || process.env.EMAIL_SECURE === "true" || false, 
+  host: process.env.EMAIL_HOST || "smtp.gmail.com",
+  port: parseInt(process.env.EMAIL_PORT || "465"),
+  secure: process.env.EMAIL_PORT !== "587", // true for 465, false for other ports
   auth: {
-    user: process.env.SMTP_USER || process.env.EMAIL_USER,
-    pass: process.env.SMTP_PASS || process.env.EMAIL_PASS,
+    user: process.env.EMAIL_USER || process.env.SMTP_USER,
+    pass: process.env.EMAIL_PASS || process.env.SMTP_PASS,
   },
-  // Extreme production settings
-  connectionTimeout: 20000, // 20 seconds
-  greetingTimeout: 10000,
-  socketTimeout: 30000,
   tls: {
-    // Avoids strict TLS errors that block Render IPs
     rejectUnauthorized: false
   }
 });
 
-// Verify connection configuration on startup
 transporter.verify()
   .then(() => console.log('✅ SMTP transporter verified and ready to send emails'))
   .catch(err => console.error('❌ SMTP verification failed:', err.message));
 
-// Helper for sending with retry
-const sendMailWithRetry = async (mailOptions, retries = 3) => {
-  for (let i = 0; i < retries; i++) {
-    try {
-      return await transporter.sendMail(mailOptions);
-    } catch (error) {
-      console.warn(`⚠️ Email sending attempt ${i + 1} failed: ${error.message}`);
-      if (i === retries - 1) throw error; // Rethrow on last attempt
-      // Exponential backoff
-      await new Promise(res => setTimeout(res, 1500 * (i + 1)));
-    }
-  }
-};
-
-// Email templates
 function clientMailTemplate(name) {
   return `
   <div style="font-family: Arial, Helvetica, sans-serif; background:#f5f7fb; padding:28px;">
@@ -87,80 +66,40 @@ function adminMailTemplate({ userName, userEmail, company, projectType, budget, 
   </div>`;
 }
 
-// Main email sending function
 async function sendConfirmationEmail(payload) {
   const { userEmail, userName, company, projectType, budget, message } = payload;
-  const authUser = process.env.SMTP_USER || process.env.EMAIL_USER;
-  const authPass = process.env.SMTP_PASS || process.env.EMAIL_PASS;
-
-  // Validate credentials
-  if (!authUser || !authPass) {
-    throw new Error("Email credentials are missing. Configure EMAIL_USER and EMAIL_PASS in .env.");
+  let authUser = process.env.EMAIL_USER || process.env.SMTP_USER;
+  
+  if (!authUser) {
+    throw new Error("Email credentials are missing in .env");
   }
 
+  const from = `"BytBrand" <${authUser}>`;
+  const adminRecipient = process.env.ADMIN_EMAILS || authUser;
+
   try {
-    const from = `"BytBrand" <${authUser}>`;
-    const adminRecipient = process.env.ADMIN_EMAILS || authUser;
+    console.log(`⏳ Sending email to Admin (${adminRecipient}) and Client (${userEmail})...`);
 
-    // Send both emails in parallel using retry wrapper
-    const [clientResult, adminResult] = await Promise.allSettled([
-      // Client confirmation email
-      sendMailWithRetry({
-        from,
-        to: userEmail,
-        subject: "We received your message - BytBrand",
-        text: `Hi ${userName},\n\nThanks for contacting BytBrand. We have received your message and will get back to you within 24-48 hours.\n\nBest regards,\nBytBrand Team`,
-        html: clientMailTemplate(userName),
-      }),
-      
-      // Admin notification email
-      sendMailWithRetry({
-        from,
-        to: adminRecipient,
-        subject: `New inquiry from ${userName}`,
-        text: [
-          `Name: ${userName}`,
-          `Email: ${userEmail}`,
-          `Company: ${company || "N/A"}`,
-          `Project Type: ${projectType || "N/A"}`,
-          `Budget: ${budget || "N/A"}`,
-          "",
-          "Message:",
-          message,
-        ].join("\n"),
-        html: adminMailTemplate({ userName, userEmail, company, projectType, budget, message }),
-      }),
-    ]);
+    const adminResult = await transporter.sendMail({
+      from,
+      to: adminRecipient,
+      subject: `New inquiry from ${userName}`,
+      html: adminMailTemplate({ userName, userEmail, company, projectType, budget, message }),
+      replyTo: userEmail
+    });
+    console.log(`✅ Admin notification sent: ${adminResult.messageId}`);
 
-    // Log results
-    const clientDelivered = clientResult.status === 'fulfilled';
-    const adminDelivered = adminResult.status === 'fulfilled';
+    const clientResult = await transporter.sendMail({
+      from,
+      to: userEmail,
+      subject: "We received your message - BytBrand",
+      html: clientMailTemplate(userName),
+    });
+    console.log(`✅ Confirmation email sent to ${userEmail}: ${clientResult.messageId}`);
 
-    if (clientDelivered) {
-      console.log(`✅ Confirmation email sent to ${userEmail}`);
-    } else {
-      console.error(`❌ Failed to send confirmation email to ${userEmail}:`, clientResult.reason);
-    }
-
-    if (adminDelivered) {
-      console.log(`✅ Admin notification sent`);
-    } else {
-      console.error(`❌ Failed to send admin notification:`, adminResult.reason);
-    }
-
-    // Treat as overall error only if we couldn't send to admin
-    if (!adminDelivered && !clientDelivered) {
-      throw new Error("Failed to send ANY emails (both client and admin delivery failed)");
-    }
-
-    return { 
-      success: adminDelivered,
-      clientDelivered,
-      adminDelivered
-    };
-
+    return { success: true };
   } catch (error) {
-    console.error("❌ Email service error:", error);
+    console.error("❌ Email service error:", error.message);
     throw error;
   }
 }

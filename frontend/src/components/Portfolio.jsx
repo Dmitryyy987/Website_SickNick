@@ -1,80 +1,190 @@
+import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
 const projects = [
   {
+    slug: "cartonize",
     title: "Cartonize",
-    description: "E-commerce platform for custom packaging procurement workflows.",
-    tech: ["Next.js", "TypeScript", "Stripe"],
+    tagline: "B2B e-commerce platform for custom packaging at scale",
+    problem: "Fragmented workflows and manual quoting slowing enterprise procurement",
+    result: "80% faster quoting, 45% higher conversion",
+    tech: ["Next.js", "TypeScript", "Stripe", "Three.js"],
+    color: "#8b95ff",
     link: "https://cartonize.vercel.app/",
   },
   {
-    title: "ArcadiaX",
-    description: "Gaming-focused web product with real-time experiences and user dashboards.",
-    tech: ["React", "Node.js", "WebSocket"],
-    link: "https://arcadiax.vercel.app/",
-  },
-  {
+    slug: "gen-ai-engineer",
     title: "Gen-AI Engineer",
-    description: "AI product site highlighting workflows, demos, and technical documentation.",
-    tech: ["React", "Node.js", "AI APIs"],
+    tagline: "Interactive showcase for enterprise AI automation",
+    problem: "Complex AI capabilities impossible to demo through static docs",
+    result: "Sales cycle shortened by 3 weeks",
+    tech: ["React", "Node.js", "Vercel AI SDK", "OpenAI"],
+    color: "#c57eff",
     link: "https://gen-ai.engineer/",
   },
   {
-    title: "Weather Application",
-    description: "Responsive weather app with chart-based forecast visualization.",
-    tech: ["React", "Chart.js", "Weather API"],
-    link: "https://react-weather-app.netlify.app/",
-  },
-  {
+    slug: "brainwave",
     title: "Brainwave",
-    description: "Marketing site for an AI product with immersive sections and interactive UI.",
-    tech: ["React", "Framer Motion", "Three.js"],
+    tagline: "Physics-driven marketing experience for next-gen AI",
+    problem: "Needed a visual identity distinct from generic SaaS templates",
+    result: "65% waitlist increase, 3 design awards",
+    tech: ["React", "GSAP", "Three.js", "Framer Motion"],
+    color: "#8b95ff",
     link: "https://ai-landing-page.netlify.app/",
-  },
-  {
-    title: "Nike Frontend",
-    description: "Product-focused commerce frontend built for strong storytelling and UX flow.",
-    tech: ["React", "Tailwind", "Animation"],
-    link: "https://nike-frontend.netlify.app/",
   },
 ];
 
 export default function Portfolio() {
+  const sectionRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".portfolio-header",
+        { autoAlpha: 0, y: 25 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 90%", once: true },
+        }
+      );
+
+      gsap.utils.toArray(".project-block").forEach((block, i) => {
+        gsap.fromTo(
+          block,
+          { autoAlpha: 0, y: 40 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: block,
+              start: "top 90%",
+              once: true,
+            },
+          }
+        );
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="portfolio" className="section-shell pt-0" data-animate>
-      <div className="glass-panel rounded-3xl p-6 md:p-9" data-animate>
-        <div className="max-w-2xl" data-animate>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary)]">Selected Work</p>
-          <h2 className="heading-font mt-3 text-3xl md:text-4xl font-semibold">Recent projects and deliveries</h2>
-          <p className="mt-3 text-[var(--muted)]">
-            A snapshot of websites and products we have designed, built, and shipped.
-          </p>
+    <section
+      ref={sectionRef}
+      id="portfolio"
+      className="section-space relative overflow-hidden"
+    >
+      <div className="container-wide relative z-10">
+        <div className="portfolio-header mb-12 md:mb-16" style={{ opacity: 0 }}>
+          <div className="grid md:grid-cols-2 gap-8 items-end">
+            <div>
+              <span className="label-accent mb-4 block">Selected Work</span>
+              <h2 className="heading-lg text-[var(--text)]">
+                Projects that{" "}
+                <span className="gradient-text">speak for themselves.</span>
+              </h2>
+            </div>
+            <div className="md:text-right">
+              <p className="body-base max-w-md md:ml-auto">
+                We architect scalable solutions that solve complex bottlenecks and
+                drive measurable business growth.
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4" data-animate-stagger>
-          {projects.map((project) => (
-            <article
-              key={project.title}
-              className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-sm card-interactive"
-              data-animate-item
+        {/* Project Blocks */}
+        <div className="flex flex-col gap-6 md:gap-8">
+          {projects.map((project, index) => (
+            <a
+              key={project.slug}
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-block group relative block rounded-2xl overflow-hidden cursor-pointer"
+              style={{
+                opacity: 0,
+                background: `linear-gradient(135deg, var(--surface-elevated), var(--surface))`,
+              }}
             >
-              <h3 className="heading-font text-xl font-semibold">{project.title}</h3>
-              <p className="mt-2 text-[var(--muted)] text-sm leading-relaxed">{project.description}</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {project.tech.map((item) => (
-                  <span key={item} className="rounded-full bg-[var(--primary-soft)] px-3 py-1 text-xs text-[var(--primary)]">
-                    {item}
-                  </span>
-                ))}
+              <div className="relative z-10 p-6 md:p-10 lg:p-12">
+                <div className="grid md:grid-cols-12 gap-8 items-start">
+                  {/* Left: Title & Tagline */}
+                  <div className={`md:col-span-7 ${index % 2 !== 0 ? "md:order-2 md:col-start-6" : ""}`}>
+                    <span className="label mb-4 block">0{index + 1}</span>
+                    <h3 className="heading-md text-[var(--text)] mb-4 group-hover:text-[var(--accent)] transition-colors duration-500">
+                      {project.title}
+                    </h3>
+                    <p className="body-lg mb-8 max-w-lg">{project.tagline}</p>
+
+                    {/* Tech Tags */}
+                    <div className="flex flex-wrap gap-2 mb-8">
+                      {project.tech.map((t) => (
+                        <span
+                          key={t}
+                          className="px-3 py-1 text-xs font-medium text-[var(--text-secondary)] bg-white/[0.04] rounded-full"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Result */}
+                    <div className="inline-flex items-center gap-3">
+                      <div className="w-1 h-8 rounded-full" style={{ background: project.color }} />
+                      <div>
+                        <span className="label block mb-1">Impact</span>
+                        <span className="text-base font-semibold text-[var(--text)]">
+                          {project.result}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right: Problem & CTA */}
+                  <div className={`md:col-span-5 flex flex-col justify-between h-full ${index % 2 !== 0 ? "md:order-1" : ""}`}>
+                    <div>
+                      <span className="label mb-3 block">The Challenge</span>
+                      <p className="body-base">{project.problem}</p>
+                    </div>
+
+                    <div className="mt-8 flex items-center gap-2 text-[var(--text-secondary)] group-hover:text-[var(--accent)] transition-colors duration-500">
+                      <span className="text-sm font-semibold">View Project</span>
+                      <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                    </div>
+                  </div>
+                </div>
               </div>
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center text-sm font-semibold text-[var(--primary)] btn-interactive rounded-lg px-2 py-1"
-                data-click-animate
-              >
-                Open project
-              </a>
-            </article>
+
+              {/* Hover glow effect */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                style={{
+                  background: `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${project.color}08, transparent 50%)`,
+                }}
+              />
+
+              {/* Bottom accent line */}
+              <div
+                className="absolute bottom-0 left-0 h-[1px] w-0 group-hover:w-full transition-all duration-700 ease-out"
+                style={{ background: `linear-gradient(90deg, ${project.color}, transparent)` }}
+              />
+            </a>
           ))}
         </div>
       </div>

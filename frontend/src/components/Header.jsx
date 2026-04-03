@@ -1,124 +1,149 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { FiMenu, FiMoon, FiSun } from "react-icons/fi";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { ArrowRight, Menu, X } from "lucide-react";
+import gsap from "gsap";
 
-const navLinks = [
-  { id: "services", label: "Services" },
-  { id: "portfolio", label: "Work" },
-];
-
-export default function Header({ theme, onToggleTheme }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
+export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
-  const scrollToSection = (id) => {
-    setMenuOpen(false);
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-    const runScroll = () => {
-      const node = document.getElementById(id);
-      if (!node) return;
-      node.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
 
+  // Animate mobile menu
+  useEffect(() => {
+    if (!mobileMenuRef.current) return;
+    if (isOpen) {
+      gsap.fromTo(
+        mobileMenuRef.current,
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }
+      );
+      gsap.fromTo(
+        mobileMenuRef.current.querySelectorAll(".mobile-link"),
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, stagger: 0.08, duration: 0.5, ease: "power3.out", delay: 0.15 }
+      );
+    }
+  }, [isOpen]);
+
+  const handleNavClick = (sectionId) => {
+    setIsOpen(false);
     if (location.pathname !== "/") {
       navigate("/");
-      window.setTimeout(runScroll, 140);
-      return;
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+      }, 600);
+    } else {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
     }
-
-    runScroll();
   };
 
-  return (
-    <header className="sticky top-0 z-50 border-b nav-surface">
-      <div className="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
-        <button
-          type="button"
-          onClick={() => navigate("/")}
-          className="heading-font text-xl font-semibold tracking-tight btn-interactive rounded-lg px-2 py-1"
-          data-click-animate
-        >
-          Byt<span className="text-[var(--primary)]">Brand</span>
-        </button>
+  const navItems = [
+    { label: "Services", action: () => handleNavClick("services") },
+    { label: "Work", action: () => handleNavClick("portfolio") },
+    { label: "Process", action: () => handleNavClick("process") },
+    { label: "Contact", action: () => { setIsOpen(false); navigate("/contact"); } },
+  ];
 
-        <nav className="hidden md:flex items-center gap-2">
-          {navLinks.map((link) => (
-            <button
-              type="button"
-              key={link.id}
-              onClick={() => scrollToSection(link.id)}
-              className="px-4 py-2 rounded-lg text-[var(--muted)] btn-secondary btn-interactive"
-              data-click-animate
-            >
-              {link.label}
-            </button>
-          ))}
+  return (
+    <>
+      <header
+        ref={headerRef}
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+          scrolled
+            ? "bg-[#0E0E0E]/90 backdrop-blur-xl py-4"
+            : "bg-transparent py-6"
+        }`}
+      >
+        <div className="container-wide flex items-center justify-between">
+          {/* Logo */}
           <button
             type="button"
-            onClick={onToggleTheme}
-            className="rounded-lg px-3 py-2 text-[var(--muted)] btn-secondary btn-interactive"
-            aria-label="Toggle theme"
-            data-click-animate
+            onClick={() => { navigate("/"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+            className="text-lg font-bold tracking-[-0.03em] text-[var(--text)] hover:opacity-70 transition-opacity"
           >
-            {theme === "dark" ? <FiSun size={18} /> : <FiMoon size={18} />}
+            BYTBRAND
           </button>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-10">
+            {navItems.map((item) => (
+              <button
+                key={item.label}
+                onClick={item.action}
+                className="label text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors duration-300 cursor-pointer"
+                style={{ letterSpacing: "0.12em", fontSize: "0.6875rem" }}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* Desktop CTA */}
           <button
             type="button"
             onClick={() => navigate("/contact")}
-            className="ml-2 rounded-lg px-5 py-2 btn-primary btn-interactive"
-            data-click-animate
+            className="hidden md:inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300 group"
           >
-            Contact
+            <span>Let's Talk</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
           </button>
-        </nav>
 
-        <button
-          type="button"
-          onClick={() => setMenuOpen((prev) => !prev)}
-          className="md:hidden rounded-lg p-2 btn-secondary btn-interactive"
-          aria-label="Toggle menu"
-          data-click-animate
-        >
-          <FiMenu className="w-5 h-5" />
-        </button>
-      </div>
-
-      {menuOpen && (
-        <div className="md:hidden border-t border-[var(--line)] bg-[var(--surface)] px-5 py-4 flex flex-col gap-2">
-          {navLinks.map((link) => (
-            <button
-              type="button"
-              key={link.id}
-              onClick={() => scrollToSection(link.id)}
-              className="rounded-lg px-3 py-2 text-left btn-secondary btn-interactive"
-              data-click-animate
-            >
-              {link.label}
-            </button>
-          ))}
+          {/* Mobile Toggle */}
           <button
-            type="button"
-            onClick={onToggleTheme}
-            className="rounded-lg px-3 py-2 text-left btn-secondary btn-interactive flex items-center gap-2"
-            data-click-animate
+            className="md:hidden text-[var(--text)] p-2 -mr-2"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
           >
-            {theme === "dark" ? <FiSun size={16} /> : <FiMoon size={16} />}
-            Theme
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setMenuOpen(false);
-              navigate("/contact");
-            }}
-            className="rounded-lg px-3 py-2 text-left btn-primary btn-interactive"
-            data-click-animate
-          >
-            Contact
+            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      {isOpen && (
+        <div
+          ref={mobileMenuRef}
+          className="fixed inset-0 z-40 bg-[var(--bg)] pt-24 px-8 md:hidden flex flex-col"
+        >
+          <nav className="flex flex-col gap-1 flex-1">
+            {navItems.map((item) => (
+              <button
+                key={item.label}
+                onClick={item.action}
+                className="mobile-link text-left py-4 text-3xl font-bold tracking-[-0.03em] text-[var(--text)] hover:text-[var(--accent)] transition-colors border-b border-white/5"
+              >
+                {item.label}
+              </button>
+            ))}
+
+            <div className="mt-12">
+              <button
+                type="button"
+                onClick={() => { setIsOpen(false); navigate("/contact"); }}
+                className="btn-primary w-full text-base"
+              >
+                <span>Start a Project</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </nav>
+        </div>
       )}
-    </header>
+    </>
   );
 }

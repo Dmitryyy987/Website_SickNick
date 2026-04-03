@@ -1,130 +1,128 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { FiArrowRight, FiBriefcase, FiGrid, FiMail, FiPhoneCall } from "react-icons/fi";
-
-const links = [
-  { id: "services", label: "Services" },
-  { id: "portfolio", label: "Portfolio" },
-];
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, Github, Twitter, Linkedin } from "lucide-react";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const location = useLocation();
   const navigate = useNavigate();
 
-  const handleJump = (id) => {
-    const runScroll = () => {
-      const node = document.getElementById(id);
-      if (node) node.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
-
-    if (location.pathname !== "/") {
+  const handleNavClick = (sectionId) => {
+    if (window.location.pathname !== "/") {
       navigate("/");
-      window.setTimeout(runScroll, 140);
-      return;
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+      }, 600);
+    } else {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
     }
-    runScroll();
-  };
-
-  const handleSubscribe = (event) => {
-    event.preventDefault();
-    const normalized = email.trim();
-    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized);
-
-    if (!isValid) {
-      setError("Enter a valid email address.");
-      return;
-    }
-
-    setError("");
-    setEmail("");
-    navigate(`/contact?email=${encodeURIComponent(normalized)}`);
   };
 
   return (
-    <footer className="border-t border-[var(--line)] bg-[var(--surface)]" data-animate>
-      <div className="section-shell py-12" data-animate>
-        <div className="grid md:grid-cols-[1.4fr_1fr_1fr] gap-10" data-animate-stagger>
-          <div data-animate-item>
-            <p className="heading-font text-2xl font-semibold">
-              Byt<span className="text-[var(--primary)]">Brand</span>
+    <footer className="relative pt-16 pb-12 lg:pt-20 lg:pb-16" style={{ background: "var(--surface)" }}>
+      <div className="container-wide relative z-10">
+        {/* Top section: Large wordmark + CTA */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
+          <div>
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-[-0.04em] text-[var(--text)]">
+              BYTBRAND
+            </h2>
+            <p className="body-base mt-4 max-w-md">
+              Crafting premium digital experiences for ambitious brands worldwide.
             </p>
-            <p className="mt-3 max-w-md text-[var(--muted)]">
-              We help companies launch and scale digital products with clean UI, maintainable code, and reliable
-              backend systems.
-            </p>
-            <div className="mt-4 flex items-center gap-4 text-[var(--muted)]">
-              <a
-                href="mailto:bytbrand.info@gmail.com"
-                className="btn-interactive rounded-lg p-1"
-                aria-label="Email"
-                data-click-animate
-              >
-                <FiMail />
-              </a>
-              <a href="tel:+15551234567" className="btn-interactive rounded-lg p-1" aria-label="Phone" data-click-animate>
-                <FiPhoneCall />
-              </a>
-            </div>
           </div>
 
-          <div data-animate-item>
-            <h3 className="heading-font text-base font-semibold">Quick Links</h3>
-            <ul className="mt-3 space-y-2 text-[var(--muted)]">
-              {links.map((item) => (
-                <li key={item.id}>
-                  <button
-                    type="button"
-                    onClick={() => handleJump(item.id)}
-                    className="hover:text-[var(--primary)] btn-interactive rounded-lg px-2 py-1 inline-flex items-center gap-2 btn-secondary"
-                    data-click-animate
-                  >
-                    {item.id === "services" ? <FiBriefcase size={14} /> : <FiGrid size={14} />}
-                    {item.label}
-                  </button>
-                </li>
-              ))}
+          <button
+            type="button"
+            onClick={() => navigate("/contact")}
+            className="btn-ghost group self-start md:self-end"
+          >
+            <span>Start a conversation</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+
+        {/* Divider */}
+        <div className="h-[1px] bg-white/[0.04] mb-12" />
+
+        {/* Links grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+          <div>
+            <h4 className="label mb-6">Services</h4>
+            <ul className="flex flex-col gap-3">
               <li>
-                <button
-                  type="button"
-                  onClick={() => navigate("/contact")}
-                  className="hover:text-[var(--primary)] btn-interactive rounded-lg px-2 py-1 btn-secondary"
-                  data-click-animate
-                >
+                <button onClick={() => handleNavClick("services")} className="text-sm text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors">
+                  Web Platforms
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNavClick("services")} className="text-sm text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors">
+                  Mobile Architecture
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNavClick("services")} className="text-sm text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors">
+                  AI Integrations
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="label mb-6">Company</h4>
+            <ul className="flex flex-col gap-3">
+              <li>
+                <button onClick={() => handleNavClick("portfolio")} className="text-sm text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors">
+                  Case Studies
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNavClick("process")} className="text-sm text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors">
+                  Our Process
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigate("/contact")} className="text-sm text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors">
                   Contact
                 </button>
               </li>
             </ul>
           </div>
 
-          <div data-animate-item>
-            <h3 className="heading-font text-base font-semibold">Stay in Touch</h3>
-            <p className="mt-3 text-sm text-[var(--muted)]">Enter your email and continue to our contact form.</p>
-            <form onSubmit={handleSubscribe} className="mt-3 flex gap-2">
-              <input
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@company.com"
-                className="min-w-0 flex-1 rounded-lg border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-sm"
-              />
-              <button
-                type="submit"
-                className="rounded-lg px-4 py-2 text-sm font-semibold btn-primary btn-interactive inline-flex items-center gap-2"
-                data-click-animate
-              >
-                Continue
-                <FiArrowRight size={14} />
-              </button>
-            </form>
-            {error ? <p className="mt-2 text-xs text-rose-600">{error}</p> : null}
+          <div>
+            <h4 className="label mb-6">Connect</h4>
+            <ul className="flex flex-col gap-3">
+              <li>
+                <a href="mailto:bytbrand.info@gmail.com" className="text-sm text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors">
+                  bytbrand.info@gmail.com
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="label mb-6">Social</h4>
+            <div className="flex items-center gap-4">
+              <a href="#" className="text-[var(--muted)] hover:text-[var(--text)] transition-colors" aria-label="Twitter">
+                <Twitter className="w-4 h-4" />
+              </a>
+              <a href="#" className="text-[var(--muted)] hover:text-[var(--text)] transition-colors" aria-label="LinkedIn">
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a href="#" className="text-[var(--muted)] hover:text-[var(--text)] transition-colors" aria-label="GitHub">
+                <Github className="w-4 h-4" />
+              </a>
+            </div>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-[var(--line)] pt-5 text-sm text-[var(--muted)]">
-          {currentYear} BytBrand. All rights reserved.
+        {/* Divider */}
+        <div className="h-[1px] bg-white/[0.04] mb-8" />
+
+        {/* Bottom bar */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[var(--muted)]">
+          <p>© {new Date().getFullYear()} BYTBRAND. All rights reserved.</p>
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)] shadow-[0_0_6px_var(--success)]" />
+            <span>All Systems Operational</span>
+          </div>
         </div>
       </div>
     </footer>
