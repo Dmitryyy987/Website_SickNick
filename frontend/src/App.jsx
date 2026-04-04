@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import Stats from "./components/Stats";
 import Services from "./components/Services";
 import Portfolio from "./components/Portfolio";
 import ProcessSteps from "./components/ProcessSteps";
@@ -17,7 +16,6 @@ function HomePage() {
   return (
     <>
       <Hero />
-      <Stats />
       <Services />
       <Portfolio />
       <ProcessSteps />
