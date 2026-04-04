@@ -32,6 +32,7 @@ function Layout({ children }) {
   const mainRef = useRef(null);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     return initPageAnimations(mainRef.current);
   }, [location.pathname]);
 

@@ -8,14 +8,49 @@ export default function Header() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const headerRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+
+      if (location.pathname === "/contact") {
+        setActiveSection("contact");
+        return;
+      } else if (location.pathname !== "/") {
+        setActiveSection("");
+        return;
+      }
+
+      const sections = ["services", "portfolio", "process"];
+      let current = "";
+      
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          // Adjust threshold based on viewport height
+          if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+            current = section;
+            break;
+          }
+        }
+      }
+      
+      if (!current && window.scrollY < 100) {
+        current = "home";
+      }
+
+      setActiveSection(current);
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location]);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -53,11 +88,19 @@ export default function Header() {
   };
 
   const navItems = [
-    { label: "Services", action: () => handleNavClick("services") },
-    { label: "Work", action: () => handleNavClick("portfolio") },
-    { label: "Process", action: () => handleNavClick("process") },
-    { label: "Contact", action: () => { setIsOpen(false); navigate("/contact"); } },
+    { id: "services", label: "Services", action: () => handleNavClick("services") },
+    { id: "portfolio", label: "Work", action: () => handleNavClick("portfolio") },
+    { id: "process", label: "Process", action: () => handleNavClick("process") },
   ];
+
+  const handleContactClick = () => {
+    setIsOpen(false);
+    if (location.pathname === "/contact") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      navigate("/contact");
+    }
+  };
 
   return (
     <>
@@ -81,22 +124,30 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-10">
-            {navItems.map((item) => (
-              <button
-                key={item.label}
-                onClick={item.action}
-                className="label text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors duration-300 cursor-pointer"
-                style={{ letterSpacing: "0.12em", fontSize: "0.6875rem" }}
-              >
-                {item.label}
-              </button>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={item.action}
+                  className={`group relative label transition-colors duration-300 cursor-pointer pb-1.5 ${isActive ? "text-[var(--text)]" : "text-[var(--text-secondary)] hover:text-[var(--text)]"}`}
+                  style={{ letterSpacing: "0.12em", fontSize: "0.6875rem" }}
+                >
+                  {item.label}
+                  <span
+                    className={`absolute left-0 bottom-0 w-full h-[1.5px] bg-[var(--accent)] transition-transform duration-300 ease-out ${
+                      isActive ? "scale-x-100 origin-left" : "scale-x-0 origin-right group-hover:scale-x-100 group-hover:origin-left"
+                    }`}
+                  />
+                </button>
+              );
+            })}
           </nav>
 
           {/* Desktop CTA */}
           <button
             type="button"
-            onClick={() => navigate("/contact")}
+            onClick={handleContactClick}
             className="hidden md:inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300 group"
           >
             <span>Let's Talk</span>
@@ -134,7 +185,7 @@ export default function Header() {
             <div className="mt-12">
               <button
                 type="button"
-                onClick={() => { setIsOpen(false); navigate("/contact"); }}
+                onClick={handleContactClick}
                 className="btn-primary w-full text-base"
               >
                 <span>Start a Project</span>

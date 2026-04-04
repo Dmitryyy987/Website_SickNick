@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -41,7 +41,6 @@ const projects = [
 
 export default function Portfolio() {
   const sectionRef = useRef(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -61,7 +60,7 @@ export default function Portfolio() {
         }
       );
 
-      gsap.utils.toArray(".project-block").forEach((block, i) => {
+      gsap.utils.toArray(".project-block").forEach((block) => {
         gsap.fromTo(
           block,
           { autoAlpha: 0, y: 40 },
@@ -111,12 +110,9 @@ export default function Portfolio() {
         {/* Project Blocks */}
         <div className="flex flex-col gap-6 md:gap-8">
           {projects.map((project, index) => (
-            <a
+            <div
               key={project.slug}
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-block group relative block rounded-2xl overflow-hidden cursor-pointer"
+              className="project-block group relative block rounded-2xl overflow-hidden"
               style={{
                 opacity: 0,
                 background: `linear-gradient(135deg, var(--surface-elevated), var(--surface))`,
@@ -163,9 +159,24 @@ export default function Portfolio() {
                       <p className="body-base">{project.problem}</p>
                     </div>
 
-                    <div className="mt-8 flex items-center gap-2 text-[var(--text-secondary)] group-hover:text-[var(--accent)] transition-colors duration-500">
-                      <span className="text-sm font-semibold">View Project</span>
-                      <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                    <div className="mt-8 flex flex-wrap items-center gap-4 relative z-20">
+                      <Link
+                        to={`/project/${project.slug}`}
+                        className="btn-ghost"
+                        style={{ padding: '0.75rem 1.5rem' }}
+                      >
+                        Case Study
+                      </Link>
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-primary flex items-center gap-2"
+                        style={{ padding: '0.75rem 1.5rem' }}
+                      >
+                        <span>Live Project</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -184,7 +195,7 @@ export default function Portfolio() {
                 className="absolute bottom-0 left-0 h-[1px] w-0 group-hover:w-full transition-all duration-700 ease-out"
                 style={{ background: `linear-gradient(90deg, ${project.color}, transparent)` }}
               />
-            </a>
+            </div>
           ))}
         </div>
       </div>

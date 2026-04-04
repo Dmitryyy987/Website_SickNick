@@ -110,13 +110,6 @@ export default function Hero() {
 
       <div className="container-wide relative z-10">
         <div className="max-w-4xl">
-          {/* Badge */}
-          <div ref={badgeRef} className="mb-6" style={{ opacity: 0 }}>
-            <span className="label-accent inline-flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
-              Digital Product Studio
-            </span>
-          </div>
 
           {/* Headline */}
           <h1

@@ -15,6 +15,14 @@ export default function Footer() {
     }
   };
 
+  const handleContactClick = () => {
+    if (window.location.pathname === "/contact") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      navigate("/contact");
+    }
+  };
+
   return (
     <footer className="relative pt-16 pb-12 lg:pt-20 lg:pb-16" style={{ background: "var(--surface)" }}>
       <div className="container-wide relative z-10">
@@ -31,7 +39,7 @@ export default function Footer() {
 
           <button
             type="button"
-            onClick={() => navigate("/contact")}
+            onClick={handleContactClick}
             className="btn-ghost group self-start md:self-end"
           >
             <span>Start a conversation</span>
@@ -79,7 +87,7 @@ export default function Footer() {
                 </button>
               </li>
               <li>
-                <button onClick={() => navigate("/contact")} className="text-sm text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors">
+                <button onClick={handleContactClick} className="text-sm text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors">
                   Contact
                 </button>
               </li>

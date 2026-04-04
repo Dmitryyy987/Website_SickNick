@@ -111,7 +111,7 @@ export default function Contact() {
       />
 
       <div className="container-wide relative z-10">
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid pt-10 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column */}
           <div className="contact-left lg:col-span-5 lg:sticky lg:top-32" style={{ opacity: 0 }}>
             <span className="label-accent mb-6 block">Get in Touch</span>
