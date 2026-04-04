@@ -272,7 +272,7 @@ function FloatingInput({ field, value, onChange }) {
         onBlur={() => setFocused(false)}
         required={field.required}
         autoComplete="off"
-        className="w-full bg-transparent border-b border-white/[0.08] focus:border-transparent py-3 text-base text-[var(--text)] placeholder-transparent focus:outline-none transition-colors peer"
+        className="w-full bg-transparent border-b border-white/[0.08] focus:border-transparent py-3 text-base text-[var(--text)] placeholder-transparent focus:outline-none focus-visible:!outline-none transition-colors peer"
       />
       {/* Animated gradient line */}
       <div
@@ -289,33 +289,91 @@ function FloatingInput({ field, value, onChange }) {
   );
 }
 
-/* ─── Floating Label Select ─── */
+/* ─── Floating Label Select (Custom UI) ─── */
 function FloatingSelect({ name, label, value, onChange, options }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setIsOpen(false);
+        setFocused(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSelect = (opt) => {
+    onChange({ target: { name, value: opt } });
+    setIsOpen(false);
+    setFocused(true);
+  };
+
   return (
-    <div className="relative">
+    <div className="relative" ref={containerRef}>
       <label
-        htmlFor={name}
-        className="absolute -top-5 left-0 text-[0.6875rem] font-semibold tracking-[0.15em] uppercase text-[var(--muted)]"
+        className={`absolute left-0 transition-all duration-300 pointer-events-none text-[0.6875rem] font-semibold tracking-[0.15em] uppercase -top-5 ${
+          focused || isOpen ? "text-[var(--accent)]" : "text-[var(--muted)]"
+        }`}
       >
         {label}
       </label>
-      <select
-        id={name}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="w-full bg-transparent border-b border-white/[0.08] focus:border-[var(--accent)] py-3 text-base text-[var(--text)] focus:outline-none appearance-none cursor-pointer transition-colors"
+      
+      <button
+        type="button"
+        onClick={() => { setIsOpen(!isOpen); setFocused(true); }}
+        className="w-full bg-transparent border-b border-white/[0.08] focus:border-transparent focus-visible:!outline-none py-3 text-left text-base text-[var(--text)] focus:outline-none cursor-pointer transition-colors"
       >
-        {options.map((opt) => (
-          <option key={opt} value={opt} className="bg-[var(--surface)] text-[var(--text)]">
-            {opt}
-          </option>
-        ))}
-      </select>
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none">
+        {value}
+      </button>
+
+      {/* Chevron */}
+      <div 
+        className={`absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 ${
+          isOpen ? "rotate-180" : ""
+        }`}
+      >
         <svg className="w-4 h-4 text-[var(--muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
         </svg>
+      </div>
+
+      {/* Animated gradient line */}
+      <div
+        className={`absolute bottom-0 left-0 h-[2px] transition-all duration-500 z-10 ${
+          focused || isOpen ? "w-full opacity-100" : "w-0 opacity-0"
+        }`}
+        style={{
+          background: "linear-gradient(90deg, var(--accent), var(--accent-secondary))",
+        }}
+      />
+
+      {/* Dropdown Menu */}
+      <div
+        className={`absolute top-full left-0 w-full mt-2 bg-black/80 backdrop-blur-md border border-white/[0.08] rounded-xl overflow-hidden transition-all duration-300 z-50 shadow-2xl ${
+          isOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
+        }`}
+      >
+        <ul className="flex flex-col py-2 max-h-60 overflow-y-auto">
+          {options.map((opt) => (
+            <li key={opt}>
+              <button
+                type="button"
+                onClick={() => handleSelect(opt)}
+                className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                  value === opt
+                    ? "bg-white/[0.06] text-[var(--accent)]"
+                    : "text-[var(--text-secondary)] hover:bg-white/[0.03] hover:text-[var(--text)]"
+                }`}
+              >
+                {opt}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
@@ -347,7 +405,7 @@ function FloatingTextarea({ name, label, placeholder, value, onChange, required 
         onBlur={() => setFocused(false)}
         required={required}
         rows={4}
-        className="w-full bg-transparent border-b border-white/[0.08] focus:border-transparent py-3 text-base text-[var(--text)] placeholder-transparent focus:outline-none resize-y transition-colors"
+        className="w-full bg-transparent border-b border-white/[0.08] focus:border-transparent py-3 text-base text-[var(--text)] placeholder-transparent focus:outline-none focus-visible:!outline-none resize-y transition-colors"
       />
       <div
         className={`absolute bottom-0 left-0 h-[2px] transition-all duration-500 ${
