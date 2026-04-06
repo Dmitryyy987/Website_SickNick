@@ -1,420 +1,155 @@
-import { useState, useEffect, useRef } from "react";
-import { ArrowRight, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
-import gsap from "gsap";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-
-const inputFields = [
-  { name: "name", label: "Your Name", type: "text", placeholder: "Erica Chen", required: true, half: true },
-  { name: "email", label: "Work Email", type: "email", placeholder: "erica@lumina.ai", required: true, half: true },
-  { name: "company", label: "Company", type: "text", placeholder: "Lumina AI Corp.", required: false, half: false },
-];
-
-const projectTypes = [
-  "Full Architecture Build",
-  "SaaS Redesign",
-  "Backend Scaling",
-  "Premium Marketing Site",
-];
-
-const budgetRanges = [
-  "$5,000 – $10,000",
-  "$10,000 – $25,000",
-  "$25,000 – $50,000",
-  "$50,000+",
-];
+import { useState } from 'react';
+import useSEO from '../hooks/useSEO';
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    projectType: projectTypes[0],
-    budget: budgetRanges[1],
-    message: "",
+  const [formData, setFormData] = useState({ name: '', email: '', subject: 'Select Engagement Type', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+
+  useSEO({
+    title: 'Initialize Project | BytBrand',
+    description: 'Contact BytBrand to scope your next high-converting digital product.',
+    url: 'https://bytbrand.com/contact'
   });
-  const [status, setStatus] = useState("idle");
-  const [toast, setToast] = useState(null);
-  const sectionRef = useRef(null);
-  const formRef = useRef(null);
-
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".contact-left",
-        { opacity: 0, x: -30 },
-        { opacity: 1, x: 0, duration: 0.7, ease: "power3.out", delay: 0.1 }
-      );
-      gsap.fromTo(
-        ".contact-right",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 0.2 }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
 
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus("loading");
-    setToast(null);
-
     try {
-      const response = await fetch(`${API_URL}/contact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        if (data.warning) {
-          setToast({ type: "warning", message: data.message });
-        } else {
-          setToast({ type: "success", message: "Message sent. We'll reply within 24 hours." });
-        }
-        setFormData({ name: "", email: "", company: "", projectType: projectTypes[0], budget: budgetRanges[1], message: "" });
+      if (res.ok) {
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 3000);
+        setFormData({ name: '', email: '', subject: 'Select Engagement Type', message: '' });
       } else {
-        setToast({ type: "error", message: data.error || "Something went wrong. Please try again." });
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 3000);
       }
-    } catch {
-      setToast({ type: "error", message: "Network error. Please check your connection." });
-    } finally {
-      setStatus("idle");
+    } catch (err) {
+      console.error(err);
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 3000);
     }
   };
 
   return (
-    <section
-      ref={sectionRef}
-      className="section-space relative overflow-hidden"
-      id="contact"
-    >
-      {/* Background glow */}
-      <div
-        className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, rgba(139,149,255,0.06) 0%, transparent 70%)",
-          filter: "blur(100px)",
-          transform: "translate(30%, -30%)",
-        }}
-      />
+    <main className="page contact-page">
+      <div className="contact-grid">
 
-      <div className="container-wide relative z-10">
-        <div className="grid pt-10 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column */}
-          <div className="contact-left lg:col-span-5 lg:sticky lg:top-32" style={{ opacity: 0 }}>
-            <span className="label-accent mb-6 block">Get in Touch</span>
+        {/* ── LEFT ── */}
+        <div>
+          <span className="eyebrow text-rust">Direct Access</span>
+          <h1 className="contact-h1" style={{ fontSize: 'clamp(44px, 5.5vw, 68px)' }}>
+            <span>Architect</span>
+            <span>your</span>
+            <span className="accent">market</span>
+            <span className="accent">advantage.</span>
+          </h1>
+          <p className="contact-sub text-[16px] max-w-md">
+            Whether you require a high-converting web platform, a complex SaaS workflow integration,
+            or enterprise-grade AI automation pipelines—our engineering team is ready to execute.
+          </p>
 
-            <h1 className="heading-lg text-[var(--text)] mb-6">
-              Let's build{" "}
-              <span className="gradient-text">something great</span>
-              <br />together.
-            </h1>
+          <div className="contact-card mt-12 bg-white hover:shadow-lg transition-shadow">
+            <div className="contact-card-content">
+              <span className="eyebrow" style={{ marginBottom: '4px' }}>Discovery Phase</span>
+              <h3>Technical Brief Review</h3>
+              <p>A rigorous 30-minute system evaluation outlining a roadmap to unblock your bottlenecks and scale revenue.</p>
+            </div>
+            <span className="contact-card-arrow text-2xl">→</span>
+          </div>
 
-            <p className="body-lg mb-8">
-              Share your requirements and we'll respond with actionable architecture
-              recommendations, stack suggestions, and timeline estimates.
-            </p>
-
-            <div className="space-y-8 pt-8" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-              <div>
-                <span className="label block mb-2">Email</span>
-                <a
-                  href="mailto:bytbrand.info@gmail.com"
-                  className="text-lg font-semibold text-[var(--text)] hover:text-[var(--accent)] transition-colors"
-                >
-                  bytbrand.info@gmail.com
-                </a>
-              </div>
-              <div>
-                <span className="label block mb-2">Response Time</span>
-                <p className="text-base text-[var(--text)]">Within 24 hours</p>
+          <div className="contact-card bg-transparent border-transparent px-0 hover:border-transparent cursor-default">
+            <div className="contact-card-content">
+              <span className="eyebrow" style={{ marginBottom: '8px' }}>Global Presence</span>
+              <div className="social-links">
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="font-semibold tracking-wide hover:underline cursor-none">LinkedIn</a>
+                <span className="social-sep">·</span>
+                <a href="https://github.com" target="_blank" rel="noreferrer" className="font-semibold tracking-wide hover:underline cursor-none">GitHub</a>
+                <span className="social-sep">·</span>
+                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="font-semibold tracking-wide hover:underline cursor-none">X/Twitter</a>
               </div>
             </div>
           </div>
-
-          {/* Right Column — Form */}
-          <div className="contact-right lg:col-span-7" style={{ opacity: 0 }}>
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
-              {/* Name & Email row */}
-              <div className="grid sm:grid-cols-2 gap-8">
-                {inputFields.filter((f) => f.half).map((field) => (
-                  <FloatingInput
-                    key={field.name}
-                    field={field}
-                    value={formData[field.name]}
-                    onChange={handleChange}
-                  />
-                ))}
-              </div>
-
-              {/* Company */}
-              {inputFields.filter((f) => !f.half).map((field) => (
-                <FloatingInput
-                  key={field.name}
-                  field={field}
-                  value={formData[field.name]}
-                  onChange={handleChange}
-                />
-              ))}
-
-              {/* Selects row */}
-              <div className="grid sm:grid-cols-2 gap-8">
-                <FloatingSelect
-                  name="projectType"
-                  label="Project Type"
-                  value={formData.projectType}
-                  onChange={handleChange}
-                  options={projectTypes}
-                />
-                <FloatingSelect
-                  name="budget"
-                  label="Budget Range"
-                  value={formData.budget}
-                  onChange={handleChange}
-                  options={budgetRanges}
-                />
-              </div>
-
-              {/* Message */}
-              <FloatingTextarea
-                name="message"
-                label="Project Details"
-                placeholder="Tell us about your project, goals, and timeline..."
-                value={formData.message}
-                onChange={handleChange}
-                required
-              />
-
-              {/* Toast */}
-              {toast && (
-                <div
-                  className={`flex items-center gap-3 p-4 rounded-lg text-sm font-medium ${
-                    toast.type === "success"
-                      ? "bg-emerald-500/10 text-emerald-400"
-                      : toast.type === "warning"
-                      ? "bg-amber-500/10 text-amber-400"
-                      : "bg-rose-500/10 text-rose-400"
-                  }`}
-                >
-                  {toast.type === "success" ? (
-                    <CheckCircle className="w-4 h-4 flex-shrink-0" />
-                  ) : (
-                    <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-                  )}
-                  <span>{toast.message}</span>
-                </div>
-              )}
-
-              {/* Submit */}
-              <button
-                type="submit"
-                disabled={status === "loading"}
-                className={`btn-primary w-full text-base py-5 ${
-                  status === "loading" ? "opacity-60 cursor-not-allowed" : ""
-                }`}
-              >
-                {status === "loading" ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Sending...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Send Message</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
-              </button>
-            </form>
-          </div>
         </div>
-      </div>
-    </section>
-  );
-}
 
-/* ─── Floating Label Input ─── */
-function FloatingInput({ field, value, onChange }) {
-  const [focused, setFocused] = useState(false);
-  const isActive = focused || value.length > 0;
+        {/* ── RIGHT: FORM ── */}
+        <div className="contact-form mt-8 md:mt-0 bg-white p-8 md:p-12 rounded-lg border border-border shadow-sm">
+          <h3 className="font-sans font-bold text-xl mb-6">Initialize Communication</h3>
+          <div className="form-row-2col">
+            <div className="form-group">
+              <label className="form-label font-bold text-black/70">Full Name</label>
+              <input
+                className="form-input bg-stone/30"
+                placeholder="Ex. Jane Doe"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label font-bold text-black/70">Email Address</label>
+              <input
+                className="form-input bg-stone/30"
+                type="email"
+                placeholder="director@company.com"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
 
-  return (
-    <div className="relative">
-      <label
-        htmlFor={field.name}
-        className={`absolute left-0 transition-all duration-300 pointer-events-none ${
-          isActive
-            ? "text-[0.6875rem] font-semibold tracking-[0.15em] uppercase -top-5 text-[var(--accent)]"
-            : "top-3 text-sm text-[var(--muted)]"
-        }`}
-      >
-        {field.label}
-      </label>
-      <input
-        id={field.name}
-        type={field.type}
-        name={field.name}
-        value={value}
-        onChange={onChange}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        required={field.required}
-        autoComplete="off"
-        className="w-full bg-transparent border-b border-white/[0.08] focus:border-transparent py-3 text-base text-[var(--text)] placeholder-transparent focus:outline-none focus-visible:!outline-none transition-colors peer"
-      />
-      {/* Animated gradient line */}
-      <div
-        className={`absolute bottom-0 left-0 h-[2px] transition-all duration-500 ${
-          focused
-            ? "w-full opacity-100"
-            : "w-0 opacity-0"
-        }`}
-        style={{
-          background: "linear-gradient(90deg, var(--accent), var(--accent-secondary))",
-        }}
-      />
-    </div>
-  );
-}
-
-/* ─── Floating Label Select (Custom UI) ─── */
-function FloatingSelect({ name, label, value, onChange, options }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [focused, setFocused] = useState(false);
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (containerRef.current && !containerRef.current.contains(event.target)) {
-        setIsOpen(false);
-        setFocused(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleSelect = (opt) => {
-    onChange({ target: { name, value: opt } });
-    setIsOpen(false);
-    setFocused(true);
-  };
-
-  return (
-    <div className="relative" ref={containerRef}>
-      <label
-        className={`absolute left-0 transition-all duration-300 pointer-events-none text-[0.6875rem] font-semibold tracking-[0.15em] uppercase -top-5 ${
-          focused || isOpen ? "text-[var(--accent)]" : "text-[var(--muted)]"
-        }`}
-      >
-        {label}
-      </label>
-      
-      <button
-        type="button"
-        onClick={() => { setIsOpen(!isOpen); setFocused(true); }}
-        className="w-full bg-transparent border-b border-white/[0.08] focus:border-transparent focus-visible:!outline-none py-3 text-left text-base text-[var(--text)] focus:outline-none cursor-pointer transition-colors"
-      >
-        {value}
-      </button>
-
-      {/* Chevron */}
-      <div 
-        className={`absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 ${
-          isOpen ? "rotate-180" : ""
-        }`}
-      >
-        <svg className="w-4 h-4 text-[var(--muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </div>
-
-      {/* Animated gradient line */}
-      <div
-        className={`absolute bottom-0 left-0 h-[2px] transition-all duration-500 z-10 ${
-          focused || isOpen ? "w-full opacity-100" : "w-0 opacity-0"
-        }`}
-        style={{
-          background: "linear-gradient(90deg, var(--accent), var(--accent-secondary))",
-        }}
-      />
-
-      {/* Dropdown Menu */}
-      <div
-        className={`absolute top-full left-0 w-full mt-2 bg-black/80 backdrop-blur-md border border-white/[0.08] rounded-xl overflow-hidden transition-all duration-300 z-50 shadow-2xl ${
-          isOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
-        }`}
-      >
-        <ul className="flex flex-col py-2 max-h-60 overflow-y-auto">
-          {options.map((opt) => (
-            <li key={opt}>
-              <button
-                type="button"
-                onClick={() => handleSelect(opt)}
-                className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
-                  value === opt
-                    ? "bg-white/[0.06] text-[var(--accent)]"
-                    : "text-[var(--text-secondary)] hover:bg-white/[0.03] hover:text-[var(--text)]"
-                }`}
+          <div className="form-group mt-2">
+            <label className="form-label font-bold text-black/70">Scope of Operation</label>
+            <div className="select-wrapper">
+              <select
+                className="form-select bg-stone/30"
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
               >
-                {opt}
-              </button>
-            </li>
-          ))}
-        </ul>
+                <option value="Select Engagement Type" disabled>Select Framework...</option>
+                <option value="High-Converting Web Platform">High-Converting Web Platform</option>
+                <option value="SaaS Architecture & UI">SaaS Architecture & UI</option>
+                <option value="AI Ecosystem Automation">AI Ecosystem Automation</option>
+                <option value="Enterprise Lead Generation">Enterprise Lead Generation</option>
+                <option value="Retainer Staff Augmentation">Dedicated Engineering Pods</option>
+              </select>
+              <svg className="select-caret" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5"/>
+              </svg>
+            </div>
+          </div>
+
+          <div className="form-group mt-2">
+            <label className="form-label font-bold text-black/70">Strategic Brief</label>
+            <textarea
+              className="form-textarea bg-stone/30"
+              placeholder="Detail your business bottleneck, target outcomes, timeline constraints, and how this investment translates to revenue..."
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+            />
+          </div>
+
+          <button
+            className={`btn-submit shadow-md mt-4 ${submitted ? ' bg-green-800' : ''}`}
+            onClick={handleSubmit}
+            type="button"
+          >
+            {submitted ? '✓ Telemetry Received' : 'Dispatch Project Brief'}
+          </button>
+          <p className="form-note opacity-80 mt-3 text-[9px] uppercase tracking-wider text-center w-full">Briefs reviewed strictly within 12 business hours by senior architects.</p>
+        </div>
+
       </div>
-    </div>
-  );
-}
-
-/* ─── Floating Label Textarea ─── */
-function FloatingTextarea({ name, label, placeholder, value, onChange, required }) {
-  const [focused, setFocused] = useState(false);
-  const isActive = focused || value.length > 0;
-
-  return (
-    <div className="relative">
-      <label
-        htmlFor={name}
-        className={`absolute left-0 transition-all duration-300 pointer-events-none ${
-          isActive
-            ? "text-[0.6875rem] font-semibold tracking-[0.15em] uppercase -top-5 text-[var(--accent)]"
-            : "top-3 text-sm text-[var(--muted)]"
-        }`}
-      >
-        {label}
-      </label>
-      <textarea
-        id={name}
-        name={name}
-        value={value}
-        onChange={onChange}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        required={required}
-        rows={4}
-        className="w-full bg-transparent border-b border-white/[0.08] focus:border-transparent py-3 text-base text-[var(--text)] placeholder-transparent focus:outline-none focus-visible:!outline-none resize-y transition-colors"
-      />
-      <div
-        className={`absolute bottom-0 left-0 h-[2px] transition-all duration-500 ${
-          focused ? "w-full opacity-100" : "w-0 opacity-0"
-        }`}
-        style={{
-          background: "linear-gradient(90deg, var(--accent), var(--accent-secondary))",
-        }}
-      />
-    </div>
+    </main>
   );
 }

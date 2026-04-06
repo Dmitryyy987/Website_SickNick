@@ -1,0 +1,47 @@
+export const projects = [
+  {
+    slug: "cartonize",
+    title: "Cartonize",
+    category: "B2B SaaS / E-Commerce",
+    tagline: "B2B e-commerce platform for custom packaging at scale",
+    shortDescription: "A comprehensive quoting and manufacturing platform built for an enterprise packaging supplier. We digitized a manual workflow.",
+    problem: "Fragmented workflows and manual quoting slowing enterprise procurement",
+    result: "80% faster quoting, 45% higher conversion",
+    tech: ["Next.js", "TypeScript", "Stripe", "Three.js"],
+    color: "#8b95ff",
+    link: "https://cartonize.vercel.app/",
+    howItWorks: "The system utilizes a 3D Three.js product configurator where users adjust packaging dimensions in real-time. It pings a Node.js backend executing a heavy pricing algorithm, returning manufacturing costs instantly, bypassing a traditional 48-hour sales delay.",
+    challenges: "Handling real-time 3D model generation alongside strict database transaction consistency. The math needed to calculate corrugated board constraints dynamically without crashing the browser.",
+    scalability: "We decoupled the heavy computational logic into a series of serverless edge functions on Vercel, allowing the main Next.js thread to remain butter-smooth even during concurrent enterprise quoting queries."
+  },
+  {
+    slug: "gen-ai-engineer",
+    title: "Gen-AI Engineer",
+    category: "AI Automation",
+    tagline: "Interactive showcase for enterprise AI automation",
+    shortDescription: "An interactive code-writing LLM interface simulating enterprise AI capabilities for prospective agency clients.",
+    problem: "Complex AI capabilities impossible to demo through static docs",
+    result: "Sales cycle shortened by 3 weeks",
+    tech: ["React", "Node.js", "Vercel AI SDK", "OpenAI"],
+    color: "#c57eff",
+    link: "https://gen-ai.engineer/",
+    howItWorks: "Built using the Vercel AI SDK hooked into GPT-4o. The platform streams generative text directly into a custom React code-editor component, executing basic scripts in a secure sandbox environment allowing users to witness AI-driven engineering live.",
+    challenges: "Managing latency and chunked data streaming over server-sent events (SSE). Ensuring the sandbox could not be maliciously exploited via prompt injection.",
+    scalability: "Implemented dynamic token limiting and Redis-based global rate limiting. The backend scales stateless WebSocket connections across AWS clusters dependent on user volume."
+  },
+  {
+    slug: "brainwave",
+    title: "Brainwave",
+    category: "Web Application",
+    tagline: "Physics-driven marketing experience for next-gen AI",
+    shortDescription: "A highly immersive, WebGL-focused landing environment designed to harvest waitlist emails for a new AI startup.",
+    problem: "Needed a visual identity distinct from generic SaaS templates",
+    result: "65% waitlist increase, 3 design awards",
+    tech: ["React", "GSAP", "Three.js", "Framer Motion"],
+    color: "#8b95ff",
+    link: "https://ai-landing-page.netlify.app/",
+    howItWorks: "As the user scrolls, GSAP timelines trigger synchronized WebGL canvas mutations. The front-end leverages Framer Motion for DOM layout transitions while offloading heavy visual computations to the GPU via Three.js.",
+    challenges: "Achieving a consistent 60fps across low-end mobile devices while rendering thousands of particle geometries.",
+    scalability: "Deployed a rigorous asset-loading strategy: pre-loading low-res textures and progressively hydrating the WebGL canvas, ensuring the time-to-interactive remains below 1.2 seconds globally."
+  },
+];

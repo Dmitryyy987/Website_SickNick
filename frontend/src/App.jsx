@@ -1,103 +1,51 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Services from "./components/Services";
-import Portfolio from "./components/Portfolio";
-import ProcessSteps from "./components/ProcessSteps";
-import Testimonials from "./components/Testimonials";
-import CTA from "./components/CTA";
+import { AnimatePresence } from "framer-motion";
+
+import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Cursor from "./components/Cursor";
+import Home from "./pages/Home";
+import Services from "./pages/Services";
+import CaseStudies from "./pages/CaseStudies";
+import CaseStudyDetail from "./pages/CaseStudyDetail";
 import Contact from "./pages/Contact";
-import ProjectDetail from "./pages/ProjectDetail";
-import { initPageAnimations, bindClickAnimations } from "./animations/siteAnimations";
+import Process from "./pages/Process";
 
-function HomePage() {
-  return (
-    <>
-      <Hero />
-      <Services />
-      <Portfolio />
-      <ProcessSteps />
-      <Testimonials />
-      <CTA />
-    </>
-  );
-}
-
-function Layout({ children }) {
+function MainLayout() {
   const location = useLocation();
-  const mainRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    return initPageAnimations(mainRef.current);
   }, [location.pathname]);
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      <main ref={mainRef} key={location.pathname} className="route-fade flex-1">
-        {children}
+      <Navbar />
+      <main className="flex-1 w-full overflow-hidden">
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Home />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/process" element={<Process />} />
+            <Route path="/case-studies" element={<CaseStudies />} />
+            <Route path="/case-study/:slug" element={<CaseStudyDetail />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </AnimatePresence>
       </main>
       <Footer />
     </div>
   );
 }
 
-function NotFound() {
-  return (
-    <section className="section-space min-h-[60vh] flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="heading-xl gradient-text mb-4">404</h1>
-        <p className="body-base mb-8">The page you're looking for doesn't exist.</p>
-        <a href="/" className="btn-primary">
-          <span>Back to Home</span>
-        </a>
-      </div>
-    </section>
-  );
-}
-
 export default function App() {
-  useEffect(() => bindClickAnimations(document), []);
-
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Layout>
-              <HomePage />
-            </Layout>
-          }
-        />
-        <Route
-          path="/contact"
-          element={
-            <Layout>
-              <Contact />
-            </Layout>
-          }
-        />
-        <Route
-          path="/project/:slug"
-          element={
-            <Layout>
-              <ProjectDetail />
-            </Layout>
-          }
-        />
-        <Route
-          path="*"
-          element={
-            <Layout>
-              <NotFound />
-            </Layout>
-          }
-        />
-      </Routes>
-    </Router>
+    <>
+      <Cursor />
+      <Router>
+        <MainLayout />
+      </Router>
+    </>
   );
 }
