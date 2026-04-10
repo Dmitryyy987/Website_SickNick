@@ -2,12 +2,19 @@ import { useState } from 'react';
 import useSEO from '../hooks/useSEO';
 import { api } from '../services/api';
 
+const EMPTY_FORM = { name: '', email: '', projectType: '', message: '' };
+
 export default function Contact() {
+<<<<<<< HEAD
   const [formData, setFormData] = useState({ name: '', email: '', projectType: '', message: '', company: '', budget: '' });
   const [submitted, setSubmitted] = useState(false);
+=======
+  const [formData, setFormData] = useState(EMPTY_FORM);
+  const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+>>>>>>> 041cb3bed71f23a195b5f975d6d8f674a804082a
 
   useSEO({
-    title: 'Initialize Project | BytBrand',
+    title: 'Contact Us',
     description: 'Contact BytBrand to scope your next high-converting digital product.',
     url: 'https://bytbrand.com/contact'
   });
@@ -18,22 +25,39 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus('loading');
     try {
+<<<<<<< HEAD
       const res = await api.sendContactForm(formData);
       if (res.success) {
         setSubmitted(true);
         setTimeout(() => setSubmitted(false), 3000);
         setFormData({ name: '', email: '', projectType: '', message: '', company: '', budget: '' });
+=======
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      if (res.ok) {
+        setStatus('success');
+        setFormData(EMPTY_FORM);
+        setTimeout(() => setStatus('idle'), 4000);
+>>>>>>> 041cb3bed71f23a195b5f975d6d8f674a804082a
       } else {
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 3000);
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 4000);
       }
     } catch (err) {
       console.error(err);
-      setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 3000);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 4000);
     }
   };
+
+  const isLoading = status === 'loading';
+  const isSuccess = status === 'success';
+  const isError   = status === 'error';
 
   return (
     <main className="page contact-page">
@@ -77,7 +101,11 @@ export default function Contact() {
         </div>
 
         {/* ── RIGHT: FORM ── */}
-        <div className="contact-form mt-8 md:mt-0 bg-white p-8 md:p-12 rounded-lg border border-border shadow-sm">
+        <form
+          className="contact-form mt-8 md:mt-0 bg-white p-8 md:p-12 rounded-lg border border-border shadow-sm"
+          onSubmit={handleSubmit}
+          noValidate
+        >
           <h3 className="font-sans font-bold text-xl mb-6">Initialize Communication</h3>
           <div className="form-row-2col">
             <div className="form-group">
@@ -88,6 +116,9 @@ export default function Contact() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                required
+                minLength={2}
+                maxLength={80}
               />
             </div>
             <div className="form-group">
@@ -99,6 +130,7 @@ export default function Contact() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                required
               />
             </div>
           </div>
@@ -114,10 +146,10 @@ export default function Contact() {
               >
                 <option value="" disabled>Select Framework...</option>
                 <option value="High-Converting Web Platform">High-Converting Web Platform</option>
-                <option value="SaaS Architecture & UI">SaaS Architecture & UI</option>
+                <option value="SaaS Architecture & UI">SaaS Architecture &amp; UI</option>
                 <option value="AI Ecosystem Automation">AI Ecosystem Automation</option>
                 <option value="Enterprise Lead Generation">Enterprise Lead Generation</option>
-                <option value="Retainer Staff Augmentation">Dedicated Engineering Pods</option>
+                <option value="Dedicated Engineering Pods">Dedicated Engineering Pods</option>
               </select>
               <svg className="select-caret" width="12" height="8" viewBox="0 0 12 8" fill="none">
                 <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5"/>
@@ -133,18 +165,21 @@ export default function Contact() {
               name="message"
               value={formData.message}
               onChange={handleChange}
+              required
+              minLength={10}
+              maxLength={5000}
             />
           </div>
 
           <button
-            className={`btn-submit shadow-md mt-4 ${submitted ? ' bg-green-800' : ''}`}
-            onClick={handleSubmit}
-            type="button"
+            className={`btn-submit shadow-md mt-4${isSuccess ? ' bg-green-800' : isError ? ' bg-red-700' : ''}`}
+            type="submit"
+            disabled={isLoading}
           >
-            {submitted ? '✓ Telemetry Received' : 'Dispatch Project Brief'}
+            {isLoading ? 'Sending…' : isSuccess ? '✓ Brief Received' : isError ? '✕ Delivery Failed — Retry' : 'Dispatch Project Brief'}
           </button>
           <p className="form-note opacity-80 mt-3 text-[9px] uppercase tracking-wider text-center w-full">Briefs reviewed strictly within 12 business hours by senior architects.</p>
-        </div>
+        </form>
 
       </div>
     </main>

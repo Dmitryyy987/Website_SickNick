@@ -8,9 +8,15 @@ export default function CaseStudyDetail() {
   const project = projects.find(p => p.slug === slug);
 
   useSEO({
+<<<<<<< HEAD
     title: project ? `${project.title} | Case Study` : 'Case Study Not Found',
     description: project?.shortDescription || 'Case study not found',
     url: `https://bytbrand.com/case-study/${project?.slug || ''}`
+=======
+    title: project ? `${project.title} | Case Study` : 'Case Study',
+    description: project?.shortDescription ?? '',
+    url: `https://bytbrand.com/case-study/${slug}`
+>>>>>>> 041cb3bed71f23a195b5f975d6d8f674a804082a
   });
 
   if (!project) return <Navigate to="/case-studies" replace />;
