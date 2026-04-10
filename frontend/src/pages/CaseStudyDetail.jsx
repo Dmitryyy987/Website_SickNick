@@ -7,13 +7,13 @@ export default function CaseStudyDetail() {
   const { slug } = useParams();
   const project = projects.find(p => p.slug === slug);
 
-  if (!project) return <Navigate to="/case-studies" replace />;
-
   useSEO({
-    title: `${project.title} | Case Study`,
-    description: project.shortDescription,
-    url: `https://bytbrand.com/case-study/${project.slug}`
+    title: project ? `${project.title} | Case Study` : 'Case Study',
+    description: project?.shortDescription ?? '',
+    url: `https://bytbrand.com/case-study/${slug}`
   });
+
+  if (!project) return <Navigate to="/case-studies" replace />;
 
   return (
     <main className="cs-detail-page">

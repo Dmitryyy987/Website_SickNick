@@ -37,7 +37,7 @@ export default function Home() {
           <img 
             src="/images/home_hero_new.png" 
             alt="BytBrand SaaS Dashboard and AI Systems" 
-            loading="lazy"
+            loading="eager"
              
           />
         </div>
