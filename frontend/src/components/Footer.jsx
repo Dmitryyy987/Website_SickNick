@@ -1,16 +1,30 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { api } from '../services/api';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
+  const [status, setStatus] = useState('idle'); // idle | loading | success | error
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email || !email.includes('@')) return;
-    setSubscribed(true);
-    setEmail('');
-    setTimeout(() => setSubscribed(false), 4000);
+
+    setStatus('loading');
+    try {
+      const res = await api.subscribeNewsletter(email);
+      if (res.success) {
+        setStatus('success');
+        setEmail('');
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
+      console.error('Newsletter subscription failed:', error);
+      setStatus('error');
+    }
+
+    setTimeout(() => setStatus('idle'), 4000);
   };
 
   return (
@@ -58,7 +72,7 @@ export default function Footer() {
               aria-label="Email address for newsletter"
             />
             <button className="newsletter-btn" type="submit" aria-label="Subscribe">
-              {subscribed ? '✓' : '→'}
+              {status === 'loading' ? '…' : status === 'success' ? '✓' : status === 'error' ? '✕' : '→'}
             </button>
           </form>
         </div>

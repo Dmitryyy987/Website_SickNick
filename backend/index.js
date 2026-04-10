@@ -4,6 +4,7 @@ const { rateLimit, ipKeyGenerator } = require("express-rate-limit");
 require("dotenv").config();
 
 const contactRoutes = require("./routes/contactRoutes");
+const newsletterRoutes = require("./routes/newsletterRoutes");
 
 const app = express();
 app.set("trust proxy", 1); // Trust first proxy
@@ -60,8 +61,19 @@ const contactLimiter = rateLimit({
     success: false,
     error: "Too many contact requests. Please wait a few minutes and try again.",
   },
-  keyGenerator: (req) => ipKeyGenerator(req),
-  skip: (req) => req.path === '/api/health' || req.path === '/'
+  keyGenerator: (req) => ipKeyGenerator(req)
+});
+
+const newsletterLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 30, // Limit each IP to 30 newsletter requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    error: "Too many newsletter requests. Please wait a few minutes and try again.",
+  },
+  keyGenerator: (req) => ipKeyGenerator(req)
 });
 
 // Public routes (no rate limiting)
@@ -73,7 +85,8 @@ app.get("/", (_, res) => {
     timestamp: new Date().toISOString(),
     endpoints: {
       health: "GET /api/health",
-      contact: "POST /api/contact"
+      contact: "POST /api/contact",
+      newsletter: "POST /api/newsletter"
     }
   });
 });
@@ -91,9 +104,11 @@ app.get("/api/health", (_, res) => {
 
 // ✅ IMPORTANT: Apply rate limiting to specific route BEFORE mounting
 app.use("/api/contact", contactLimiter);
+app.use("/api/newsletter", newsletterLimiter);
 
 // Mount contact routes
 app.use("/api/contact", contactRoutes);
+app.use("/api/newsletter", newsletterRoutes);
 
 // 404 handler for undefined routes
 app.use((req, res) => {
@@ -103,7 +118,7 @@ app.use((req, res) => {
     error: `Route ${req.method} ${req.path} not found`,
     availableEndpoints: {
       GET: ["/", "/api/health"],
-      POST: ["/api/contact"]
+      POST: ["/api/contact", "/api/newsletter"]
     }
   });
 });
@@ -154,6 +169,7 @@ const server = app.listen(PORT, () => {
   console.log(`   - GET  http://localhost:${PORT}/`);
   console.log(`   - GET  http://localhost:${PORT}/api/health`);
   console.log(`   - POST http://localhost:${PORT}/api/contact`);
+  console.log(`   - POST http://localhost:${PORT}/api/newsletter`);
   console.log("=".repeat(50) + "\n");
 });
 

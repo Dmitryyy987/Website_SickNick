@@ -7,6 +7,7 @@ const EMPTY_FORM = { name: '', email: '', projectType: '', message: '', company:
 export default function Contact() {
   const [formData, setFormData] = useState(EMPTY_FORM);
   const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+  const [errorText, setErrorText] = useState('');
 
   useSEO({
     title: 'Contact Us',
@@ -21,20 +22,25 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('loading');
+    setErrorText('');
     try {
-      const res = await api.sendContactForm(formData);
-      if (res.success) {
-        setStatus('success');
-        setFormData(EMPTY_FORM);
-        setTimeout(() => setStatus('idle'), 4000);
-      } else {
-        setStatus('error');
-        setTimeout(() => setStatus('idle'), 4000);
-      }
+      await api.sendContactForm(formData);
+      setStatus('success');
+      setFormData(EMPTY_FORM);
+      setTimeout(() => {
+        setStatus('idle');
+        setErrorText('');
+      }, 4000);
     } catch (err) {
       console.error(err);
       setStatus('error');
-      setTimeout(() => setStatus('idle'), 4000);
+      const firstValidationMessage = err?.details?.errors?.[0]?.msg;
+      const serverMessage = err?.details?.error || err?.message;
+      setErrorText(firstValidationMessage || serverMessage || 'Could not send your message right now. Please try again.');
+      setTimeout(() => {
+        setStatus('idle');
+        setErrorText('');
+      }, 5000);
     }
   };
 
@@ -161,7 +167,7 @@ export default function Contact() {
           >
             {isLoading ? 'Sending…' : isSuccess ? '✓ Brief Received' : isError ? '✕ Delivery Failed — Retry' : 'Dispatch Project Brief'}
           </button>
-          <p className="form-note opacity-80 mt-3 text-[9px] uppercase tracking-wider text-center w-full">Briefs reviewed strictly within 12 business hours by senior architects.</p>
+          <p className="form-note opacity-80 mt-3 text-[9px] uppercase tracking-wider text-center w-full">{isError && errorText ? errorText : 'Briefs reviewed strictly within 12 business hours by senior architects.'}</p>
         </form>
 
       </div>

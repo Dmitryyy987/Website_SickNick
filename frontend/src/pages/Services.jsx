@@ -15,12 +15,10 @@ export default function ServicesPage() {
       <FadeUp>
         <div className="page-header">
           <span className="eyebrow">Capabilities & Offerings</span>
-          <h1>Systems built to <br />generate revenue.</h1>
+          <h1>Digital SaaS services <br />built for scale.</h1>
           <p>
-            We don't sell hours; we sell business outcomes. 
-            From converting cold traffic to automating complex internal workflows, 
-            our tightly integrated design and engineering teams build full-scale solutions 
-            designed explicitly to capture market share.
+            From product strategy to launch and optimization, we help SaaS teams ship faster and grow with confidence.
+            Our work spans web platforms, mobile apps, AI integrations, and scalable architecture designed for real-world usage.
           </p>
         </div>
       </FadeUp>
@@ -126,37 +124,37 @@ export default function ServicesPage() {
       <FadeUp>
         <div className="aesthetic-section mt-16">
           <span className="aesthetic-eyebrow">The Agency Advantage</span>
-          <h2>Why Elite Brands Choose Us</h2>
+          <h2>Why SaaS Teams Partner With Us</h2>
           <div className="brand-craft-layout">
             <div className="brand-craft-grid">
               
               <div className="brand-craft-card">
                 <div className="bc-icon">⚡</div>
-                <h3>Unmatched Speed</h3>
+                <h3>Fast, Focused Delivery</h3>
                 <p>
-                  No bloated middle-management. You work directly with senior architects ensuring rapid execution rhythms and compressed launch timelines.
+                  Work directly with senior product engineers. We keep execution lean, communication clear, and releases predictable.
                 </p>
               </div>
 
               <div className="brand-craft-card rust-card">
                 <div className="bc-icon">✦✦</div>
-                <h3>Design-First Philosophy</h3>
-                <p>Features don't sell; experiences do. We enforce a zero-compromise approach to visual elegance and frictionless user workflows.</p>
+                <h3>Product-First Thinking</h3>
+                <p>We connect design and engineering to create user experiences that improve adoption, trust, and retention.</p>
               </div>
 
               <div className="brand-craft-card">
                 <div className="bc-icon">📊</div>
-                <h3>Business-Focused Builds</h3>
+                <h3>Outcome-Driven Execution</h3>
                 <p>
-                  Code is just a tool. Every technical decision we make is reverse-engineered entirely from your ultimate revenue and metric goals.
+                  Every technical decision maps to a business objective, from activation and conversion to churn reduction.
                 </p>
               </div>
 
               <div className="brand-craft-card">
                 <div className="bc-icon">▣</div>
-                <h3>Scalable Architecture</h3>
+                <h3>Scalable Foundations</h3>
                 <p>
-                  We don't build disposable MVPs. We engineer enterprise-ready infrastructure designed to support massive traffic surges as you scale.
+                  We build maintainable systems and infrastructure that can support growth without costly rewrites.
                 </p>
               </div>
 
@@ -177,11 +175,11 @@ export default function ServicesPage() {
       {/* ── CTA BANNER ── */}
       <FadeUp delay="80ms">
         <div className="cta-banner" style={{ margin: '80px 0' }}>
-          <h2>Ready to <span className="accent">Scale Your Systems?</span></h2>
+          <h2>Need a Team to <span className="accent">Build and Scale?</span></h2>
           <p>
-            Stop losing leads to poor interfaces and sluggish architecture. Partner with an agency that engineers digital dominance.
+            We help SaaS companies design, build, and optimize digital products that are reliable, performant, and growth-ready.
           </p>
-          <Link to="/contact" className="btn-primary mt-6">Book Your Strategy Session</Link>
+          <Link to="/contact" className="btn-primary mt-6">Book a Strategy Session</Link>
         </div>
       </FadeUp>
 

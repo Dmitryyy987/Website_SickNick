@@ -35,7 +35,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   background: var(--cream-soft);
   color: var(--black);
@@ -44,6 +44,7 @@ body {
   line-height: 1.6;
   cursor: none;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 a  { text-decoration: none; color: inherit; cursor: none; }
 button { cursor: none; font-family: 'DM Sans', sans-serif; }
@@ -550,7 +551,7 @@ svg { display: block; }
   align-items: center;
   justify-content: center;
 }
-.portfolio-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 24px; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.portfolio-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 .portfolio-card:hover .portfolio-thumb img { transform: scale(1.03); }
 .portfolio-card-body { padding: 24px 28px 28px; flex: 1; }
 .portfolio-card-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rust); display: block; margin-bottom: 10px; }
@@ -606,7 +607,7 @@ svg { display: block; }
 .btn-submit { width: 100%; height: 52px; background: var(--grad-135); color: #fff; border: none; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: none; }
 .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--rust-20); }
 .btn-submit.sent { background: var(--brown-dark); }
-.form-note { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: var(--muted); text-align: center; }
+.form-note { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: var(--muted); text-align: center; word-break: break-word; overflow-wrap: anywhere; }
 
 .archive-block { margin-top: 64px; border-radius: var(--radius-md); overflow: hidden; display: grid; grid-template-columns: 1.4fr 1fr; }
 .archive-left { background: radial-gradient(circle at 25% 50%, rgba(136,69,49,0.28) 0%, transparent 60%), #1C1B1A; padding: 60px 52px; }
@@ -656,6 +657,8 @@ svg { display: block; }
   .brand-craft-grid { grid-template-columns: 1fr; }
   .brand-craft-layout { grid-template-columns: 1fr; }
   .engineering-section { grid-template-columns: 1fr; gap: 40px; padding: 48px 0; }
+  .engineering-cols { grid-template-columns: 1fr; }
+  .engineering-col + .engineering-col { border-left: none; border-top: 1px solid var(--border); }
   .case-studies-page { padding: 80px 24px 60px; }
   .portfolio-header { grid-template-columns: 1fr; gap: 24px; }
   .portfolio-grid { grid-template-columns: 1fr; }
@@ -663,13 +666,17 @@ svg { display: block; }
   .contact-grid { grid-template-columns: 1fr; gap: 48px; }
   .form-row-2col { grid-template-columns: 1fr; }
   .archive-block { grid-template-columns: 1fr; }
+  .archive-left, .archive-right { padding: 40px 24px; }
   .footer { padding: 48px 24px 0; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
 @media (max-width: 480px) {
   .footer-grid { grid-template-columns: 1fr; }
   .hero-buttons { flex-direction: column; align-items: flex-start; }
+  .hero-buttons .btn-primary, .hero-buttons .btn-ghost { max-width: 100%; white-space: normal; }
   .portfolio-stats { flex-direction: column; gap: 8px; }
+  .portfolio-header h1 { font-size: clamp(40px, 14vw, 56px); }
 }
 
 /* ── CASE STUDY DETAIL PAGE ── */
@@ -686,7 +693,7 @@ svg { display: block; }
   align-items: center;
   justify-content: center;
 }
-.cs-cover img { width: 100%; height: 100%; object-fit: contain; padding: 40px; }
+.cs-cover img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .cs-hero { max-width: 1080px; margin: -80px auto 0; position: relative; z-index: 10; padding: 0 24px; }
 .cs-hero-card { background: #fff; padding: 64px; border-radius: var(--radius-lg); box-shadow: 0 8px 40px rgba(0,0,0,0.04); border: 1px solid var(--border); }
 .cs-hero-card h1 { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: clamp(36px, 5.5vw, 64px); color: var(--black); line-height: 1.05; margin-bottom: 14px; letter-spacing: -0.02em; }
