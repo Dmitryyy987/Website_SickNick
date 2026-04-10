@@ -2,16 +2,11 @@ import { useState } from 'react';
 import useSEO from '../hooks/useSEO';
 import { api } from '../services/api';
 
-const EMPTY_FORM = { name: '', email: '', projectType: '', message: '' };
+const EMPTY_FORM = { name: '', email: '', projectType: '', message: '', company: '', budget: '' };
 
 export default function Contact() {
-<<<<<<< HEAD
-  const [formData, setFormData] = useState({ name: '', email: '', projectType: '', message: '', company: '', budget: '' });
-  const [submitted, setSubmitted] = useState(false);
-=======
   const [formData, setFormData] = useState(EMPTY_FORM);
   const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
->>>>>>> 041cb3bed71f23a195b5f975d6d8f674a804082a
 
   useSEO({
     title: 'Contact Us',
@@ -27,23 +22,11 @@ export default function Contact() {
     e.preventDefault();
     setStatus('loading');
     try {
-<<<<<<< HEAD
       const res = await api.sendContactForm(formData);
       if (res.success) {
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 3000);
-        setFormData({ name: '', email: '', projectType: '', message: '', company: '', budget: '' });
-=======
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      if (res.ok) {
         setStatus('success');
         setFormData(EMPTY_FORM);
         setTimeout(() => setStatus('idle'), 4000);
->>>>>>> 041cb3bed71f23a195b5f975d6d8f674a804082a
       } else {
         setStatus('error');
         setTimeout(() => setStatus('idle'), 4000);
