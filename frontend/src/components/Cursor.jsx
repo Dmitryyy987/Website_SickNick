@@ -26,20 +26,35 @@ export default function Cursor() {
     };
     tick();
     window.addEventListener('mousemove', onMove);
+
+    const enterHandlers = new Map();
+    const leaveHandlers = new Map();
+
     const attach = () => {
       document.querySelectorAll('a, button, [data-hover]').forEach(el => {
-        el.addEventListener('mouseenter', () => {
+        if (enterHandlers.has(el)) return; // already attached
+        const onEnter = () => {
           dotRef.current?.classList.add('hovered');
           ringRef.current?.classList.add('hovered');
-        });
-        el.addEventListener('mouseleave', () => {
+        };
+        const onLeave = () => {
           dotRef.current?.classList.remove('hovered');
           ringRef.current?.classList.remove('hovered');
-        });
+        };
+        el.addEventListener('mouseenter', onEnter);
+        el.addEventListener('mouseleave', onLeave);
+        enterHandlers.set(el, onEnter);
+        leaveHandlers.set(el, onLeave);
       });
     };
     attach();
-    return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(raf); };
+
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      cancelAnimationFrame(raf);
+      enterHandlers.forEach((handler, el) => el.removeEventListener('mouseenter', handler));
+      leaveHandlers.forEach((handler, el) => el.removeEventListener('mouseleave', handler));
+    };
   }, []);
 
   return (

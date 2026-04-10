@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -38,7 +38,7 @@ export default function Testimonials() {
   const quoteRef = useRef(null);
   const [current, setCurrent] = useState(0);
 
-  const goTo = (index) => {
+  const goTo = useCallback((index) => {
     if (index === current) return;
     const next = ((index % testimonials.length) + testimonials.length) % testimonials.length;
 
@@ -60,7 +60,7 @@ export default function Testimonials() {
     } else {
       setCurrent(next);
     }
-  };
+  }, [current]);
 
   // Auto-rotate
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function Testimonials() {
       goTo(current + 1);
     }, 6000);
     return () => clearInterval(timer);
-  }, [current]);
+  }, [current, goTo]);
 
   useEffect(() => {
     if (!sectionRef.current) return;

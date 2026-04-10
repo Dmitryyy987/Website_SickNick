@@ -1,5 +1,15 @@
 const nodemailer = require("nodemailer");
 
+function escapeHtml(str) {
+  if (typeof str !== "string") return String(str ?? "");
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST || "smtp.gmail.com",
   port: parseInt(process.env.EMAIL_PORT || "465"),
@@ -29,7 +39,7 @@ function clientMailTemplate(name) {
       </tr>
       <tr>
         <td style="padding:24px; color:#1e293b;">
-          <p style="margin-top:0;">Hi ${name},</p>
+          <p style="margin-top:0;">Hi ${escapeHtml(name)},</p>
           <p>Thanks for reaching out to BytBrand. We have received your inquiry and a specialist will respond within 24-48 hours.</p>
           <p style="margin-bottom:0;">Regards,<br/><strong>BytBrand Team</strong></p>
         </td>
@@ -50,14 +60,14 @@ function adminMailTemplate({ userName, userEmail, company, projectType, budget, 
       <tr>
         <td style="padding:24px; color:#1e293b;">
           <table style="width:100%; border-collapse:collapse;">
-            <tr><td style="padding:8px 0;"><strong>Name:</strong></td><td>${userName}</td></tr>
-            <tr><td style="padding:8px 0;"><strong>Email:</strong></td><td>${userEmail}</td></tr>
-            <tr><td style="padding:8px 0;"><strong>Company:</strong></td><td>${company || "Not provided"}</td></tr>
-            <tr><td style="padding:8px 0;"><strong>Project Type:</strong></td><td>${projectType || "Not provided"}</td></tr>
-            <tr><td style="padding:8px 0;"><strong>Budget:</strong></td><td>${budget || "Not provided"}</td></tr>
+            <tr><td style="padding:8px 0;"><strong>Name:</strong></td><td>${escapeHtml(userName)}</td></tr>
+            <tr><td style="padding:8px 0;"><strong>Email:</strong></td><td>${escapeHtml(userEmail)}</td></tr>
+            <tr><td style="padding:8px 0;"><strong>Company:</strong></td><td>${escapeHtml(company || "Not provided")}</td></tr>
+            <tr><td style="padding:8px 0;"><strong>Project Type:</strong></td><td>${escapeHtml(projectType || "Not provided")}</td></tr>
+            <tr><td style="padding:8px 0;"><strong>Budget:</strong></td><td>${escapeHtml(budget || "Not provided")}</td></tr>
           </table>
           <h3 style="margin:20px 0 10px;">Message:</h3>
-          <p style="background:#f8fafc; padding:15px; border-radius:8px;">${message}</p>
+          <p style="background:#f8fafc; padding:15px; border-radius:8px; white-space:pre-wrap;">${escapeHtml(message)}</p>
           <hr style="border:none; border-top:1px solid #e2e8f0; margin:20px 0;">
           <p><small>Received at: ${new Date().toLocaleString()}</small></p>
         </td>
