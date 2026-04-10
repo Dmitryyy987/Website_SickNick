@@ -38,7 +38,7 @@ router.post(
       .withMessage("Budget must be less than 60 characters."),
   ],
   async (req, res) => {
-    console.log("📬 Contact form submission received:", req.body);
+    console.log("📬 Contact form submission received. Fields:", Object.keys(req.body).join(", "));
 
     // Check for validation errors
     const errors = validationResult(req);
@@ -57,7 +57,7 @@ router.post(
         locations: ["body"],
       });
 
-      console.log("✅ Validated data:", data);
+      console.log("✅ Validation passed for fields:", Object.keys(data).join(", "));
 
       // Save to Firebase
       let docRef;

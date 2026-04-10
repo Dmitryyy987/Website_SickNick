@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import useSEO from '../hooks/useSEO';
+import { api } from '../services/api';
 
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: 'Select Engagement Type', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', projectType: '', message: '', company: '', budget: '' });
   const [submitted, setSubmitted] = useState(false);
 
   useSEO({
@@ -18,15 +19,11 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      if (res.ok) {
+      const res = await api.sendContactForm(formData);
+      if (res.success) {
         setSubmitted(true);
         setTimeout(() => setSubmitted(false), 3000);
-        setFormData({ name: '', email: '', subject: 'Select Engagement Type', message: '' });
+        setFormData({ name: '', email: '', projectType: '', message: '', company: '', budget: '' });
       } else {
         setSubmitted(true);
         setTimeout(() => setSubmitted(false), 3000);
@@ -111,11 +108,11 @@ export default function Contact() {
             <div className="select-wrapper">
               <select
                 className="form-select bg-stone/30"
-                name="subject"
-                value={formData.subject}
+                name="projectType"
+                value={formData.projectType}
                 onChange={handleChange}
               >
-                <option value="Select Engagement Type" disabled>Select Framework...</option>
+                <option value="" disabled>Select Framework...</option>
                 <option value="High-Converting Web Platform">High-Converting Web Platform</option>
                 <option value="SaaS Architecture & UI">SaaS Architecture & UI</option>
                 <option value="AI Ecosystem Automation">AI Ecosystem Automation</option>
