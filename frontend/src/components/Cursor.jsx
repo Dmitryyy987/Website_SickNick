@@ -30,24 +30,20 @@ export default function Cursor() {
     const enterHandlers = new Map();
     const leaveHandlers = new Map();
 
-    const attach = () => {
-      document.querySelectorAll('a, button, [data-hover]').forEach(el => {
-        if (enterHandlers.has(el)) return; // already attached
-        const onEnter = () => {
-          dotRef.current?.classList.add('hovered');
-          ringRef.current?.classList.add('hovered');
-        };
-        const onLeave = () => {
-          dotRef.current?.classList.remove('hovered');
-          ringRef.current?.classList.remove('hovered');
-        };
-        el.addEventListener('mouseenter', onEnter);
-        el.addEventListener('mouseleave', onLeave);
-        enterHandlers.set(el, onEnter);
-        leaveHandlers.set(el, onLeave);
-      });
-    };
-    attach();
+    document.querySelectorAll('a, button, [data-hover]').forEach(el => {
+      const onEnter = () => {
+        dotRef.current?.classList.add('hovered');
+        ringRef.current?.classList.add('hovered');
+      };
+      const onLeave = () => {
+        dotRef.current?.classList.remove('hovered');
+        ringRef.current?.classList.remove('hovered');
+      };
+      el.addEventListener('mouseenter', onEnter);
+      el.addEventListener('mouseleave', onLeave);
+      enterHandlers.set(el, onEnter);
+      leaveHandlers.set(el, onLeave);
+    });
 
     return () => {
       window.removeEventListener('mousemove', onMove);

@@ -130,7 +130,7 @@ export default function Contact() {
                 value={formData.projectType}
                 onChange={handleChange}
               >
-                <option value="">Select Framework...</option>
+                <option value="" disabled>Select Framework...</option>
                 <option value="High-Converting Web Platform">High-Converting Web Platform</option>
                 <option value="SaaS Architecture & UI">SaaS Architecture &amp; UI</option>
                 <option value="AI Ecosystem Automation">AI Ecosystem Automation</option>

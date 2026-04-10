@@ -67,7 +67,7 @@ function adminMailTemplate({ userName, userEmail, company, projectType, budget, 
             <tr><td style="padding:8px 0;"><strong>Budget:</strong></td><td>${escapeHtml(budget || "Not provided")}</td></tr>
           </table>
           <h3 style="margin:20px 0 10px;">Message:</h3>
-          <p style="background:#f8fafc; padding:15px; border-radius:8px; white-space:pre-wrap;">${escapeHtml(message)}</p>
+          <p style="background:#f8fafc; padding:15px; border-radius:8px; white-space:pre-wrap; word-wrap:break-word; overflow-wrap:break-word;">${escapeHtml(message)}</p>
           <hr style="border:none; border-top:1px solid #e2e8f0; margin:20px 0;">
           <p><small>Received at: ${new Date().toLocaleString()}</small></p>
         </td>
