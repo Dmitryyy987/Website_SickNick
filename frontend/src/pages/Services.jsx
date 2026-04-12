@@ -1,5 +1,10 @@
 import { Link } from 'react-router-dom';
-import FadeUp from '../components/FadeUp';
+import FadeUp from '../components/common/FadeUp';
+import BlurText from '../components/reactbits/BlurText';
+import ScrollReveal from '../components/reactbits/ScrollReveal';
+import Magnet from '../components/reactbits/Magnet';
+import BorderGlow from '../components/reactbits/BorderGlow';
+import Folder from '../components/reactbits/Folder';
 import useSEO from '../hooks/useSEO';
 
 export default function ServicesPage() {
@@ -10,178 +15,220 @@ export default function ServicesPage() {
   });
 
   return (
-    <main className="page services-page">
+    <main className="pt-16 min-h-screen bg-cream-soft">
 
       <FadeUp>
-        <div className="page-header">
-          <span className="eyebrow">Capabilities & Offerings</span>
-          <h1>Digital SaaS services <br />built for scale.</h1>
-          <p>
-            From product strategy to launch and optimization, we help SaaS teams ship faster and grow with confidence.
-            Our work spans web platforms, mobile apps, AI integrations, and scalable architecture designed for real-world usage.
-          </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-4 md:pt-6 md:pb-16 text-center">
+          <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-4">Capabilities & Offerings</span>
+          <h1 className="text-4xl md:text-6xl font-bold text-black tracking-tight leading-[1.1] mb-6">
+            <BlurText text="Technical Solutions" delay={150} animateBy="words" direction="top" /> <br className="hidden md:block"/>
+            <BlurText text="That Drive Revenue." delay={150} animateBy="words" direction="top" />
+          </h1>
+          <ScrollReveal baseOpacity={0} blurStrength={10}>
+            <p className="text-lg text-muted font-light max-w-2xl mx-auto leading-relaxed">
+              We handle your entire technical infrastructure, empowering your team to focus exclusively on product adoption and scaling operational metrics.
+            </p>
+          </ScrollReveal>
         </div>
       </FadeUp>
 
-      {/* ── SERVICE 1: High-Converting Web Development ── */}
-      <FadeUp>
-        <div className="service-section" id="web-dev">
-          <div>
-            <div className="service-section-icon">⬡</div>
-            <h2>High-Converting Web Development</h2>
-            <p><strong>The Problem:</strong> Most websites are gorgeous digital brochures that completely fail to generate leads.</p>
-            <p><strong>The Solution:</strong> We engineer landing pages and brand sites strictly optimized for conversion. Utilizing robust frameworks like Next.js, we guarantee instantaneous load times combined with psychological UI flows designed to capture users.</p>
-            <p className="mb-6"><strong>The Outcome:</strong> Skyrocketed conversion rates, radically decreased bounce rates, and a measurable surge in high-quality pipeline volume.</p>
-            <Link to="/case-studies" className="btn-ghost" style={{ padding: '10px 20px', fontSize: '13px' }}>View Web Projects →</Link>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 mb-24">
+        
+        {/* ── SERVICE 1: Web & SaaS Engineering ── */}
+        <FadeUp>
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center" id="web-dev">
+            <div>
+              <div className="mb-6">
+                <Folder color="var(--color-rust)" items={[<span className="text-2xl">⬡</span>]} size={0.7} />
+              </div>
+              <h2 className="text-3xl font-bold text-black mb-4">
+                <BlurText text="Web & SaaS Engineering" delay={100} animateBy="words" direction="top" />
+              </h2>
+              <ScrollReveal baseOpacity={0.6}>
+                <p className="text-lg text-black mb-6 font-light">Custom software infrastructures engineered to process high traffic seamlessly while remaining perfectly secure.</p>
+              </ScrollReveal>
+              <ul className="list-disc pl-5 space-y-3 text-[15px] text-muted font-light">
+                <li>Next.js and Node.js backend architecture</li>
+                <li>Secure, multi-tenant billing systems</li>
+                <li>Lightning-fast database implementations</li>
+              </ul>
+            </div>
+            <div>
+              <img loading="lazy" src="/images/services_web_dev.png" alt="Web Development" className="w-full max-w-sm mx-auto h-auto object-cover rounded-xl shadow-lg border border-border" />
+            </div>
           </div>
-          <div className="service-img-placeholder" >
-            <img loading="lazy" src="/images/srv_web.png" alt="Web Development"  />
-          </div>
-        </div>
-      </FadeUp>
+        </FadeUp>
 
-      {/* ── SERVICE 2: App Development ── */}
-      <FadeUp>
-        <div className="engineering-section" id="app-dev">
-          <div className="service-img-placeholder" >
-             <img loading="lazy" src="/images/srv_app_new.png" alt="App Development"  />
+        {/* ── SERVICE 2: Mobile App Development ── */}
+        <FadeUp>
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center" id="app-dev">
+            <div className="order-last md:order-first">
+               <img loading="lazy" src="/images/about_team.png" alt="Mobile App Development" className="w-full max-w-sm mx-auto h-auto object-cover rounded-xl shadow-lg border border-border" />
+            </div>
+            <div className="order-first md:order-last">
+              <div className="mb-6 flex justify-end">
+                <Folder color="var(--color-rust)" items={[<span className="text-2xl">▣</span>]} size={0.7} />
+              </div>
+              <h2 className="text-3xl font-bold text-black mb-4 text-right">
+                <BlurText text="Mobile App Development" delay={100} animateBy="words" direction="top" />
+              </h2>
+              <ScrollReveal baseOpacity={0.6}>
+                <p className="text-lg text-black mb-6 font-light text-right">Fluid, cross-platform mobile experiences that boost user retention and feel indistinguishably native on all devices.</p>
+              </ScrollReveal>
+              <ul className="list-disc pl-5 space-y-3 text-[15px] text-muted font-light text-right list-none">
+                <li>Unified React Native codebases</li>
+                <li>Butter-smooth app animations</li>
+                <li>Integrated push notification pipelines</li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <div className="service-section-icon">▣</div>
-            <h2>Scalable Mobile & Web Apps</h2>
-            <p><strong>The Problem:</strong> Developing mobile and cross-platform apps often leads to fragmented codebases and performance bottlenecks as user volume spikes.</p>
-            <p><strong>The Solution:</strong> We deploy React Native and progressive web app (PWA) architectures backed by headless Node.js infrastructure. This ensures a unified codebase, butter-smooth native-like feel, and infinite scalability.</p>
-            <p><strong>The Outcome:</strong> An incredibly sticky mobile experience that retains users, easily handles global traffic spikes, and drives recurring engagement.</p>
-          </div>
-        </div>
-      </FadeUp>
+        </FadeUp>
 
-      {/* ── SERVICE 3: AI Automation ── */}
-      <FadeUp>
-        <div className="service-section" id="ai-automation">
-          <div>
-            <div className="service-section-icon">◈</div>
-            <h2>AI Automation & Integrations</h2>
-            <p><strong>The Problem:</strong> Human capital is wasted on repetitive operational tasks and manual customer support, crushing profit margins.</p>
-            <p><strong>The Solution:</strong> We seamlessly integrate custom LLM logic via the OpenAI and Vercel AI SDKs. From smart automated customer-success chatbots to complex internal data-parsing workflows, we bake AI directly into your systems.</p>
-            <p><strong>The Outcome:</strong> Massive reduction in operational overhead, 24/7 intelligent customer interactions, and radically increased team bandwidth.</p>
+        {/* ── SERVICE 3: AI Tool Integrations ── */}
+        <FadeUp>
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center" id="ai-automation">
+            <div>
+              <div className="mb-6">
+                <Folder color="var(--color-rust)" items={[<span className="text-2xl">◈</span>]} size={0.7} />
+              </div>
+              <h2 className="text-3xl font-bold text-black mb-4">
+                <BlurText text="AI Tool Integrations" delay={100} animateBy="words" direction="top" />
+              </h2>
+              <ScrollReveal baseOpacity={0.6}>
+                <p className="text-lg text-black mb-6 font-light">Deploy advanced Large Language Models into your workflow to instantly reduce manual operations and accelerate data processing.</p>
+              </ScrollReveal>
+              <ul className="list-disc pl-5 space-y-3 text-[15px] text-muted font-light">
+                <li>Automated customer success chatbots</li>
+                <li>Internal data parsing and analysis</li>
+                <li>Custom OpenAI integrations</li>
+              </ul>
+            </div>
+            <div>
+              <img loading="lazy" src="/images/services_automation.png" alt="AI Tool Integrations" className="w-full max-w-sm mx-auto h-auto object-cover rounded-xl shadow-lg border border-border" />
+            </div>
           </div>
-          <div className="service-img-placeholder" >
-            <img loading="lazy" src="/images/srv_ai_new.png" alt="AI Automation"  />
-          </div>
-        </div>
-      </FadeUp>
+        </FadeUp>
 
-      {/* ── SERVICE 4: SaaS Product Development ── */}
-      <FadeUp>
-        <div className="engineering-section" id="saas-dev">
-          <div className="service-img-placeholder" >
-            <img loading="lazy" src="/images/srv_saas_new.png" alt="SaaS Product Development"  />
+        {/* ── SERVICE 4: Growth & Conversion UI ── */}
+        <FadeUp>
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center" id="ui-ux">
+            <div className="order-last md:order-first">
+              <img loading="lazy" src="/images/services_ui_design.png" alt="Growth & Conversion UI" className="w-full max-w-sm mx-auto h-auto object-cover rounded-xl shadow-lg border border-border" />
+            </div>
+            <div className="order-first md:order-last">
+              <div className="mb-6 flex justify-end">
+                <Folder color="var(--color-rust)" items={[<span className="text-2xl">✏</span>]} size={0.7} />
+              </div>
+              <h2 className="text-3xl font-bold text-black mb-4 text-right">
+                <BlurText text="Growth & Conversion UI" delay={100} animateBy="words" direction="top" />
+              </h2>
+              <ScrollReveal baseOpacity={0.6}>
+                <p className="text-lg text-black mb-6 font-light text-right">Visual aesthetic frameworks mapped strictly to user psychology, significantly lowering churn and improving direct conversion rates.</p>
+              </ScrollReveal>
+              <ul className="list-disc pl-5 space-y-3 text-[15px] text-muted font-light text-right list-none">
+                <li>Psychological conversion flow mapping</li>
+                <li>Atomic design systems built in Figma</li>
+                <li>Engaging scroll-based micro-animations</li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <div className="service-section-icon">☁</div>
-            <h2>SaaS Product Development</h2>
-            <p><strong>The Problem:</strong> Founders get stuck in "Development Hell," missing launch windows and shipping clunky MVPs that churn early adopters.</p>
-            <p><strong>The Solution:</strong> We execute full-cycle SaaS builds. We map the entire data pipeline, construct secure multi-tenant architectures, wire up complex billing systems (Stripe), and wrap it all in a frictionless React UI.</p>
-            <p><strong>The Outcome:</strong> A secure, market-ready, enterprise-grade software product shipped fast, completely primed for explosive user acquisition.</p>
-          </div>
-        </div>
-      </FadeUp>
+        </FadeUp>
 
-      {/* ── SERVICE 5: UI/UX Design ── */}
-      <FadeUp>
-        <div className="service-section" id="ui-ux">
-          <div>
-            <div className="service-section-icon">✏</div>
-            <h2>Strategic UI/UX Design</h2>
-            <p><strong>The Problem:</strong> Generic interfaces cause intense friction; users instantly bounce when a product feels cheap, confusing, or untrustworthy.</p>
-            <p><strong>The Solution:</strong> We enforce atomic design systems within Figma. Every typography choice, micro-interaction, and layout hierarchy is meticulously tested to ensure intuitive navigation and establish visual authority.</p>
-            <p><strong>The Outcome:</strong> An incredibly premium brand aesthetic that immediately commands trust, drastically reducing drop-off rates and elevating your perceived market value.</p>
-          </div>
-          <div className="service-img-placeholder" >
-            <img loading="lazy" src="/images/srv_uiux_new.png" alt="UI/UX Design Workflow"  />
-          </div>
-        </div>
-      </FadeUp>
+      </div>
 
-      {/* ── SERVICE 6: Growth Systems ── */}
+      {/* ── WHY CHOOSE BYTBRAND (ABOUT SECTION) ── */}
       <FadeUp>
-        <div className="engineering-section" id="growth">
-          <div className="service-img-placeholder" >
-            <img loading="lazy" src="/images/srv_growth_new.png" alt="Growth Funnel Pipelines"  />
-          </div>
-          <div>
-            <div className="service-section-icon">📈</div>
-            <h2>Growth Systems & Lead Generation</h2>
-            <p><strong>The Problem:</strong> Great software without an integrated distribution pipeline is a ghost town. Startups struggle to trace exactly where users abandon the journey.</p>
-            <p><strong>The Solution:</strong> We embed robust analytics, complex event tracking, and advanced SEO architectures straight into the codebase. We engineer dynamic marketing funnels that guide cold traffic strictly towards the checkout or lead-capture form.</p>
-            <p><strong>The Outcome:</strong> Complete transparency over customer acquisition costs (CAC) and a systematic, automated engine generating a predictable flow of revenue.</p>
-          </div>
-        </div>
-      </FadeUp>
-
-      {/* ── WHY CHOOSE BYTBRAND ── */}
-      <FadeUp>
-        <div className="aesthetic-section mt-16">
-          <span className="aesthetic-eyebrow">The Agency Advantage</span>
-          <h2>Why SaaS Teams Partner With Us</h2>
-          <div className="brand-craft-layout">
-            <div className="brand-craft-grid">
-              
-              <div className="brand-craft-card">
-                <div className="bc-icon">⚡</div>
-                <h3>Fast, Focused Delivery</h3>
-                <p>
-                  Work directly with senior product engineers. We keep execution lean, communication clear, and releases predictable.
+        <div className="bg-white py-12 md:py-16 border-y border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-4">Engineered for the Scale-Up Phase</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-black mb-6">
+                <BlurText text="Built By Founders, For Founders" delay={100} animateBy="words" direction="top" />
+              </h2>
+              <ScrollReveal baseOpacity={0.6}>
+                <p className="max-w-2xl mx-auto text-muted font-light text-lg">
+                  We know what it takes to survive the startup curve. Let our senior engineers become your technical advantage.
                 </p>
-              </div>
+              </ScrollReveal>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+              <BorderGlow borderRadius={16} backgroundColor="#ECE7E4">
+                <div className="p-8 h-full">
+                  <div className="mb-4">
+                    <Folder color="var(--color-rust)" items={[<span className="text-2xl">⚡</span>]} size={0.5} />
+                  </div>
+                  <h3 className="text-lg font-bold text-black mb-3">Senior Talent Only</h3>
+                  <p className="text-muted font-light text-sm">No junior devs. You work directly with battle-tested engineers who ship fast.</p>
+                </div>
+              </BorderGlow>
 
-              <div className="brand-craft-card rust-card">
-                <div className="bc-icon">✦✦</div>
-                <h3>Product-First Thinking</h3>
-                <p>We connect design and engineering to create user experiences that improve adoption, trust, and retention.</p>
-              </div>
+              <BorderGlow borderRadius={16} backgroundColor="#884531" glowColor="40 80 80">
+                <div className="p-8 h-full text-white">
+                  <div className="mb-4">
+                    <Folder color="var(--color-cream)" items={[<span className="text-2xl text-cream">✦✦</span>]} size={0.5} />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-3">Zero Tech Debt</h3>
+                  <p className="text-white/80 font-light text-sm">We build resilient systems designed to safely support millions of concurrent users.</p>
+                </div>
+              </BorderGlow>
 
-              <div className="brand-craft-card">
-                <div className="bc-icon">📊</div>
-                <h3>Outcome-Driven Execution</h3>
-                <p>
-                  Every technical decision maps to a business objective, from activation and conversion to churn reduction.
-                </p>
-              </div>
-
-              <div className="brand-craft-card">
-                <div className="bc-icon">▣</div>
-                <h3>Scalable Foundations</h3>
-                <p>
-                  We build maintainable systems and infrastructure that can support growth without costly rewrites.
-                </p>
-              </div>
-
+              <BorderGlow borderRadius={16} backgroundColor="#ECE7E4">
+                <div className="p-8 h-full">
+                  <div className="mb-4">
+                    <Folder color="var(--color-rust)" items={[<span className="text-2xl">📊</span>]} size={0.5} />
+                  </div>
+                  <h3 className="text-lg font-bold text-black mb-3">Outcome-Driven Execution</h3>
+                  <p className="text-muted font-light text-sm">We don't just write code. Every technical architecture maps directly to improving your bottom-line activation and revenue metrics.</p>
+                </div>
+              </BorderGlow>
             </div>
           </div>
         </div>
       </FadeUp>
 
       {/* ── Stamp Row ── */}
-      <div className="stamp-row">
-        <span className="stamp-text">Conversion</span>
-        <span className="stamp-star">✦</span>
-        <span className="stamp-text">Scale</span>
-        <span className="stamp-star">✦</span>
-        <span className="stamp-text">Automation</span>
+      <div className="flex flex-wrap justify-center items-center gap-6 py-12 bg-cream-soft text-muted font-mono text-[10px] uppercase tracking-widest border-b border-border">
+        <span>Conversion</span>
+        <span className="text-rust">✦</span>
+        <span>Scale</span>
+        <span className="text-rust">✦</span>
+        <span>Automation</span>
       </div>
 
       {/* ── CTA BANNER ── */}
-      <FadeUp delay="80ms">
-        <div className="cta-banner" style={{ margin: '80px 0' }}>
-          <h2>Need a Team to <span className="accent">Build and Scale?</span></h2>
-          <p>
-            We help SaaS companies design, build, and optimize digital products that are reliable, performant, and growth-ready.
-          </p>
-          <Link to="/contact" className="btn-primary mt-6">Book a Strategy Session</Link>
-        </div>
-      </FadeUp>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        <FadeUp delay="80ms">
+          <div className="bg-stone border border-border p-8 md:p-16 rounded-2xl text-center relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-rust/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-brown-dark/5 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
+            
+            <div className="relative z-10 max-w-2xl mx-auto">
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-black mb-6">
+                <BlurText text="Build faster." delay={100} animateBy="words" direction="top" /> 
+                <span className="text-rust">
+                  <BlurText text="Scale smarter." delay={100} animateBy="words" direction="top" />
+                </span>
+              </h2>
+              <ScrollReveal baseOpacity={0} blurStrength={5}>
+                <p className="text-lg text-muted font-light mb-8">
+                  We engineer full-stack SaaS products that remove friction from user journeys and drive real, compounding business growth over time.
+                </p>
+              </ScrollReveal>
+              <ul className="text-left w-fit mx-auto mb-10 text-sm text-muted font-light list-square pl-5 space-y-3">
+                <li>Get a complete technical roadmap</li>
+                <li>Receive transparent project timelines</li>
+                <li>Start development within 7 days</li>
+              </ul>
+              <Magnet strength={0.6}>
+                <Link to="/contact" className="inline-block bg-rust text-white px-8 py-3 rounded-lg font-medium text-center hover:bg-rust-light transition-colors">
+                  Let's Work Together
+                </Link>
+              </Magnet>
+            </div>
+          </div>
+        </FadeUp>
+      </section>
 
     </main>
   );

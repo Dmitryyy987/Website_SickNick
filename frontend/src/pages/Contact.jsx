@@ -1,6 +1,12 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import useSEO from '../hooks/useSEO';
+import BlurText from '../components/reactbits/BlurText';
+import ScrollReveal from '../components/reactbits/ScrollReveal';
+import Magnet from '../components/reactbits/Magnet';
+import Folder from '../components/reactbits/Folder';
 import { api } from '../services/api';
+
+const BorderGlow = lazy(() => import('../components/reactbits/BorderGlow'));
 
 const EMPTY_FORM = { name: '', email: '', projectType: '', message: '', company: '', budget: '' };
 
@@ -49,127 +55,137 @@ export default function Contact() {
   const isError   = status === 'error';
 
   return (
-    <main className="page contact-page">
-      <div className="contact-grid">
+    <main className="pt-16 min-h-screen bg-cream-soft">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-4 md:pt-6 md:pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
 
-        {/* ── LEFT ── */}
-        <div>
-          <span className="eyebrow text-rust">Direct Access</span>
-          <h1 className="contact-h1" style={{ fontSize: 'clamp(44px, 5.5vw, 68px)' }}>
-            <span>Architect</span>
-            <span>your</span>
-            <span className="accent">market</span>
-            <span className="accent">advantage.</span>
-          </h1>
-          <p className="contact-sub text-[16px] max-w-md">
-            Whether you require a high-converting web platform, a complex SaaS workflow integration,
-            or enterprise-grade AI automation pipelines—our engineering team is ready to execute.
-          </p>
+          {/* ── LEFT ── */}
+          <div>
+            <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-4">Direct Access</span>
+            <h1 className="text-4xl md:text-6xl font-bold text-black tracking-tight leading-[1.1] mb-6">
+              <span className="block"><BlurText text="Ready to" delay={150} animateBy="words" direction="top" /></span>
+              <span className="block"><BlurText text="Build Your" delay={150} animateBy="words" direction="top" initialDelay={200} /></span>
+              <span className="block text-rust"><BlurText text="Product?" delay={150} animateBy="words" direction="top" initialDelay={400} /></span>
+            </h1>
+            <ScrollReveal baseOpacity={0} blurStrength={5}>
+              <p className="text-[15px] max-w-[360px] text-muted font-light leading-relaxed mb-8">
+                Partner with a senior team that executes with speed, precision, and uncompromising product quality.
+              </p>
+            </ScrollReveal>
 
-          <div className="contact-card mt-12 bg-white hover:shadow-lg transition-shadow">
-            <div className="contact-card-content">
-              <span className="eyebrow" style={{ marginBottom: '4px' }}>Discovery Phase</span>
-              <h3>Technical Brief Review</h3>
-              <p>A rigorous 30-minute system evaluation outlining a roadmap to unblock your bottlenecks and scale revenue.</p>
-            </div>
-            <span className="contact-card-arrow text-2xl">→</span>
-          </div>
+            <Suspense fallback={<div className="h-40 bg-stone rounded-xl animate-pulse" />}>
+              <BorderGlow borderRadius={12} backgroundColor="#FFFFFF">
+                <div className="p-6 flex flex-col items-start h-full">
+                  <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-3">What to Expect</span>
+                  <ul className="list-disc pl-5 space-y-2 text-sm text-muted font-light">
+                    <li>Get a complete technical roadmap</li>
+                    <li>Receive transparent project timelines</li>
+                    <li>Start development within 7 days</li>
+                  </ul>
+                </div>
+              </BorderGlow>
+            </Suspense>
 
-          <div className="contact-card bg-transparent border-transparent px-0 hover:border-transparent cursor-default">
-            <div className="contact-card-content">
-              <span className="eyebrow" style={{ marginBottom: '8px' }}>Global Presence</span>
-              <div className="social-links">
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="font-semibold tracking-wide hover:underline cursor-none">LinkedIn</a>
-                <span className="social-sep">·</span>
-                <a href="https://github.com" target="_blank" rel="noreferrer" className="font-semibold tracking-wide hover:underline cursor-none">GitHub</a>
-                <span className="social-sep">·</span>
-                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="font-semibold tracking-wide hover:underline cursor-none">X/Twitter</a>
+            <div className="mt-12 px-0">
+              <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-6">Global Presence</span>
+              <div className="flex flex-wrap items-center gap-4 text-black text-sm">
+                <Magnet strength={0.2}><Folder color="#0a66c2" items={[<a href="https://linkedin.com" target="_blank" rel="noreferrer" className="px-4 py-2 font-semibold tracking-wide">LinkedIn</a>]} size={0.6} /></Magnet>
+                <Magnet strength={0.2}><Folder color="#333" items={[<a href="https://github.com" target="_blank" rel="noreferrer" className="px-4 py-2 font-semibold tracking-wide">GitHub</a>]} size={0.6} /></Magnet>
+                <Magnet strength={0.2}><Folder color="#1da1f2" items={[<a href="https://twitter.com" target="_blank" rel="noreferrer" className="px-4 py-2 font-semibold tracking-wide">X/Twitter</a>]} size={0.6} /></Magnet>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* ── RIGHT: FORM ── */}
-        <form
-          className="contact-form mt-8 md:mt-0 bg-white p-8 md:p-12 rounded-lg border border-border shadow-sm"
-          onSubmit={handleSubmit}
-          noValidate
-        >
-          <h3 className="font-sans font-bold text-xl mb-6">Initialize Communication</h3>
-          <div className="form-row-2col">
-            <div className="form-group">
-              <label className="form-label font-bold text-black/70">Full Name</label>
-              <input
-                className="form-input bg-stone/30"
-                placeholder="Ex. Jane Doe"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                minLength={2}
-                maxLength={80}
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label font-bold text-black/70">Email Address</label>
-              <input
-                className="form-input bg-stone/30"
-                type="email"
-                placeholder="director@company.com"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
 
-          <div className="form-group mt-2">
-            <label className="form-label font-bold text-black/70">Scope of Operation</label>
-            <div className="select-wrapper">
-              <select
-                className="form-select bg-stone/30"
-                name="projectType"
-                value={formData.projectType}
-                onChange={handleChange}
-              >
-                <option value="" disabled>Select Framework...</option>
-                <option value="High-Converting Web Platform">High-Converting Web Platform</option>
-                <option value="SaaS Architecture & UI">SaaS Architecture &amp; UI</option>
-                <option value="AI Ecosystem Automation">AI Ecosystem Automation</option>
-                <option value="Enterprise Lead Generation">Enterprise Lead Generation</option>
-                <option value="Dedicated Engineering Pods">Dedicated Engineering Pods</option>
-              </select>
-              <svg className="select-caret" width="12" height="8" viewBox="0 0 12 8" fill="none">
-                <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5"/>
-              </svg>
-            </div>
-          </div>
-
-          <div className="form-group mt-2">
-            <label className="form-label font-bold text-black/70">Strategic Brief</label>
-            <textarea
-              className="form-textarea bg-stone/30"
-              placeholder="Detail your business bottleneck, target outcomes, timeline constraints, and how this investment translates to revenue..."
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-              minLength={10}
-              maxLength={5000}
-            />
-          </div>
-
-          <button
-            className={`btn-submit shadow-md mt-4${isSuccess ? ' bg-green-800' : isError ? ' bg-red-700' : ''}`}
-            type="submit"
-            disabled={isLoading}
+          {/* ── RIGHT: FORM ── */}
+          <form
+            className="bg-white p-8 md:p-12 rounded-2xl border border-border shadow-sm flex flex-col"
+            onSubmit={handleSubmit}
+            noValidate
           >
-            {isLoading ? 'Sending…' : isSuccess ? '✓ Brief Received' : isError ? '✕ Delivery Failed — Retry' : 'Dispatch Project Brief'}
-          </button>
-          <p className="form-note opacity-80 mt-3 text-[9px] uppercase tracking-wider text-center w-full">{isError && errorText ? errorText : 'Briefs reviewed strictly within 12 business hours by senior architects.'}</p>
-        </form>
+            <h3 className="font-sans font-bold text-xl text-black mb-6">Initialize Communication</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-black/70">Full Name</label>
+                <input
+                  className="bg-stone/30 border border-transparent focus:border-rust focus:bg-white transition-colors text-black rounded-lg px-4 py-3 text-[15px] outline-none placeholder:text-muted/50"
+                  placeholder="Ex. Jane Doe"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  minLength={2}
+                  maxLength={80}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-black/70">Email Address</label>
+                <input
+                  className="bg-stone/30 border border-transparent focus:border-rust focus:bg-white transition-colors text-black rounded-lg px-4 py-3 text-[15px] outline-none placeholder:text-muted/50"
+                  type="email"
+                  placeholder="director@company.com"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
 
+            <div className="flex flex-col gap-2 mb-6">
+              <label className="text-sm font-bold text-black/70">Scope of Operation</label>
+              <div className="relative">
+                <select
+                  className="w-full bg-stone/30 border border-transparent focus:border-rust focus:bg-white transition-colors text-black rounded-lg pl-4 pr-10 py-3 text-[15px] outline-none appearance-none"
+                  name="projectType"
+                  value={formData.projectType}
+                  onChange={handleChange}
+                >
+                  <option value="" disabled>Select Framework...</option>
+                  <option value="High-Converting Web Platform">High-Converting Web Platform</option>
+                  <option value="SaaS Architecture & UI">SaaS Architecture &amp; UI</option>
+                  <option value="AI Ecosystem Automation">AI Ecosystem Automation</option>
+                  <option value="Enterprise Lead Generation">Enterprise Lead Generation</option>
+                  <option value="Dedicated Engineering Pods">Dedicated Engineering Pods</option>
+                </select>
+                <svg className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                  <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5"/>
+                </svg>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2 mb-8">
+              <label className="text-sm font-bold text-black/70">Strategic Brief</label>
+              <textarea
+                className="w-full bg-stone/30 border border-transparent focus:border-rust focus:bg-white transition-colors text-black rounded-lg px-4 py-3 text-[15px] outline-none resize-y min-h-[140px] placeholder:text-muted/50"
+                placeholder="Detail your business bottleneck, target outcomes, timeline constraints, and how this investment translates to revenue..."
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                minLength={10}
+                maxLength={5000}
+              />
+            </div>
+
+            <Magnet strength={0.4} className="w-full">
+              <button
+                className={`w-full py-4 rounded-lg font-medium text-white shadow-md transition-all ${
+                  isSuccess ? 'bg-green-700' : isError ? 'bg-red-700' : 'bg-black hover:bg-rust'
+                }`}
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Sending…' : isSuccess ? '✓ Brief Received' : isError ? '✕ Delivery Failed — Retry' : 'Dispatch Project Brief'}
+              </button>
+            </Magnet>
+            <p className="mt-4 text-[9px] uppercase tracking-wider text-center text-muted w-full">
+              {isError && errorText ? errorText : 'Briefs reviewed strictly within 12 business hours by senior architects.'}
+            </p>
+          </form>
+
+        </div>
       </div>
     </main>
   );

@@ -1,134 +1,301 @@
 import { Link } from 'react-router-dom';
-import Marquee from '../components/Marquee';
-import FadeUp from '../components/FadeUp';
+import LogoLoop from '../components/reactbits/LogoLoop';
+import FadeUp from '../components/common/FadeUp';
+import BlurText from '../components/reactbits/BlurText';
+import ScrollReveal from '../components/reactbits/ScrollReveal';
+import Magnet from '../components/reactbits/Magnet';
+import BorderGlow from '../components/reactbits/BorderGlow';
 import useSEO from '../hooks/useSEO';
+import { useRef, Suspense, lazy } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 
-// SVG removed, using AI-generated asset
+// Lazy load complex animation components below the fold
+const ImageTrail = lazy(() => import('../components/reactbits/ImageTrail'));
+const ScrollStack = lazy(() => import('../components/reactbits/ScrollStack'));
+const PixelTransition = lazy(() => import('../components/reactbits/PixelTransition'));
 
 export default function Home() {
+  const rootRef = useRef();
+
+  useGSAP(() => {
+    gsap.from('.hero-sub', { 
+      y: 30, opacity: 0, duration: 1, stagger: 0.2, delay: 0.8, ease: 'power3.out' 
+    });
+    gsap.from('.hero-img', { 
+      scale: 0.95, opacity: 0, duration: 1.5, delay: 1, ease: 'power3.out' 
+    });
+  }, { scope: rootRef });
+
   useSEO({
     title: 'High-Converting SaaS Agency',
     description: 'BytBrand is a modern SaaS-focused technology agency building scalable web apps, mobile apps, and AI automation systems.',
     url: 'https://bytbrand.com/'
   });
 
+  const clientLogos = [
+    { src: '/images/client_kinfolk.png', alt: 'Kinfolk Digital' },
+    { src: '/images/client_aura.png', alt: 'Aura Labs' },
+    { src: '/images/client_mono.png', alt: 'Mono Brand' },
+    { src: '/images/client_editorial.png', alt: 'Editorial Collective' },
+    { src: '/images/client_nova.png', alt: 'NovaTech' },
+    { src: '/images/client_vanta.png', alt: 'Vanta Systems' },
+    { src: '/images/client_orbital.png', alt: 'Orbital SaaS' },
+  ];
+
   return (
-    <main className="page">
+    <main ref={rootRef} className="pt-16 min-h-screen bg-cream-soft">
 
       {/* ── HERO ── */}
-      <section className="hero">
-        <div className="hero-left">
-          <span className="eyebrow hero-eyebrow">Digital SaaS Agency</span>
-          <h1>
-            We design and build<br />
-            SaaS products that<br />
-            <span className="accent">drive measurable growth.</span>
-          </h1>
-          <p className="hero-body">
-            BytBrand is a full-stack digital SaaS agency helping teams launch, optimize, and scale modern products.
-            We combine product strategy, engineering, and AI automation to deliver platforms that improve activation,
-            retention, and revenue.
-          </p>
-          <div className="hero-buttons">
-            <Link to="/contact" className="btn-primary">Book a Strategy Call</Link>
-            <Link to="/case-studies" className="btn-ghost">View Case Studies →</Link>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-4 md:pt-6 md:pb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div>
+            <span className="hero-sub font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-4">
+              Digital SaaS Agency
+            </span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black tracking-tight leading-[1.1] mb-6">
+              <BlurText text="Ship Faster." delay={100} animateBy="words" direction="top" /><br />
+              <BlurText text="Scale With" delay={100} animateBy="words" direction="top" /><br />
+              <span className="text-rust">
+                <BlurText text="Confidence." delay={100} animateBy="words" direction="top" />
+              </span>
+            </h1>
+            <ScrollReveal baseOpacity={0} blurStrength={10}>
+              <p className="hero-sub text-lg text-muted font-light max-w-md mb-6 leading-relaxed">
+                We design and build scalable SaaS platforms that help teams launch faster, improve user experience, and drive consistent growth.
+              </p>
+            </ScrollReveal>
+            <ul className="hero-sub list-disc pl-5 space-y-2 text-sm text-muted font-light mb-8">
+              <li>Production-ready architectures deployed rapidly</li>
+              <li>Conversion-obsessed interface and UX design</li>
+              <li>Intelligent workflows powered by LLM models</li>
+            </ul>
+            <div className="hero-sub flex flex-col sm:flex-row gap-4 mt-4 sm:mt-6">
+              <Magnet strength={0.5}>
+                <Link to="/contact" className="block bg-rust text-white px-6 py-3 rounded-lg font-medium text-center hover:bg-rust-light transition-colors">
+                  Start Your Project
+                </Link>
+              </Magnet>
+              <Magnet strength={0.5}>
+                <Link to="/case-studies" className="block bg-transparent text-black border border-black/10 px-6 py-3 rounded-lg font-medium text-center hover:bg-black/5 transition-colors">
+                  Explore Work →
+                </Link>
+              </Magnet>
+            </div>
+          </div>
+          <div className="order-first md:order-last mb-8 md:mb-0">
+            <img
+              src="/images/hero_dashboard.png"
+              alt="BytBrand SaaS Dashboard and AI Systems"
+              className="hero-img w-full max-w-xl mx-auto object-cover rounded-2xl shadow-xl border border-border"
+              loading="eager"
+            />
           </div>
         </div>
-        <div className="hero-image" >
-          <img 
-            src="/images/home_hero_new.png" 
-            alt="BytBrand SaaS Dashboard and AI Systems" 
-            loading="eager"
-             
+      </section>
+
+      {/* ── LOGO LOOP ── */}
+      <section className="border-y border-border py-12 overflow-hidden bg-cream-soft">
+        <div className="mb-8 text-center">
+          <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-muted">Our Trusted Clients</span>
+        </div>
+        <LogoLoop 
+          logos={clientLogos} 
+          speed={60} 
+          direction="left" 
+          logoHeight={40} 
+          gap={80} 
+          className="grayscale hover:grayscale-0 transition-all duration-500"
+        />
+        <div className="mt-4">
+          <LogoLoop 
+            logos={clientLogos} 
+            speed={60} 
+            direction="right" 
+            logoHeight={40} 
+            gap={80} 
+            className="grayscale hover:grayscale-0 transition-all duration-500"
           />
         </div>
       </section>
 
-      {/* ── MARQUEE ── */}
-      <Marquee />
-
       {/* ── SERVICES INTRO ── */}
-      <FadeUp>
-        <div className="services-intro">
-          <div className="services-intro-left">
-            <h2>Built for <span className="text-rust">SaaS Outcomes</span></h2>
-            <p>
-              We build the core systems that SaaS companies rely on: conversion-focused web experiences,
-              robust product architecture, and automation that reduces operational drag.
-              Every engagement is aligned to clear business metrics and long-term product velocity.
-            </p>
-          </div>
-          <Link to="/services" className="view-all-link">Explore our services ——</Link>
-        </div>
-      </FadeUp>
-
-      {/* ── SERVICE CARDS 2×2 ── */}
-      <FadeUp delay="80ms">
-        <div className="services-grid">
-
-          {/* Card 1 */}
-          <div className="service-card">
-            <div className="service-icon">⬡</div>
-            <h3>SaaS & Web App Development</h3>
-            <p>
-              Performant, resilient, and infinitely scalable web applications built on Next.js, React, and Node.js. 
-              We engineer complex platforms that deliver butter-smooth UX and bulletproof security.
-            </p>
-            <div className="service-tags">
-              <span className="tag">Next.js</span>
-              <span className="tag">TypeScript</span>
-              <span className="tag">PostgreSQL</span>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-16 pb-12">
+        <FadeUp>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl sm:text-4xl font-bold text-black tracking-tight mb-4">
+                <BlurText text="Technical Solutions" delay={150} animateBy="words" direction="top" /> 
+                <span className="text-rust">
+                  <BlurText text="That Drive Revenue" delay={150} animateBy="words" direction="top" />
+                </span>
+              </h2>
+              <ScrollReveal baseOpacity={0} blurStrength={8}>
+                <p className="text-lg text-muted font-light leading-relaxed">
+                  We handle the complete technical pipeline—from infrastructure to analytics—so your team can focus entirely on acquiring active users and maximizing LTV.
+                </p>
+              </ScrollReveal>
             </div>
+            <Magnet strength={0.4}>
+              <Link to="/services" className="font-mono text-[10px] tracking-[0.1em] text-rust uppercase hover:text-rust-light transition-colors pb-2 border-b border-rust/20">
+                Explore our services ——
+              </Link>
+            </Magnet>
           </div>
+        </FadeUp>
 
-          {/* Card 2 — Featured stat */}
-          <div className="service-card featured">
-            <div className="service-icon mb-4 block" style={{ fontSize: '24px' }}>◈</div>
-            <h3>AI Automation Systems</h3>
-            <p>
-              Deploy LLM-powered chatbots, intelligent internal workflows, and seamless tool integrations. 
-              We build systems that slash manual operations and unlock exponential bandwidth for your team.
-            </p>
-            <div className="service-tags mt-auto pt-6">
-              <span className="tag opacity-80 border-white/20 bg-black/20 text-white">OpenAI</span>
-              <span className="tag opacity-80 border-white/20 bg-black/20 text-white">Vercel AI SDK</span>
-            </div>
-          </div>
-
-          {/* Card 3 */}
-          <div className="service-card">
-            <div className="service-icon">▤</div>
-            <h3>High-Converting Web Design</h3>
-            <p>
-              Landing pages and corporate websites engineered as elite sales tools. We utilize psychological design principles, 
-              cinematic visuals, and GSAP micro-animations to command attention and skyrocket conversions.
-            </p>
-          </div>
-
-          {/* Card 4 */}
-          <div className="service-card">
-            <div className="service-icon">⚡</div>
-            <h3>Growth & Lead Generation</h3>
-            <p>
-              We integrate analytics pipelines, dynamic marketing funnels, and structured SEO frameworks directly into the codebase. 
-              Your product launches with the fundamental hooks to capture and nurture every visitor.
-            </p>
-          </div>
-
+        {/* ── SERVICE CARDS 2×2 ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+          {[
+            { 
+              title: "Web & SaaS Engineering", 
+              desc: "High-performance infrastructure that scales effortlessly.", 
+              tags: ["Next.js", "TypeScript", "PostgreSQL"],
+              icon: "⬡",
+              images: ["/images/tech_saas_1.png", "/images/tech_saas_2.png", "/images/tech_saas_3.png"]
+            },
+            { 
+              title: "AI Tool Integrations", 
+              desc: "Replace manual operations with intelligent LLM workflows.", 
+              tags: ["OpenAI", "Vercel AI SDK"],
+              icon: "◈",
+              dark: true,
+              images: ["/images/tech_ai_1.png", "/images/tech_ai_2.png", "/images/tech_ai_3.png"]
+            },
+            { 
+              title: "Growth & Conversion UI", 
+              desc: "Cinematic design engineered strictly for user acquisition.", 
+              tags: ["UX Audit", "A/B Testing"],
+              icon: "✏",
+              images: ["/images/tech_growth_1.png", "/images/tech_growth_2.png", "/images/tech_growth_3.png"]
+            },
+            { 
+              title: "Mobile App Development", 
+              desc: "Cross-platform mobile experiences that feel seamlessly native.", 
+              tags: ["React Native", "Expo"],
+              icon: "▣",
+              images: ["/images/tech_mobile_1.png", "/images/tech_mobile_2.png", "/images/tech_mobile_3.png"]
+            }
+          ].map((service, idx) => (
+            <Suspense key={idx} fallback={<div className="h-64 bg-stone rounded-2xl animate-pulse" />}>
+              <ImageTrail items={service.images}>
+                <BorderGlow 
+                  borderRadius={16} 
+                  glowColor="40 80 80" 
+                  backgroundColor={service.dark ? "#1C1B1A" : "#FFFFFF"}
+                  className="h-full"
+                >
+                  <div className={`p-8 md:p-10 flex flex-col items-start h-full ${service.dark ? 'text-white' : 'text-black'}`}>
+                    <div className="text-3xl text-rust mb-6">{service.icon}</div>
+                    <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
+                    <ScrollReveal baseOpacity={0.5}>
+                      <p className={`text-base font-light leading-relaxed mb-8 ${service.dark ? 'text-cream/80' : 'text-muted'}`}>
+                        {service.desc}
+                      </p>
+                    </ScrollReveal>
+                    <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-border/20 w-full">
+                      {service.tags.map((tag, tIdx) => (
+                        <span key={tIdx} className={`text-[11px] font-mono tracking-wider px-3 py-1 rounded-md uppercase ${service.dark ? 'bg-white/10 text-cream' : 'bg-stone text-muted'}`}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </BorderGlow>
+              </ImageTrail>
+            </Suspense>
+          ))}
         </div>
-      </FadeUp>
+      </section>
+
+      {/* ── CASE STUDIES SCROLL STACK ── */}
+      <section className="py-24 bg-black overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+          <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight leading-[1.1]">
+            <BlurText text="Portfolio" delay={150} animateBy="words" direction="top" />
+            <br />
+            <span className="text-rust">
+              <BlurText text="Elite Cases." delay={150} animateBy="words" direction="top" />
+            </span>
+          </h2>
+        </div>
+        
+        <Suspense fallback={<div className="h-[80vh] flex items-center justify-center text-white">Loading Stack...</div>}>
+          <ScrollStack items={[
+            { id: 1, title: 'NovaPay', category: 'FinTech', desc: 'Next-gen payment infrastructure for global SaaS platforms.', image: '/images/cs_novapay.png' },
+            { id: 2, title: 'AuraAI', category: 'Artificial Intelligence', desc: 'Predictive analytics engine for enterprise resource planning.', image: '/images/cs_auraai.png' },
+            { id: 3, title: 'VantaCommerce', category: 'E-commerce', desc: 'High-conversion checkout experience for luxury brands.', image: '/images/cs_vanta.png' }
+          ]}>
+            {(project) => (
+              <div className="w-[100vw] h-[80vh] flex items-center justify-center px-4 snap-start">
+                <BorderGlow 
+                  borderRadius={32} 
+                  glowRadius={60} 
+                  className="w-full max-w-6xl aspect-video overflow-hidden"
+                  backgroundColor="#1C1B1A"
+                >
+                  <PixelTransition
+                    firstContent={
+                      <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                    }
+                    secondContent={
+                      <div className="w-full h-full flex flex-col items-center justify-center text-center p-12 bg-black/80">
+                        <span className="font-mono text-xs tracking-widest text-rust uppercase mb-4">{project.category}</span>
+                        <h3 className="text-4xl md:text-6xl font-bold text-white mb-6">{project.title}</h3>
+                        <p className="text-lg text-cream/60 max-w-xl font-light leading-relaxed">
+                          {project.desc}
+                        </p>
+                        <Magnet strength={0.5}>
+                          <Link to={`/case-study/${project.title.toLowerCase()}`} className="mt-8 bg-rust text-white px-8 py-3 rounded-lg font-medium">
+                            View Case Study
+                          </Link>
+                        </Magnet>
+                      </div>
+                    }
+                    gridSize={20}
+                    pixelColor="#884531"
+                    animationStepDuration={0.4}
+                  />
+                </BorderGlow>
+              </div>
+            )}
+          </ScrollStack>
+        </Suspense>
+      </section>
 
       {/* ── CTA BANNER ── */}
-      <FadeUp delay="80ms">
-        <div className="cta-banner">
-          <h2>Ready to Scale Your <span className="accent">SaaS Product?</span></h2>
-          <p>
-            Partner with a senior team that can ship your roadmap faster, improve product quality,
-            and build the technical foundation required for sustainable growth.
-          </p>
-          <Link to="/contact" className="btn-primary mt-4">Start Your Project</Link>
-        </div>
-      </FadeUp>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        <FadeUp delay="80ms">
+          <div className="bg-stone border border-border p-8 md:p-16 rounded-2xl text-center relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-rust/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-brown-dark/5 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
+            
+            <div className="relative z-10 max-w-2xl mx-auto">
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-black mb-6">
+                <BlurText text="Build faster." delay={100} animateBy="words" direction="top" /> 
+                <span className="text-rust">
+                  <BlurText text="Scale smarter." delay={100} animateBy="words" direction="top" />
+                </span>
+              </h2>
+              <ScrollReveal baseOpacity={0} blurStrength={5}>
+                <p className="text-lg text-muted font-light mb-8">
+                  We engineer full-stack SaaS products that remove friction from user journeys and drive real, compounding business growth over time.
+                </p>
+              </ScrollReveal>
+              <ul className="text-left w-fit mx-auto mb-10 text-sm text-muted font-light list-square pl-5 space-y-3">
+                <li>Get a complete technical roadmap</li>
+                <li>Receive transparent project timelines</li>
+                <li>Start development within 7 days</li>
+              </ul>
+              <Magnet strength={0.6}>
+                <Link to="/contact" className="inline-block bg-rust text-white px-8 py-3 rounded-lg font-medium text-center hover:bg-rust-light transition-colors">
+                  Let's Work Together
+                </Link>
+              </Magnet>
+            </div>
+          </div>
+        </FadeUp>
+      </section>
 
     </main>
   );

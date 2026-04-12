@@ -1,6 +1,61 @@
 import { Link } from 'react-router-dom';
-import FadeUp from '../components/FadeUp';
+import FadeUp from '../components/common/FadeUp';
+import BlurText from '../components/reactbits/BlurText';
+import ScrollReveal from '../components/reactbits/ScrollReveal';
+import Magnet from '../components/reactbits/Magnet';
 import useSEO from '../hooks/useSEO';
+
+const PROCESS_STEPS = [
+  {
+    phase: 'Phase 01',
+    title: 'Discovery',
+    description: 'We isolate the exact features that move the revenue needle.',
+    image: '/images/process_discovery.png',
+    alt: 'Discovery Phase',
+  },
+  {
+    phase: 'Phase 02',
+    title: 'Architecture',
+    description: 'We blueprint secure, zero-latency cloud database schemas.',
+    image: '/images/process_planning.png',
+    alt: 'Planning & Architecture',
+  },
+  {
+    phase: 'Phase 03',
+    title: 'UI/UX Design',
+    description: 'We prototype pixel-perfect, conversion-optimized interfaces.',
+    image: '/images/process_development.png',
+    alt: 'UI/UX Design',
+  },
+  {
+    phase: 'Phase 04',
+    title: 'Development',
+    description: 'We write clean, typed, and modular React infrastructure.',
+    image: '/images/process_testing.png',
+    alt: 'Development',
+  },
+  {
+    phase: 'Phase 05',
+    title: 'QA Testing',
+    description: 'We stress-test code to guarantee zero launch-day crashes.',
+    image: '/images/process_deployment.png',
+    alt: 'QA Testing',
+  },
+  {
+    phase: 'Phase 06',
+    title: 'Deployment',
+    description: 'We distribute your app across global Edge networks.',
+    image: '/images/process_delivery.png',
+    alt: 'Deployment',
+  },
+  {
+    phase: 'Phase 07',
+    title: 'Scaling',
+    description: 'We analyze live user telemetrics to drive your next feature sprints.',
+    image: '/images/process_support.png',
+    alt: 'Scaling & Support',
+  },
+];
 
 export default function ProcessPage() {
   useSEO({
@@ -10,205 +65,106 @@ export default function ProcessPage() {
   });
 
   return (
-    <main className="page services-page">
+    <main className="pt-16 min-h-screen bg-cream-soft">
       <FadeUp>
-        <div className="page-header">
-          <span className="eyebrow">The Pipeline</span>
-          <h1>Precision. <br />From day one.</h1>
-          <p>
-            We don't guess. We execute based on a battle-tested blueprint. 
-            Our agile engineering pipeline ensures high transparency, rapid feedback loops, and 
-            bulletproof code architecture designed to scale your business gracefully.
-          </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-4 md:pt-6 md:pb-16 text-center">
+          <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-4">The Pipeline</span>
+          <h1 className="text-4xl md:text-6xl font-bold text-black tracking-tight leading-[1.1] mb-6">
+            <BlurText text="How We Build" delay={150} animateBy="words" direction="top" /><br className="hidden md:block" />
+            <BlurText text="Winning Products." delay={150} animateBy="words" direction="top" />
+          </h1>
+          <ScrollReveal baseOpacity={0} blurStrength={10}>
+            <p className="text-lg text-muted font-light max-w-2xl mx-auto leading-relaxed">
+              We execute a rigorous, transparent agile workflow designed to unblock founders. No guesswork or delays—just rapid deployment and continuous iteration.
+            </p>
+          </ScrollReveal>
         </div>
       </FadeUp>
 
-      <FadeUp delay="60ms">
-        <div className="service-img-placeholder process-diagram mb-24">
-          <img loading="lazy" src="/images/process_main.png" alt="Engineering Process Pipeline" />
+      {/* ── PROCESS STEPS ── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 md:pb-16">
+        <div className="space-y-16 lg:space-y-24 mb-20 overflow-x-hidden p-4 -space-x-4">
+          {PROCESS_STEPS.map((step, index) => (
+            <FadeUp key={index} direction={index % 2 === 0 ? 'left' : 'right'} delay="0ms">
+              <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
+                
+                {index % 2 === 0 ? (
+                  <>
+                    <img 
+                      src={step.image} 
+                      alt={step.alt}
+                      className="w-full max-w-md mx-auto h-auto object-cover rounded-xl shadow-lg border border-border" 
+                      loading="lazy"
+                    />
+                    <div className="p-4 sm:p-6">
+                      <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-2">{step.phase}</span>
+                      <h3 className="text-2xl font-bold text-black mb-4">
+                        {step.title}
+                      </h3>
+                      <p className="mt-2 text-[16px] text-muted font-light leading-relaxed">
+                        {step.description}
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="p-4 sm:p-6 order-2 md:order-1">
+                      <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-2">{step.phase}</span>
+                      <h3 className="text-2xl font-bold text-black mb-4">
+                        {step.title}
+                      </h3>
+                      <p className="mt-2 text-[16px] text-muted font-light leading-relaxed">
+                        {step.description}
+                      </p>
+                    </div>
+                    <img 
+                      src={step.image} 
+                      alt={step.alt}
+                      className="w-full max-w-md mx-auto h-auto object-cover rounded-xl shadow-lg border border-border order-1 md:order-2" 
+                      loading="lazy"
+                    />
+                  </>
+                )}
+
+              </div>
+            </FadeUp>
+          ))}
         </div>
-      </FadeUp>
-
-      <div className="process-timeline">
-        
-        {/* Phase 1 */}
-        <FadeUp>
-          <div className="service-section" style={{ paddingTop: '0', paddingBottom: '60px', borderTop: 'none' }}>
-            <div>
-              <span className="eyebrow" style={{ fontSize: '14px', marginBottom: '8px' }}>Phase 01</span>
-              <h2>Discovery Phase</h2>
-              <p>
-                <strong>What We Do:</strong> We audit your business model, trace customer pain points, and map the friction in your current software ecosystem.
-              </p>
-              <p>
-                <strong>Tools / Tech Used:</strong> FigJam, Notion, Advanced Analytics, Stakeholder Workshops
-              </p>
-              <p>
-                <strong>The Outcome:</strong> A ruthless clarity on features that actually move the revenue needle and a concrete definition of your Minimum Viable Product (MVP).
-              </p>
-            </div>
-            <div className="flex items-center justify-center p-8 bg-border/20 rounded-md">
-              <span className="text-[120px] font-mono text-rust opacity-20 leading-none">01</span>
-            </div>
-          </div>
-        </FadeUp>
-
-        {/* Phase 2 */}
-        <FadeUp>
-          <div className="service-section" style={{ padding: '60px 0' }}>
-            <div>
-              <span className="eyebrow" style={{ fontSize: '14px', marginBottom: '8px' }}>Phase 02</span>
-              <h2>Planning & Architecture</h2>
-              <p>
-                <strong>What We Do:</strong> We blueprint the entire scalable system. We design database schemas, configure cloud infrastructure, and plan the API endpoints so they can handle enterprise-scale traffic.
-              </p>
-              <p>
-                <strong>Tools / Tech Used:</strong> AWS, PostgreSQL schemas, Next.js App Router, Docker, Prisma
-              </p>
-              <p>
-                <strong>The Outcome:</strong> A hardened technical roadmap ensuring ZERO technical debt and preventing costly structural rewrites down the line.
-              </p>
-            </div>
-            <div className="flex items-center text-left pl-12 border-l border-border">
-              <div>
-                <span className="block text-rust font-mono text-sm mb-2">Systems Output</span>
-                <p className="text-muted text-sm font-light leading-relaxed">
-                  "Architecture dictates destiny. We secure your core data models so you can scale to millions of users without server latency."
-                </p>
-              </div>
-            </div>
-          </div>
-        </FadeUp>
-
-        {/* Phase 3 */}
-        <FadeUp>
-          <div className="service-section" style={{ padding: '60px 0' }}>
-            <div>
-              <span className="eyebrow" style={{ fontSize: '14px', marginBottom: '8px' }}>Phase 03</span>
-              <h2>UI/UX Design</h2>
-              <p>
-                <strong>What We Do:</strong> We design the visual identity and interaction models. We produce high-fidelity prototypes and atomic design systems focusing heavily on user psychology and conversion optimization.
-              </p>
-              <p>
-                <strong>Tools / Tech Used:</strong> Figma, Principle, Lottie, GSAP for interaction planning
-              </p>
-              <p>
-                <strong>The Outcome:</strong> A breathtaking, pixel-perfect visual prototype that creates a massive perceived value and builds unshakeable user trust.
-              </p>
-            </div>
-            <div className="flex items-center justify-center p-8 bg-border/20 rounded-md">
-              <span className="text-[120px] font-mono text-rust opacity-20 leading-none">03</span>
-            </div>
-          </div>
-        </FadeUp>
-
-        {/* Phase 4 */}
-        <FadeUp>
-          <div className="service-section" style={{ padding: '60px 0' }}>
-            <div>
-              <span className="eyebrow" style={{ fontSize: '14px', marginBottom: '8px' }}>Phase 04</span>
-              <h2>Development Phase</h2>
-              <p>
-                <strong>What We Do:</strong> We translate prototypes into functional React infrastructure. We write typed, modular code and hook into secure Node.js backends.
-              </p>
-              <p>
-                <strong>Tools / Tech Used:</strong> React, Next.js, Node.js, TypeScript, Tailwind CSS, Stripe integration
-              </p>
-              <p>
-                <strong>The Outcome:</strong> High-performance, SEO-optimized application code executing precisely as architected, passing Core Web Vitals checks.
-              </p>
-            </div>
-            <div className="flex items-center text-left pl-12 border-l border-border">
-              <div>
-                <span className="block text-rust font-mono text-sm mb-2">Sprint Cadence</span>
-                <p className="text-muted text-sm font-light leading-relaxed">
-                  "Development operates in tight 2-week iterations. You preview staging environments frequently, guaranteeing zero surprises upon launch."
-                </p>
-              </div>
-            </div>
-          </div>
-        </FadeUp>
-
-        {/* Phase 5 */}
-        <FadeUp>
-          <div className="service-section" style={{ padding: '60px 0' }}>
-            <div>
-              <span className="eyebrow" style={{ fontSize: '14px', marginBottom: '8px' }}>Phase 05</span>
-              <h2>Testing & QA</h2>
-              <p>
-                <strong>What We Do:</strong> We relentlessly attempt to break what we've built. We run end-to-end testing, simulate traffic spikes, and ensure compatibility across every modern browser and device.
-              </p>
-              <p>
-                <strong>Tools / Tech Used:</strong> Cypress, Jest, Vercel Previews, BrowserStack
-              </p>
-              <p>
-                <strong>The Outcome:</strong> A virtually bug-free interface preventing you from losing money due to broken checkout flows or edge-case crashes.
-              </p>
-            </div>
-            <div className="flex items-center justify-center p-8 bg-border/20 rounded-md">
-              <span className="text-[120px] font-mono text-rust opacity-20 leading-none">05</span>
-            </div>
-          </div>
-        </FadeUp>
-
-        {/* Phase 6 */}
-        <FadeUp>
-          <div className="service-section" style={{ padding: '60px 0' }}>
-            <div>
-              <span className="eyebrow" style={{ fontSize: '14px', marginBottom: '8px' }}>Phase 06</span>
-              <h2>Deployment</h2>
-              <p>
-                <strong>What We Do:</strong> We transition the codebase from staging to live production. We configure automated CI/CD pipelines, SSL certificates, and set up the DNS.
-              </p>
-              <p>
-                <strong>Tools / Tech Used:</strong> Vercel, AWS ECS, GitHub Actions, Cloudflare
-              </p>
-              <p>
-                <strong>The Outcome:</strong> A flawless, zero-downtime launch sequence securely distributing your product across global Edge networks.
-              </p>
-            </div>
-            <div className="flex items-center text-left pl-12 border-l border-border">
-              <div>
-                <span className="block text-rust font-mono text-sm mb-2">Edge Delivery</span>
-                <p className="text-muted text-sm font-light leading-relaxed">
-                  "Your code gets cached at global CDNs. Whether your client is in London or Tokyo, the system delivers milliseconds-fast loading."
-                </p>
-              </div>
-            </div>
-          </div>
-        </FadeUp>
-
-        {/* Phase 7 */}
-        <FadeUp>
-          <div className="service-section" style={{ padding: '60px 0', borderBottom: '1px solid var(--border)' }}>
-            <div>
-              <span className="eyebrow" style={{ fontSize: '14px', marginBottom: '8px' }}>Phase 07</span>
-              <h2>Scaling & Growth Support</h2>
-              <p>
-                <strong>What We Do:</strong> Launch is only day one. We stay integrated post-launch, analyzing real user telemetry, optimizing A/B tests, scaling servers, and shipping new features entirely informed by data.
-              </p>
-              <p>
-                <strong>Tools / Tech Used:</strong> PostHog, Google Analytics, Sentry, Stripe Billing
-              </p>
-              <p>
-                <strong>The Outcome:</strong> Compounding momentum. Your application evolves dynamically to capture more market share without collapsing under the weight of its own success.
-              </p>
-            </div>
-            <div className="flex items-center justify-center p-8 bg-border/20 rounded-md">
-              <span className="text-[120px] font-mono text-rust opacity-20 leading-none">07</span>
-            </div>
-          </div>
-        </FadeUp>
-
       </div>
 
-      <FadeUp delay="80ms">
-        <div className="cta-banner" style={{ margin: '80px 0 0' }}>
-          <h2>Execute Your <span className="accent">Vision</span></h2>
-          <p>We deploy senior engineering teams to build products for companies prioritizing speed and uncompromising quality.</p>
-          <Link to="/contact" className="btn-primary mt-6">Contact the Agency</Link>
-        </div>
-      </FadeUp>
+      {/* ── CTA BANNER ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 border-t border-border focus:outline-none">
+        <FadeUp delay="80ms">
+          <div className="bg-stone border border-border p-8 md:p-16 rounded-2xl text-center relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-rust/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-brown-dark/5 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
+            
+            <div className="relative z-10 max-w-2xl mx-auto">
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-black mb-6">
+                <BlurText text="Build faster." delay={100} animateBy="words" direction="top" /> 
+                <span className="text-rust">
+                  <BlurText text="Scale smarter." delay={100} animateBy="words" direction="top" />
+                </span>
+              </h2>
+              <ScrollReveal baseOpacity={0} blurStrength={5}>
+                <p className="text-lg text-muted font-light mb-8">
+                  We engineer full-stack SaaS products that remove friction from user journeys and drive real, compounding business growth over time.
+                </p>
+              </ScrollReveal>
+              <ul className="text-left w-fit mx-auto mb-10 text-sm text-muted font-light list-square pl-5 space-y-3">
+                <li>Get a complete technical roadmap</li>
+                <li>Receive transparent project timelines</li>
+                <li>Start development within 7 days</li>
+              </ul>
+              <Magnet strength={0.6}>
+                <Link to="/contact" className="inline-block bg-rust text-white mt-4 sm:mt-6 px-8 py-3 rounded-lg font-medium text-center hover:bg-rust-light transition-colors">
+                  Let's Work Together
+                </Link>
+              </Magnet>
+            </div>
+          </div>
+        </FadeUp>
+      </section>
 
     </main>
   );
