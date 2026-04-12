@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -12,8 +12,6 @@ export default function Cursor() {
     document.body.style.cursor = 'none';
 
     // Set GSAP quicksetters for performance
-    const xSetRing = gsap.quickSetter(ringRef.current, "x", "px");
-    const ySetRing = gsap.quickSetter(ringRef.current, "y", "px");
     const xSetDot = gsap.quickSetter(dotRef.current, "x", "px");
     const ySetDot = gsap.quickSetter(dotRef.current, "y", "px");
 

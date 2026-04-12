@@ -1,169 +1,123 @@
-import { Link } from 'react-router-dom';
-import FadeUp from '../components/common/FadeUp';
-import BlurText from '../components/reactbits/BlurText';
+import { useRef } from 'react';
 import ScrollReveal from '../components/reactbits/ScrollReveal';
+import BlurText from '../components/reactbits/BlurText';
 import Magnet from '../components/reactbits/Magnet';
+import { Link } from 'react-router-dom';
 import useSEO from '../hooks/useSEO';
 
-const PROCESS_STEPS = [
-  {
-    phase: 'Phase 01',
-    title: 'Discovery',
-    description: 'We isolate the exact features that move the revenue needle.',
-    image: '/images/process_discovery.png',
-    alt: 'Discovery Phase',
-  },
-  {
-    phase: 'Phase 02',
-    title: 'Architecture',
-    description: 'We blueprint secure, zero-latency cloud database schemas.',
-    image: '/images/process_planning.png',
-    alt: 'Planning & Architecture',
-  },
-  {
-    phase: 'Phase 03',
-    title: 'UI/UX Design',
-    description: 'We prototype pixel-perfect, conversion-optimized interfaces.',
-    image: '/images/process_development.png',
-    alt: 'UI/UX Design',
-  },
-  {
-    phase: 'Phase 04',
-    title: 'Development',
-    description: 'We write clean, typed, and modular React infrastructure.',
-    image: '/images/process_testing.png',
-    alt: 'Development',
-  },
-  {
-    phase: 'Phase 05',
-    title: 'QA Testing',
-    description: 'We stress-test code to guarantee zero launch-day crashes.',
-    image: '/images/process_deployment.png',
-    alt: 'QA Testing',
-  },
-  {
-    phase: 'Phase 06',
-    title: 'Deployment',
-    description: 'We distribute your app across global Edge networks.',
-    image: '/images/process_delivery.png',
-    alt: 'Deployment',
-  },
-  {
-    phase: 'Phase 07',
-    title: 'Scaling',
-    description: 'We analyze live user telemetrics to drive your next feature sprints.',
-    image: '/images/process_support.png',
-    alt: 'Scaling & Support',
-  },
-];
-
 export default function ProcessPage() {
+  const rootRef = useRef();
+
   useSEO({
-    title: 'Our Process | Engineering Digital Growth',
-    description: 'Learn how BytBrand architects, designs, and engineers scalable digital products from Discovery to Deployment.',
+    title: 'Precision Protocol | Our Engineering Process',
+    description: 'Explore the BytBrand protocol—a rigorous, architectural approach to designing and engineering world-class SaaS products.',
     url: 'https://bytbrand.com/process'
   });
 
+  const steps = [
+    {
+      id: "01",
+      title: "Strategic Extraction",
+      subtitle: "The Inception Phase",
+      desc: "We dive deep into your business logic, extracting core engineering requirements and aligning technical strategy with market objectives. This is where the blueprint for scale is born.",
+      image: "/images/srv_growth_new.png",
+      metrics: ["Logic Mapping", "Technical Roadmap", "ROI Projection"]
+    },
+    {
+      id: "02",
+      title: "System Architecture",
+      subtitle: "The Foundation Phase",
+      desc: "Our engineers design a resilient, high-performance architecture optimized for your specific data-flow needs. We prioritize zero-latency and effortless horizontal scaling from day one.",
+      image: "/images/srv_ai_new.png",
+      metrics: ["Cloud Strategy", "DB Normalization", "Security Hardening"]
+    },
+    {
+      id: "03",
+      title: "High-Fidelity Engineering",
+      subtitle: "The Development Phase",
+      desc: "We translate the architectural blueprint into production-grade code. Using a sophisticated modern stack, we build systems that are as technically sound as they are visually stunning.",
+      image: "/images/srv_app_new.png",
+      metrics: ["Rapid Iteration", "CI/CD Integration", "Unit/E2E Testing"]
+    },
+    {
+      id: "04",
+      title: "Global Deployment",
+      subtitle: "The Scaling Phase",
+      desc: "Your system is launched into a globally distributed production environment. We monitor every telemetry point to ensure 99.9% availability and peak performance across all regions.",
+      image: "/images/srv_uiux_new.png",
+      metrics: ["Asset Optimization", "Global CDN", "Performance Monitoring"]
+    }
+  ];
+
   return (
-    <main className="pt-16 min-h-screen bg-cream-soft">
-      <FadeUp>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-4 md:pt-6 md:pb-16 text-center">
-          <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-4">The Pipeline</span>
-          <h1 className="text-4xl md:text-6xl font-bold text-black tracking-tight leading-[1.1] mb-6">
-            <BlurText text="How We Build" delay={150} animateBy="words" direction="top" /><br className="hidden md:block" />
-            <BlurText text="Winning Products." delay={150} animateBy="words" direction="top" />
-          </h1>
-          <ScrollReveal baseOpacity={0} blurStrength={10}>
-            <p className="text-lg text-muted font-light max-w-2xl mx-auto leading-relaxed">
-              We execute a rigorous, transparent agile workflow designed to unblock founders. No guesswork or delays—just rapid deployment and continuous iteration.
-            </p>
-          </ScrollReveal>
-        </div>
-      </FadeUp>
+    <main ref={rootRef} className="pt-32 min-h-screen bg-cream-soft px-4 sm:px-6 lg:px-8 pb-32">
+      
+      {/* ── HEADER ── */}
+      <section className="max-w-7xl mx-auto mb-32 text-center lg:text-left">
+        <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-rust block mb-8">Protocol Architecture —— 2026</span>
+        <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-black leading-[0.9] mb-12">
+          <BlurText text="The Precision" delay={150} animateBy="words" direction="top" /> 
+          <span className="text-rust italic font-serif">Protocol.</span>
+        </h1>
+        <p className="text-xl text-muted font-light max-w-2xl leading-relaxed">
+           A rigorous, outcome-driven engineering framework designed to convert 
+           complex ideas into scalable, production-grade SaaS ecosystems.
+        </p>
+      </section>
 
-      {/* ── PROCESS STEPS ── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 md:pb-16">
-        <div className="space-y-16 lg:space-y-24 mb-20 overflow-x-hidden p-4 -space-x-4">
-          {PROCESS_STEPS.map((step, index) => (
-            <FadeUp key={index} direction={index % 2 === 0 ? 'left' : 'right'} delay="0ms">
-              <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
-                
-                {index % 2 === 0 ? (
-                  <>
-                    <img 
-                      src={step.image} 
-                      alt={step.alt}
-                      className="w-full max-w-md mx-auto h-auto object-cover rounded-xl shadow-lg border border-border" 
-                      loading="lazy"
-                    />
-                    <div className="p-4 sm:p-6">
-                      <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-2">{step.phase}</span>
-                      <h3 className="text-2xl font-bold text-black mb-4">
-                        {step.title}
-                      </h3>
-                      <p className="mt-2 text-[16px] text-muted font-light leading-relaxed">
-                        {step.description}
-                      </p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="p-4 sm:p-6 order-2 md:order-1">
-                      <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-2">{step.phase}</span>
-                      <h3 className="text-2xl font-bold text-black mb-4">
-                        {step.title}
-                      </h3>
-                      <p className="mt-2 text-[16px] text-muted font-light leading-relaxed">
-                        {step.description}
-                      </p>
-                    </div>
-                    <img 
-                      src={step.image} 
-                      alt={step.alt}
-                      className="w-full max-w-md mx-auto h-auto object-cover rounded-xl shadow-lg border border-border order-1 md:order-2" 
-                      loading="lazy"
-                    />
-                  </>
-                )}
-
+      {/* ── STEPS (ARCHITECTURAL SPLIT) ── */}
+      <div className="max-w-7xl mx-auto space-y-32">
+        {steps.map((step, idx) => (
+          <ScrollReveal key={step.id} delay={idx * 100}>
+            <div className={`flex flex-col lg:flex-row items-center gap-20 py-16 border-t border-border/40 ${idx % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+              
+              {/* Visual Side */}
+              <div className="flex-1 w-full">
+                <div className="glass-card aspect-video w-full p-4 bg-rust/5 relative group overflow-hidden border-rust/10">
+                   <div className="absolute inset-0 bg-rust/10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                   <div className="image-placeholder w-full h-full rounded-xl transition-transform duration-700 group-hover:scale-105" />
+                   <div className="absolute top-8 left-8 w-16 h-16 bg-black text-white rounded-full flex items-center justify-center font-bold text-2xl shadow-xl z-20">
+                     {step.id}
+                   </div>
+                </div>
               </div>
-            </FadeUp>
-          ))}
-        </div>
+
+              {/* Content Side */}
+              <div className="flex-1 space-y-8">
+                <div>
+                  <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-muted block mb-4 italic">{step.subtitle}</span>
+                  <h3 className="text-4xl md:text-5xl font-bold tracking-tighter text-black leading-tight">
+                    {step.title}
+                  </h3>
+                </div>
+                <p className="text-lg text-muted font-light leading-relaxed">
+                  {step.desc}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {step.metrics.map(metric => (
+                    <span key={metric} className="text-[10px] font-mono tracking-widest px-4 py-2 bg-white/50 border border-border/40 rounded-full uppercase text-muted">
+                      {metric}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </ScrollReveal>
+        ))}
       </div>
 
-      {/* ── CTA BANNER ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 border-t border-border focus:outline-none">
-        <FadeUp delay="80ms">
-          <div className="bg-stone border border-border p-8 md:p-16 rounded-2xl text-center relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-rust/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-brown-dark/5 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
-            
-            <div className="relative z-10 max-w-2xl mx-auto">
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-black mb-6">
-                <BlurText text="Build faster." delay={100} animateBy="words" direction="top" /> 
-                <span className="text-rust">
-                  <BlurText text="Scale smarter." delay={100} animateBy="words" direction="top" />
-                </span>
-              </h2>
-              <ScrollReveal baseOpacity={0} blurStrength={5}>
-                <p className="text-lg text-muted font-light mb-8">
-                  We engineer full-stack SaaS products that remove friction from user journeys and drive real, compounding business growth over time.
-                </p>
-              </ScrollReveal>
-              <ul className="text-left w-fit mx-auto mb-10 text-sm text-muted font-light list-square pl-5 space-y-3">
-                <li>Get a complete technical roadmap</li>
-                <li>Receive transparent project timelines</li>
-                <li>Start development within 7 days</li>
-              </ul>
-              <Magnet strength={0.6}>
-                <Link to="/contact" className="inline-block bg-rust text-white mt-4 sm:mt-6 px-8 py-3 rounded-lg font-medium text-center hover:bg-rust-light transition-colors">
-                  Let's Work Together
-                </Link>
-              </Magnet>
-            </div>
-          </div>
-        </FadeUp>
+      {/* ── CALL TO ACTION ── */}
+      <section className="max-w-7xl mx-auto mt-32 text-center pt-32 border-t border-border/40">
+         <h2 className="text-4xl md:text-6xl font-bold tracking-tighter mb-12">
+           Ready to initialize the <br />
+           <span className="text-rust italic font-serif">BytBrand protocol?</span>
+         </h2>
+         <Magnet strength={0.4}>
+           <Link to="/contact" className="inline-block bg-black text-white px-12 py-4 rounded-xl font-bold text-lg hover:bg-rust transition-all shadow-2xl menu-button">
+             Begin Strategic Inception ——
+           </Link>
+         </Magnet>
       </section>
 
     </main>

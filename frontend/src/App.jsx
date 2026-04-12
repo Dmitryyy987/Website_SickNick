@@ -39,7 +39,7 @@ function MainLayout() {
         transition={{ duration: 1.2, ease: [0.43, 0.13, 0.23, 0.96] }}
       >
         <Navbar />
-        <main className="flex-1 w-full overflow-hidden">
+        <main className="flex-1 w-full">
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<Home />} />

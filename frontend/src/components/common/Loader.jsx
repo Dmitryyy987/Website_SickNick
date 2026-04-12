@@ -1,86 +1,37 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 import { useState, useEffect } from 'react';
-
-/**
- * Loader Variants
- */
-const containerVariants = {
-  initial: { 
-    opacity: 1 
-  },
-  exit: {
-    opacity: 0,
-    scale: 1.05,
-    filter: 'blur(10px)',
-    transition: {
-      duration: 0.8,
-      ease: [0.43, 0.13, 0.23, 0.96],
-      when: 'afterChildren'
-    }
-  }
-};
-
-const circleVariants = {
-  initial: { 
-    scale: 0.8, 
-    opacity: 0, 
-    filter: 'blur(10px)' 
-  },
-  animate: {
-    scale: [0.8, 1.1, 1],
-    opacity: 1,
-    filter: 'blur(0px)',
-    transition: {
-      duration: 1.2,
-      ease: 'easeInOut'
-    }
-  }
-};
-
-const pulseVariants = {
-  animate: {
-    scale: [1, 1.05, 1],
-    opacity: [0.5, 0.8, 0.5],
-    transition: {
-      duration: 2,
-      repeat: Infinity,
-      ease: 'easeInOut'
-    }
-  }
-};
-
-const textVariants = {
-  initial: { 
-    opacity: 0, 
-    y: 10 
-  },
-  animate: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: 0.5,
-      duration: 0.8,
-      ease: 'easeOut'
-    }
-  }
-};
 
 const Loader = ({ isLoading, onLoadingComplete }) => {
   const [percent, setPercent] = useState(0);
+  
+  // Spotlight Cursor Tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { damping: 25, stiffness: 150 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
 
   useEffect(() => {
     if (!isLoading) return;
-
     const interval = setInterval(() => {
       setPercent((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           return 100;
         }
-        return prev + Math.floor(Math.random() * 5) + 1;
+        return prev + Math.floor(Math.random() * 8) + 1;
       });
-    }, 50);
-
+    }, 45);
     return () => clearInterval(interval);
   }, [isLoading]);
 
@@ -88,81 +39,156 @@ const Loader = ({ isLoading, onLoadingComplete }) => {
     if (percent === 100) {
       const timeout = setTimeout(() => {
         onLoadingComplete?.();
-      }, 500);
+      }, 800);
       return () => clearTimeout(timeout);
     }
   }, [percent, onLoadingComplete]);
+
+  // SVG Ring Constants
+  const radius = 60;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (percent / 100) * circumference;
 
   return (
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          key="loader"
-          variants={containerVariants}
-          initial="initial"
-          exit="exit"
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden bg-white dark:bg-[#060010]"
+          key="loader-container"
+          initial={{ opacity: 0, scale: 0.98, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          exit={{ 
+            opacity: 0, 
+            scale: 1.05, 
+            filter: 'blur(15px)',
+            transition: { duration: 0.9, ease: [0.43, 0.13, 0.23, 0.96] }
+          }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-gradient-to-br from-cream-soft via-stone to-cream-soft select-none"
         >
-          {/* Animated Gradient Background */}
-          <div className="absolute inset-0 opacity-20 dark:opacity-40">
-            <div className="absolute inset-x-0 top-0 h-[500px] w-full bg-gradient-to-b from-rust/30 to-transparent blur-[120px]" />
-            <div className="absolute inset-x-0 bottom-0 h-[500px] w-full bg-gradient-to-t from-brown-dark/30 to-transparent blur-[120px]" />
-          </div>
-
-          {/* Center Element */}
-          <div className="relative flex items-center justify-center">
-            {/* Pulsing Outer Ring */}
-            <motion.div
-              variants={pulseVariants}
-              animate="animate"
-              className="absolute h-32 w-32 rounded-full border border-rust/30"
+          {/* ── BACKGROUND SYSTEM ── */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Spotlight Effect */}
+            <motion.div 
+              style={{
+                left: smoothX,
+                top: smoothY,
+              }}
+              className="absolute w-[600px] h-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-rust/5 blur-[120px]"
             />
+
+            {/* Top Blob */}
+            <motion.div
+              animate={{
+                scale: [1, 1.1, 1],
+                x: [0, 30, 0],
+                y: [0, -20, 0],
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute -top-20 -left-20 w-[40vw] h-[40vw] bg-rust opacity-5 blur-[120px] rounded-full"
+            />
+
+            {/* Bottom Blob */}
+            <motion.div
+              animate={{
+                scale: [1, 1.2, 1],
+                x: [0, -40, 0],
+                y: [0, 30, 0],
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute -bottom-20 -right-20 w-[50vw] h-[50vw] bg-stone opacity-30 blur-[120px] rounded-full"
+            />
+          </div>
+
+          {/* ── CORE LOADER ── */}
+          <div className="relative flex flex-col items-center justify-center">
             
-            {/* Staggered Circles */}
-            <div className="relative flex gap-2">
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  variants={circleVariants}
-                  initial="initial"
-                  animate="animate"
-                  transition={{ delay: i * 0.1 }}
-                  className="h-3 w-3 rounded-full bg-rust"
-                />
-              ))}
+            {/* Progress Ring & Logo Center */}
+            <div className="relative w-48 h-48 flex items-center justify-center">
+              
+              {/* Rotating Ring Container */}
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                className="absolute inset-0"
+              >
+                <svg className="w-full h-full transform -rotate-90">
+                  <circle
+                    cx="96"
+                    cy="96"
+                    r={radius}
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    fill="transparent"
+                    className="text-stone/30"
+                  />
+                  <motion.circle
+                    cx="96"
+                    cy="96"
+                    r={radius}
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    fill="transparent"
+                    strokeDasharray={circumference}
+                    animate={{ strokeDashoffset: offset }}
+                    transition={{ ease: 'easeInOut', duration: 0.5 }}
+                    className="text-rust"
+                  />
+                </svg>
+              </motion.div>
+
+              {/* Central Logo */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ 
+                  opacity: 1, 
+                  scale: [1, 1.02, 1],
+                }}
+                transition={{
+                  opacity: { duration: 0.8 },
+                  scale: { duration: 3, repeat: Infinity, ease: 'easeInOut' }
+                }}
+                className="flex flex-col items-center z-10"
+              >
+                <span className="font-serif italic text-3xl text-black">BytBrand</span>
+              </motion.div>
             </div>
-          </div>
 
-          {/* Text & Counter */}
-          <div className="mt-12 flex flex-col items-center gap-4">
+            {/* Percentage Number */}
+            <div className="mt-8 overflow-hidden h-12 flex items-center justify-center">
+              <AnimatePresence mode="popLayout">
+                <motion.span
+                  key={percent}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -20, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="font-sans text-5xl font-bold tracking-tighter text-black tabular-nums"
+                >
+                  {percent}
+                </motion.span>
+              </AnimatePresence>
+            </div>
+
             <motion.p
-              variants={textVariants}
-              initial="initial"
-              animate="animate"
-              className="font-mono text-[10px] uppercase tracking-[0.3em] text-rust"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mt-4 font-mono text-[10px] uppercase tracking-[0.4em] text-rust opacity-60"
             >
-              Initializing Experience
+              System Synchronization
             </motion.p>
-            
-            <motion.span
-              variants={textVariants}
-              initial="initial"
-              animate="animate"
-              className="font-sans text-4xl font-light text-black dark:text-cream"
-            >
-              {Math.min(percent, 100)}%
-            </motion.span>
           </div>
 
-          {/* Progress Bar (Bottom) */}
-          <div className="absolute bottom-0 left-0 h-1 w-full bg-stone dark:bg-white/5">
+          {/* ── PROGRESS BAR (BOTTOM) ── */}
+          <div className="absolute bottom-0 left-0 w-full h-[3px] bg-stone/20">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${percent}%` }}
-              transition={{ ease: 'linear' }}
-              className="h-full bg-rust shadow-[0_0_15px_rgba(136,69,49,0.5)]"
+              transition={{ ease: 'easeInOut', duration: 0.5 }}
+              className="h-full bg-gradient-to-r from-rust to-rust-light shadow-[0_0_15px_rgba(136,69,49,0.3)]"
             />
           </div>
+
         </motion.div>
       )}
     </AnimatePresence>

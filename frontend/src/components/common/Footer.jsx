@@ -2,33 +2,26 @@ import { useState, Suspense, lazy } from 'react';
 import { NavLink } from 'react-router-dom';
 import BlurText from '../reactbits/BlurText';
 import Magnet from '../reactbits/Magnet';
-import Folder from '../reactbits/Folder';
 import { api } from '../../services/api';
+import { ArrowRight } from 'lucide-react';
 
 const BorderGlow = lazy(() => import('../reactbits/BorderGlow'));
 
 export default function Footer() {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState('idle'); // idle | loading | success | error
+  const [status, setStatus] = useState('idle');
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email || !email.includes('@')) return;
-
     setStatus('loading');
     try {
       const res = await api.subscribeNewsletter(email);
-      if (res.success) {
-        setStatus('success');
-        setEmail('');
-      } else {
-        setStatus('error');
-      }
-    } catch (error) {
-      console.error('Newsletter subscription failed:', error);
+      setStatus(res.success ? 'success' : 'error');
+      if (res.success) setEmail('');
+    } catch {
       setStatus('error');
     }
-
     setTimeout(() => setStatus('idle'), 4000);
   };
 
@@ -40,6 +33,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 pb-16 border-b border-white/10">
 
+          {/* Brand */}
           <div className="lg:col-span-4 lg:pr-8">
             <span className="block font-serif italic text-3xl mb-4">
               <BlurText text="BytBrand" delay={100} animateBy="words" direction="top" />
@@ -50,6 +44,7 @@ export default function Footer() {
             </p>
           </div>
 
+          {/* Services */}
           <div className="lg:col-span-2">
             <span className="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/40 mb-6">Services</span>
             <ul className="space-y-4">
@@ -60,6 +55,7 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Company */}
           <div className="lg:col-span-2">
             <span className="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/40 mb-6">Company</span>
             <ul className="space-y-4">
@@ -69,10 +65,12 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Newsletter */}
           <div className="lg:col-span-4">
             <span className="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/40 mb-6">Newsletter</span>
-            <p className="text-cream/70 text-[13px] font-light mb-4 leading-relaxed">Tech insights and project updates — no spam.</p>
-            
+            <p className="text-cream/70 text-[13px] font-light mb-4 leading-relaxed">
+              Tech insights and project updates — no spam.
+            </p>
             <Suspense fallback={<div className="h-12 bg-white/5 rounded-lg animate-pulse" />}>
               <BorderGlow borderRadius={8} backgroundColor="transparent" glowColor="40 80 80">
                 <form className="flex w-full" onSubmit={handleSubscribe} noValidate>
@@ -86,16 +84,20 @@ export default function Footer() {
                     aria-label="Email address for newsletter"
                   />
                   <Magnet strength={0.4}>
-                    <button 
-                      className="bg-rust text-white border-none px-5 py-3 rounded-r-lg text-sm font-semibold hover:bg-rust-light transition-colors min-w-[48px] flex items-center justify-center h-full" 
-                      type="submit" 
+                    <button
+                      className="bg-rust text-white border-none px-5 py-3 rounded-r-lg text-sm font-semibold hover:bg-rust-light transition-colors min-w-[48px] flex items-center justify-center h-full"
+                      type="submit"
                       aria-label="Subscribe"
                     >
-                      <Folder 
-                        color="var(--color-white)" 
-                        size={0.4} 
-                        items={[status === 'loading' ? '…' : status === 'success' ? '✓' : status === 'error' ? '✕' : '→']} 
-                      />
+                      {status === 'loading' ? (
+                        <span className="text-xs font-mono">…</span>
+                      ) : status === 'success' ? (
+                        <span className="text-xs">✓</span>
+                      ) : status === 'error' ? (
+                        <span className="text-xs">✕</span>
+                      ) : (
+                        <ArrowRight size={14} />
+                      )}
                     </button>
                   </Magnet>
                 </form>
@@ -112,4 +114,3 @@ export default function Footer() {
     </footer>
   );
 }
-

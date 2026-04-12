@@ -47,6 +47,14 @@
     --brand-cream: #F8F3F0;
     --brand-black: #1C1B1A;
     --glow-color: 40 80 80; /* HSL for BorderGlow */
+    
+    /* SaaS 10px Grid System */
+    --grid-unit: 10px;
+    --space-1: calc(var(--grid-unit) * 1); /* 10px */
+    --space-2: calc(var(--grid-unit) * 2); /* 20px */
+    --space-4: calc(var(--grid-unit) * 4); /* 40px */
+    --space-8: calc(var(--grid-unit) * 8); /* 80px */
+    --space-12: calc(var(--grid-unit) * 12); /* 120px */
   }
 
   body {
@@ -96,6 +104,16 @@
     background-color: var(--color-rust-light);
   }
 
+  /* Typography Refresh */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight text-black;
+    line-height: 1.15;
+  }
+
+  p {
+    @apply leading-relaxed text-muted;
+  }
+
   /* Scroll Snap Utilities */
   .scroll-container {
     scroll-snap-type: x mandatory;
@@ -109,16 +127,101 @@
   .snap-start {
     scroll-snap-align: start;
   }
-}
 
+  /* Layout Standard */
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Architectural Utilities */
+  .architectural-grid {
+    @apply grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16;
+  }
+  
+  .architectural-sidebar {
+    @apply lg:col-span-4;
+  }
+  
+  .architectural-content {
+    @apply lg:col-span-8;
+  }
+
+  /* Text Reveal Effects */
+  .text-reveal {
+    @apply relative overflow-hidden;
+  }
+  
+  .text-reveal-inner {
+    @apply block;
+  }
+
+  /* Enhanced Glassmorphism UI System */
+  .glass-card {
+    @apply bg-white/40 backdrop-blur-md border border-white/20 shadow-sm rounded-2xl transition-all duration-300;
+  }
+  
+  .glass-card:hover {
+    @apply bg-white/50 border-white/30 shadow-lg -translate-y-1;
+  }
+
+  .glass-panel {
+    @apply bg-white/40 backdrop-blur-xl border border-white/10 shadow-2xl;
+  }
+
+  .glass-navbar {
+    @apply bg-white/40 backdrop-blur-lg border border-white/20 shadow-sm rounded-full;
+  }
+
+  /* SaaS Grid Utilities */
+  .px-grid { padding-left: var(--space-4); padding-right: var(--space-4); }
+  .py-grid { padding-top: var(--space-8); padding-bottom: var(--space-8); }
+  .gap-grid { gap: var(--space-4); }
+
+  /* Premium Image Placeholders */
+  .image-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .image-placeholder::after {
+    content: "SYSTEM ASSET";
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Compact SaaS Buttons */
+  .menu-button {
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em !important;
+  }
+}
 
 /* Base fade-up animations (Fallback for JS disabled, though we will prioritize GSAP) */
 .fade-up { 
   opacity: 0; 
-  transform: translateY(28px); 
-  transition: opacity 0.65s ease, transform 0.65s ease; 
+  transform: translateY(24px); 
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); 
 }
 .fade-up.visible { 
   opacity: 1; 
   transform: translateY(0); 
+}
+
+/* Custom Selection */
+::selection {
+  background: var(--color-rust);
+  color: white;
 }

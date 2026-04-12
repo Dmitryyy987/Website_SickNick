@@ -241,17 +241,9 @@ export const LogoLoop = memo(
             {item.node}
           </span>
         ) : (
-          <img
-            src={item.src}
-            srcSet={item.srcSet}
-            sizes={item.sizes}
-            width={item.width}
-            height={item.height}
-            alt={item.alt ?? ''}
-            title={item.title}
-            loading="lazy"
-            decoding="async"
-            draggable={false}
+          <div 
+            className="image-placeholder !bg-black/5 !border-none" 
+            style={{ height: toCssLength(logoHeight), width: toCssLength(item.width) || '140px' }}
           />
         );
         const itemAriaLabel = isNodeItem ? (item.ariaLabel ?? item.title) : (item.alt ?? item.title);

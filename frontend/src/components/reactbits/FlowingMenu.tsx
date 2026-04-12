@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 
 const FlowingMenu = ({
@@ -8,7 +9,8 @@ const FlowingMenu = ({
   bgColor = '#060010',
   marqueeBgColor = '#fff',
   marqueeTextColor = '#060010',
-  borderColor = '#fff'
+  borderColor = '#fff',
+  onLinkClick
 }) => {
   return (
     <div className="w-full h-full overflow-hidden" style={{ backgroundColor: bgColor }}>
@@ -23,6 +25,7 @@ const FlowingMenu = ({
             marqueeTextColor={marqueeTextColor}
             borderColor={borderColor}
             isFirst={idx === 0}
+            onLinkClick={onLinkClick}
           />
         ))}
       </nav>
@@ -39,7 +42,8 @@ const MenuItem = ({
   marqueeBgColor,
   marqueeTextColor,
   borderColor,
-  isFirst
+  isFirst,
+  onLinkClick
 }) => {
   const itemRef = useRef(null);
   const marqueeRef = useRef(null);
@@ -129,15 +133,16 @@ const MenuItem = ({
       ref={itemRef}
       style={{ borderTop: isFirst ? 'none' : `1px solid ${borderColor}` }}
     >
-      <a
+      <Link
         className="flex items-center justify-center h-full relative cursor-pointer uppercase no-underline font-semibold text-[4vh] py-8 md:py-10"
-        href={link}
+        to={link}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={onLinkClick}
         style={{ color: textColor }}
       >
         {text}
-      </a>
+      </Link>
       <div
         className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none translate-y-[101%] z-10"
         ref={marqueeRef}
@@ -148,8 +153,7 @@ const MenuItem = ({
             <div className="marquee-part flex items-center flex-shrink-0" key={idx} style={{ color: marqueeTextColor }}>
               <span className="whitespace-nowrap uppercase font-normal text-[4vh] leading-[1] px-[1vw]">{text}</span>
               <div
-                className="w-[200px] h-[7vh] my-[2em] mx-[2vw] rounded-[50px] bg-cover bg-center"
-                style={{ backgroundImage: `url(${image})` }}
+                className="w-[200px] h-[7vh] my-[2em] mx-[2vw] rounded-[50px] bg-gradient-to-r from-rust/20 to-black/20"
               />
             </div>
           ))}
