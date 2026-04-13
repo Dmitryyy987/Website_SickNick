@@ -11,9 +11,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { projects } from '../data/projects';
 
-// Lazy load complex animation components for performance
-const ImageTrail = lazy(() => import('../components/reactbits/ImageTrail'));
-
+// Removed unresolved ImageTrail component import
 export default function Home() {
   const rootRef = useRef();
 
@@ -73,14 +71,18 @@ export default function Home() {
         </div>
         
         <div className="hero-visual flex-1 relative w-full aspect-square">
-           <div className="absolute inset-0 bg-rust/5 rounded-full blur-[120px] animate-pulse" />
-           <Suspense fallback={<div className="w-full h-full bg-stone/20 rounded-3xl animate-pulse" />}>
-              <ImageTrail items={[]} variant={3}>
-                 <div className="glass-card w-full h-full p-6 flex items-center justify-center overflow-hidden border-rust/10">
-                    <div className="image-placeholder w-full h-full" />
-                 </div>
-              </ImageTrail>
-           </Suspense>
+           <div className="absolute inset-0 bg-rust/10 rounded-full blur-[120px] animate-pulse" />
+           <div className="glass-card w-full h-full p-6 flex flex-col items-center justify-center overflow-hidden border border-rust/30 shadow-[0_0_60px_rgba(139,92,246,0.1)] bg-black/40">
+              <div className="image-placeholder w-full h-full rounded-xl border border-white/5 bg-gradient-to-br from-white/5 to-transparent relative overflow-hidden flex flex-col items-center justify-center">
+                <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.03)_50%,transparent_75%)] bg-[length:250%_250%] animate-pulse" />
+                <div className="flex flex-col items-center justify-center h-full gap-4 text-white/50 z-10">
+                   <div className="w-16 h-16 border rounded-full border-rust/30 flex items-center justify-center shadow-[0_0_15px_rgba(139,92,246,0.2)]">
+                     <span className="text-rust animate-pulse text-lg">●</span>
+                   </div>
+                   <span className="font-mono text-xs tracking-[0.2em] uppercase text-rust/80">Architecture Active</span>
+                </div>
+              </div>
+           </div>
         </div>
       </section>
 
@@ -166,11 +168,11 @@ export default function Home() {
               <div className="flex flex-col items-center">
                 <div className="flex-1 flex justify-center">
                   <Folder 
-                    color="#884531" 
+                    color="#8B5CF6" 
                     size={1.4}
                     items={[
                       <div key="1" className="image-placeholder w-full h-full" />,
-                      <div key="2" className="p-10 flex flex-col justify-center h-full bg-white">
+                      <div key="2" className="p-10 flex flex-col justify-center h-full bg-stone border-l border-white/5">
                          <h4 className="text-xl font-bold text-black mb-4">Strategic Challenges</h4>
                          <p className="text-[13px] text-muted leading-relaxed font-light">{project.challenges}</p>
                       </div>,

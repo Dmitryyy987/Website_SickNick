@@ -145,7 +145,7 @@ export default function Navbar() {
                         textColor="var(--color-black)"
                         marqueeBgColor="var(--color-rust)"
                         marqueeTextColor="var(--color-white)"
-                        borderColor="rgba(0,0,0,0.05)"
+                        borderColor="rgba(255,255,255,0.05)"
                         onLinkClick={() => setOpen(false)}
                       />
                     </div>

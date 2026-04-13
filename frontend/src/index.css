@@ -2,20 +2,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brown-dark: #53433E;
-  --color-black: #1C1B1A;
-  --color-rust: #884531;
-  --color-cream: #F8F3F0;
-  --color-white: #FFFFFF;
-  --color-rust-light: #A65D47;
-  --color-cream-soft: #FDF8F5;
-  --color-blush: #D9C1BB;
-  --color-stone: #ECE7E4;
-  --color-border: #DED9D6;
-  --color-warm-white: #FFF4F1;
-  --color-off-white: #F2EDEA;
-  --color-muted: #86736D;
-  --color-gray: #6B7280;
+  --color-brown-dark: #27272A;
+  --color-black: #FAFAFA;
+  --color-rust: #8B5CF6;
+  --color-cream: #09090B;
+  --color-white: #030303; 
+  --color-rust-light: #A78BFA;
+  --color-cream-soft: #0B0B0E;
+  --color-blush: #1E1B4B;
+  --color-stone: #18181A;
+  --color-border: #27272A;
+  --color-warm-white: #0F0F13;
+  --color-off-white: #121216;
+  --color-muted: #A1A1AA;
+  --color-gray: #71717A;
 
   --font-sans: 'DM Sans', sans-serif;
   --font-serif: 'Cormorant Garamond', serif;
@@ -39,14 +39,14 @@
   }
 
   :root {
-    --rb-glow-primary: #884531; /* rust */
-    --rb-glow-secondary: #e5e0d8; /* cream-soft */
+    --rb-glow-primary: #8B5CF6; /* vivid amethyst */
+    --rb-glow-secondary: #0B0B0E; /* deep background */
     --rb-anim-speed: 0.6s;
-    --rb-pixel-color: #2b2b2b;
-    --brand-rust: #884531;
-    --brand-cream: #F8F3F0;
-    --brand-black: #1C1B1A;
-    --glow-color: 40 80 80; /* HSL for BorderGlow */
+    --rb-pixel-color: #8B5CF6;
+    --brand-rust: #8B5CF6;
+    --brand-cream: #09090B;
+    --brand-black: #FAFAFA;
+    --glow-color: 258 90 66; /* HSL for Amethyst BorderGlow */
     
     /* SaaS 10px Grid System */
     --grid-unit: 10px;
@@ -155,21 +155,21 @@
     @apply block;
   }
 
-  /* Enhanced Glassmorphism UI System */
+  /* Enhanced Glassmorphism UI System for Dark Mode */
   .glass-card {
-    @apply bg-white/40 backdrop-blur-md border border-white/20 shadow-sm rounded-2xl transition-all duration-300;
+    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-sm rounded-2xl transition-all duration-300;
   }
   
   .glass-card:hover {
-    @apply bg-white/50 border-white/30 shadow-lg -translate-y-1;
+    @apply bg-white/10 border-white/20 shadow-lg -translate-y-1;
   }
 
   .glass-panel {
-    @apply bg-white/40 backdrop-blur-xl border border-white/10 shadow-2xl;
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
   }
 
   .glass-navbar {
-    @apply bg-white/40 backdrop-blur-lg border border-white/20 shadow-sm rounded-full;
+    @apply bg-white/5 backdrop-blur-lg border border-white/10 shadow-sm rounded-full;
   }
 
   /* SaaS Grid Utilities */

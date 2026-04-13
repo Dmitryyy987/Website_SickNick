@@ -74,7 +74,7 @@ export default function Contact() {
             </ScrollReveal>
 
             <Suspense fallback={<div className="h-40 bg-stone rounded-xl animate-pulse" />}>
-              <BorderGlow borderRadius={12} backgroundColor="#FFFFFF">
+              <BorderGlow borderRadius={12} backgroundColor="#0B0B0E">
                 <div className="p-6">
                   <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-rust block mb-4">What to Expect</span>
                   <ul className="space-y-3 text-sm text-muted font-light">
